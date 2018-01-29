@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% block content %}
+    <p>So this project was prompted by spending quite a lot of time on Reddit during the election season.
+       I noticed how people with different political ideologies talked about problems in very different ways.
+       I used <a href="https://praw.readthedocs.io/en/latest/">Reddit's open API, PRAW</a>, to scrape the most popular threads from four politically engaged subreddits everday.
+       I did some preprocessing of comments using Python and used Redis and PSQL to count words. This process is automated and runs daily
+       at 11:45 PST.
+    </p>
+
+    <p>I really like this project. I'll let you draw your own conclusions about the user base of each subreddit. You may of noticed 
+    that words such as 'the, and, then' etc. are not present in this data set. I consulted <a href='https://en.wikipedia.org/wiki/Most_common_words_in_English' >Wikipedia's list of most common words</a>
+    and did not include the most common ~150 words. If you are interested, feel free to check out the project <a href='https://github.com/alexanderbcook/reddit_vocabulary'> on GitHub.</a>
+    </p>
+    <hr>
+    <b>Here are the top words used on r/politics today.</b>
+    <p>
+    </p>
+    <div class="chart" id="area1">
+    </div>
+    <div class="axis" id="axis1">
+    </div>
+    <hr>
+
+    <b>Here are the top words used on r/news today.</b>
+    <p></p>
+    <div class="chart" id="area2">
+    </div>
+    <div class="axis" id="axis2">
+    </div>
+    <hr>
+    
+    <b>Here are the top words used on r/the_donald today.</b>
+    <p></p>
+    <div class="chart" id="area3">
+    </div>
+    <div class="axis" id="axis3">
+    </div>
+    <hr>
+
+    <b>Here are the top words used on r/worldnews today.</b>
+    <p></p>
+    <div class="chart" id="area4">
+    </div>
+    <div class="axis" id="axis4">
+    </div>
+    <hr>
+
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+
+    <script>
+  
+    var JSONdata = {{politics|tojson}}    
+    var data1 = JSON.parse(JSONdata)
+    var JSONdata = {{news|tojson}}    
+    var data2 = JSON.parse(JSONdata)
+    var JSONdata = {{the_donald|tojson}}    
+    var data3 = JSON.parse(JSONdata)
+    var JSONdata = {{worldnews|tojson}}    
+    var data4 = JSON.parse(JSONdata)
+
+
+    var word = function(data){return data.word}
+    var count = function(data){return data.count}
+    function getMax(data){
+        var max;
+        for (var i = 0; i < data.length ; i ++){
+            if(!max || parseInt(data[i][count]) > parseInt(max[count]))
+                max = data[i]
+        }
+        return max.count;
+    }   
+
+    var x1 = d3.scale.linear()
+            .domain([0, getMax(data1)])
+            .range([0, 700]);
+
+    var x2 = d3.scale.linear()
+            .domain([0, getMax(data2)])
+            .range([0, 700]);
+
+    var x3 = d3.scale.linear()
+            .domain([0, getMax(data3)])
+            .range([0, 700]);
+    var x4 = d3.scale.linear()
+            .domain([0, getMax(data4)])
+            .range([0, 700]);
+
+    var chart1 = d3.select("#area1")
+        .selectAll("div")
+        .data(data1)
+        .enter().append("div")
+        .style("width", function(data) { return x1(data.count) + "px"; })
+        .text(function(data) { return data.word; });
+
+    var chart2 = d3.select("#area2")
+        .selectAll("div")
+        .data(data2)
+        .enter().append("div")
+        .style("width", function(data) { return x2(data.count) + "px"; })
+        .text(function(data) { return data.word; });
+
+    var chart2 = d3.select("#area3")
+        .selectAll("div")
+        .data(data3)
+        .enter().append("div")
+        .style("width", function(data) { return x3(data.count) + "px"; })
+        .text(function(data) { return data.word; });
+    var chart2 = d3.select("#area4")
+        .selectAll("div")
+        .data(data4)
+        .enter().append("div")
+        .style("width", function(data) { return x4(data.count) + "px"; })
+        .text(function(data) { return data.word; });
+
+
+
+    var axis1 = d3.select("#axis1").append("svg").attr("width", 750).attr("height", 20)
+    var axisScale = d3.scale.linear().domain([0, getMax(data1)]).range([-5,705])
+    var xAxis = d3.svg.axis().scale(axisScale).tickSubdivide(true)
+    var xAxisGroup = axis1.append("g").call(xAxis)
+
+    var axis2 = d3.select("#axis2").append("svg").attr("width", 750).attr("height", 20)
+    var axisScale = d3.scale.linear().domain([0, getMax(data2)]).range([-5,705])
+    var xAxis = d3.svg.axis().scale(axisScale)
+    var xAxisGroup = axis2.append("g").call(xAxis)
+
+    var axis3 = d3.select("#axis3").append("svg").attr("width", 750).attr("height", 20)
+    var axisScale = d3.scale.linear().domain([0, getMax(data3)]).range([-5,705])
+    var xAxis = d3.svg.axis().scale(axisScale)
+    var xAxisGroup = axis3.append("g").call(xAxis)
+
+    var axis4 = d3.select("#axis4").append("svg").attr("width", 750).attr("height", 20)
+    var axisScale = d3.scale.linear().domain([0, getMax(data4)]).range([-5,705])
+    var xAxis = d3.svg.axis().scale(axisScale)
+    var xAxisGroup = axis4.append("g").call(xAxis)
+
+    </script> 
+    
+    <style>
+    .axis text{
+        font: 11px arial;
+    }
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: #aaa;
+        shape-rendering: crispEdges;
+    }
+    .chart div {
+        font: 10px arial;
+        background-color: steelblue;
+        text-align: right;
+        padding: 4px;
+        margin: 1px;
+        color: white;
+    }
+    .chart div:hover {
+        font: 10.5px arial;
+        opacity: .6;
+    }
+
+    </style>
+
+{% endblock %}
