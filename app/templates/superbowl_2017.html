@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% block content %}
+
+<br>
+    <p> I started thinking about this project as I was <a href="https://github.com/alexanderbcook/twitter_stream">building the Twitter Stream project.</a>
+        Twitter has an API that allows you to filter and stream tweets based on hashtags, specific users, or geospatial restrictions. 
+        I collected every available tweet mentioning either team for the duration of the 2017 Superbowl. About 2,000,000 tweets in total. 
+        Analysis was done in Python. This page serves up a static .csv file with total count and proportion data.</a>
+        </p>
+
+    <p> This first graph is the total number of tweets. Pretty much as you would expect - dominated by the largest states and the two states principally involved in 
+        the game. Twitter rate limits streaming through the API. Usually they limit streaming capabilities to 1/10 of the total stream and moreso during periods of
+        high traffic- like the Superbowl. The count listed here is far lower than true tweet total. I screened the tweets geographically by checking the location of the user, if available.
+        Many users do not include their location, so we further lose data fidelity.
+    </p>
+    <hr>
+    <h1>total number of tweets</h1>
+    <div>
+    <svg class="first", version="1.1" viewBox="0 0 1260 600"></svg>
+    </div>
+    <hr>
+    <p> This graph is the number of tweets per person. Lots to comment on here. One thing is apparent between both graphs: Texans love football. It's interesting 
+    that Nevada tweets a lot about the Superbowl. I imagine this is due to legalized sports gambling. In states where there are no NFL teams, people do not watch the Superbowl. I'm shocked.</p>
+    <p> South Carolinians tweeted the most frequently (0.0039 tweets/person), tweeting at nearly twice the rate of the second highest state, Georgia. South Carolinians must be huge 
+    Falcons fans or at least, relished in the neighbor's misery. Massachusettans(?) tweeted at a rate of 0.0015 tweets/person. Keep in mind that due to API limiting, 
+    this is <i> not </i> the true rate of tweeting and should be only thought of as a vague 'frequency metric'.
+    <hr>
+    <h1>tweets per person</h1>
+    <div>
+    <svg class="second", version="1.1" viewBox="0 0 1260 600""></svg>
+    </div>
+    <hr> 
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="https://d3js.org/topojson.v2.min.js"></script>
+    <script>
+
+    var svg1 = d3.select(".first"),
+        width = +svg1.attr("width"),
+        height = +svg1.attr("height");
+
+    var superbowl1 = d3.map();
+
+    var path = d3.geoPath();
+
+    var x = d3.scaleLinear()
+        .domain([1, 10])
+        .rangeRound([600, 860]);
+
+    var color1 = d3.scaleThreshold()
+        .domain([0, 2000, 4000, 8000, 16000, 32000])
+        .range(["edf8fb", "#ccece6", "#99d8c9", "#66c2a4", "#2ca25f", "#006d2c"]);
+
+    d3.queue()
+    .defer(d3.json, "https://d3js.org/us-10m.v1.json")
+    .defer(d3.csv, "/static/data/2017_geo.csv", function(d) { 
+        superbowl1.set(d.id, +d.count); })
+    .await(ready1);
+
+    function ready1(error, us) {
+        if (error) throw error;
+
+        svg1.append("g")
+            .attr("class", "states")
+            .selectAll("path")
+            .data(topojson.feature(us, us.objects.states).features)
+            .enter().append("path")
+                .attr("fill", function(d) { return color1(d.count = superbowl1.get(d.id)); })
+                .attr("d", path)
+            .append("title")
+                .text(function(d) { return d.count; });
+
+        svg1.append("path")
+            .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+            .attr("class", "states")
+            .attr("d", path);
+    }
+
+    var legend = d3.select(".first").append("svg")
+        .attr("class", "legend")
+        .selectAll("g")
+        .data(color1.domain().slice().reverse())
+        .enter().append("g")
+        .attr("transform", function(d, i) { return "translate(775," + i * 18 + ")"; });
+
+    legend.append("rect")
+        .attr("width", 16)
+        .attr("height", 18)
+        .style("fill", color1);
+
+    legend.append("text")
+        .attr("x", 24)
+        .attr("y", 9)
+        .attr("dy", ".2em")
+        .text(function(d) { return d; });
+
+
+    var superbowl2 = d3.map();
+
+    var svg2 = d3.select(".second"),
+        width = +svg2.attr("width"),
+        height = +svg2.attr("height");
+
+    var superbowl = d3.map();
+
+    var path = d3.geoPath();
+
+    var x = d3.scaleLinear()
+        .domain([1, 10])
+        .rangeRound([600, 860]);
+
+    var color2 = d3.scaleThreshold()
+        .domain([0.0002, 0.0004, 0.0006, 0.0008, 0.001, 0.0012])
+        .range(["edf8fb", "#ccece6", "#99d8c9", "#66c2a4", "#2ca25f", "#006d2c"]);
+
+    d3.queue()
+    .defer(d3.json, "https://d3js.org/us-10m.v1.json")
+    .defer(d3.csv, "/static/data/2017_geo.csv", function(d) { 
+        superbowl2.set(d.id, +d.proportion); })
+    .await(ready2);
+
+    function ready2(error, us) {
+        if (error) throw error;
+
+        svg2.append("g")
+            .attr("class", "states")
+            .selectAll("path")
+            .data(topojson.feature(us, us.objects.states).features)
+            .enter().append("path")
+                .attr("fill", function(d) { return color2(d.proportion = superbowl2.get(d.id)); })
+                .attr("d", path)
+            .append("title")
+                .text(function(d) { return d.proportion; });
+
+        svg2.append("path")
+            .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+            .attr("class", "states")
+            .attr("d", path);
+    }
+
+    var legend = d3.select(".second").append("svg")
+        .attr("class", "legend")
+        .selectAll("g")
+        .data(color2.domain().slice().reverse())
+        .enter().append("g")
+        .attr("transform", function(d, i) { return "translate(775," + i * 18 + ")"; });
+
+    legend.append("rect")
+        .attr("width", 16)
+        .attr("height", 18)
+        .style("fill", color2);
+
+    legend.append("text")
+        .attr("x", 24)
+        .attr("y", 9)
+        .attr("dy", ".35em")
+        .text(function(d) { return d; });
+
+
+    </script>
+    
+    <style>
+    .states {
+        fill: none;
+        stroke: #fff;
+        stroke-linejoin: round;
+    }
+    path:hover {
+        fill-opacity: .7;
+    }
+
+    .legend {
+        font:11px arial;
+    }
+    
+    </style>   
+{% endblock %}
