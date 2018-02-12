@@ -3,7 +3,7 @@ from app import app
 import json
 import datetime
 import utilities
-from utilities import connect_to_database, close_connection, json_object_reddit
+from utilities import connect_to_database, close_connection, json_object_reddit,json_object_sentiment,json_object_category
 
 @app.route('/')
 @app.route('/index')
@@ -62,7 +62,62 @@ def superbowl():
 
     argument = request.args['year']
     if argument == '2017':
-        html = 'superbowl_2017.html'
+        html = '/superbowl/2017/superbowl.html'
     else:
-        html = 'superbowl_2018.html'
+        html = '/superbowl/2018/superbowl.html'
     return render_template(html)
+
+@app.route('/erowid')
+def erowid():
+    conn = connect_to_database()
+    cur = conn.cursor()
+
+    #Instantiate JSON objects
+
+    both = []
+    female = []
+    male = []
+
+    ketamine = []
+    cannabis = []
+    lsd = []
+
+    # Both gendered sentiment query.
+
+    json_object_sentiment("cannabis",both,None,cur)
+    json_object_sentiment("amphetamines",both,None,cur)
+    json_object_sentiment("lsd",both,None,cur)
+    json_object_sentiment("mushrooms",both,None,cur)
+    json_object_sentiment("mdma",both,None,cur)
+    json_object_sentiment("ketamine",both,None,cur)
+    json_object_sentiment("cocaine",both,None,cur)
+
+    # Female gendered sentiment query.
+
+    json_object_sentiment("cannabis",female,'\'Female\'',cur)
+    json_object_sentiment("amphetamines",female,'\'Female\'',cur)
+    json_object_sentiment("lsd",female,'\'Female\'',cur)
+    json_object_sentiment("mushrooms",female,'\'Female\'',cur)
+    json_object_sentiment("mdma",female,'\'Female\'',cur)
+    json_object_sentiment("ketamine",female,'\'Female\'',cur)
+    json_object_sentiment("cocaine",female,'\'Female\'',cur)
+
+    # Male gendered sentiment query. 
+
+    json_object_sentiment("cannabis",male,'\'Male\'',cur)
+    json_object_sentiment("amphetamines",male,'\'Male\'',cur)
+    json_object_sentiment("lsd",male,'\'Male\'',cur)
+    json_object_sentiment("mushrooms",male,'\'Male\'',cur)
+    json_object_sentiment("mdma",male,'\'Male\'',cur)
+    json_object_sentiment("ketamine",male,'\'Male\'',cur)
+    json_object_sentiment("cocaine",male,'\'Male\'',cur)  
+
+    # Category query.
+
+    json_object_category("ketamine",ketamine,cur)
+    json_object_category("cannabis",cannabis,cur)
+    json_object_category("lsd",lsd,cur)
+
+    close_connection(cur, conn)
+
+    return render_template('erowid.html', both = json.dumps(both), female= json.dumps(female), male = json.dumps(male), cannabis=json.dumps(cannabis), ketamine=json.dumps(ketamine), lsd=json.dumps(lsd))

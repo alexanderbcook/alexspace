@@ -1,0 +1,296 @@
+{% extends "base.html" %}
+{% block content %}
+    <br>
+    <p>I feel like I should start this section with a disclaimer. I do not condone the usage of hard drugs. Drug-use is counter to my personal ethos and values. 
+    </p>
+    <p> 
+        With that out of the way, let's talk about this project. Erowid is a website that aims to educate the public about illicit drugs.
+        <a href="https://www.erowid.org">Their website</a> contains lots of information about pretty much any drug imaginable. Perhaps the most interesting portion of 
+        the website is the 'experience vault' where users can share their experiences on substances. These stories are incredible - full of joy, sadness, violence, sex, and more. 
+        A social scientist's dream.
+
+    </p>
+    <p>
+        I decided to scrape all of these stories using <a href="https://github.com/scrapy/scrapy">Scrapy</a> and then perform sentiment analysis using <a href="https://textblob.readthedocs.io/en/dev/">TextBlob.</a>
+        I performed sentiment analysis on each story, giving the story a rating of 1 (very positive story) to -1 (very negative story). I also performed sentiment analysis on the sentence level. There are 23,000 stories in total. 
+        Every story has demographic data, dose size information, a user-perscribed story "category" summarizing the setting of the experience, and more. The result is a very interesting dataset that I think has been underexplored. 
+    </p>
+
+    <p> The first visualization I'll do is real simple - the average sentiment of stories about the seven most popular substances on the message board.</p>
+    <hr>
+    <p> <b>Average Sentiment by Substance, Gender</b></p>
+    <div class="chart" id="area1">
+    <div id="option" class="button">
+    <input name="updateButton" 
+                 type="button" 
+                value="Female" 
+                onclick="updateData('female')" />
+
+    </div>
+    <div id="option" class="button"> 
+    <input name="updateButton" 
+                 type="button" 
+                value="Both" 
+                onclick="updateData('both')" />
+    </div>
+    <div id="option" class="button">
+    <input name="updateButton" 
+                type="button" 
+                value="Male" 
+                onclick="updateData('male')" />
+    </div>
+    </div>
+    <hr>
+    <p> The results were not as drastic as I was anticipating. Few things to point out, though. Notice how closely the 'both genders' data tracks the 'male' options are. Given that I am recording 'average'  values, this implies that the vast majority
+    of stories are written by men. Not shocked. Women share stories that are consistently more negative than the stories men share. This is not true for only two substances, MDMA and Mushrooms.
+    </p>
+    <p>In the following chart, I graph the average sentiment by category and substance. So for example, the stories about cocaine use with a category of 'Festival/Large Crowd' were the most positive,
+    while stories with a category of "Overdose" were most negative. This graph, I think, acts as a good proof of concept.</p>
+    <hr>
+    <p><b>Average Sentiment by Category, Substance</b></p>
+    <div class="chart" id="area2">
+    <div id="option" class="button"> 
+    <input name="updateButton" 
+                 type="button" 
+                value="Ketamine" 
+                onclick="updateData2('ket')" />
+    </div>
+    <div id="option" class="button">
+    <input name="updateButton" 
+                 type="button" 
+                value="LSD" 
+                onclick="updateData2('lsd')" />
+    </div>
+    <div id="option" class="button">
+    <input name="updateButton" 
+                type="button" 
+                value="Cannabis" 
+                onclick="updateData2('can')" />
+    </div>
+    </div>
+    <hr>
+    </p>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+
+    <script>
+
+
+    var JSONdata = {{both|tojson}}
+    var data1 = JSON.parse(JSONdata)
+    var JSONdata = {{female|tojson}}
+    var data2 = JSON.parse(JSONdata)
+    var JSONdata = {{male|tojson}}
+    var data3 = JSON.parse(JSONdata)
+    var substance = function(data){return data.substance}
+    var sentiment = function(data){return data.sentiment}
+    
+
+     function updateData(set){
+        if (set == 'both'){
+            d3.select("#first").remove()
+            draw(data1, set)
+        }
+        if (set == 'female'){
+            d3.select("#first").remove()
+            draw(data2, set)
+        }
+        if (set == 'male'){
+            d3.select("#first").remove()
+            draw(data3, set)
+        }
+        
+    }
+    
+    function draw(data, set){
+
+        var margin = {top: 15, right:0, bottom:75, left:40},
+                width = 700 - margin.left - margin.right,
+                height = 300 - margin.top - margin.bottom;
+
+        var x = d3.scale.ordinal().rangeRoundBands([0,width], .05);
+        var y = d3.scale.linear().range([height, 0]);
+
+        var xAxis = d3.svg.axis()
+                .scale(x)
+                .orient("bottom")
+        var yAxis = d3.svg.axis()
+                .scale(y)
+                .orient("left")
+                .ticks(5)
+
+        if(set=="female"){
+            color = "lightpink"
+        }
+        else if(set=="male"){
+            color = "steelblue"
+        }
+        else{
+            color = "grey"
+        }
+
+        x.domain(data.map(function(d){return d.substance;}))
+        y.domain([0, .15])
+
+        var svg = d3.select("#area1").append("svg")
+            .attr("width", width+margin.left+margin.right)
+            .attr("height", height+margin.top+margin.bottom)
+            .attr("id", "first")
+            .append("g")
+            .attr("transform", "translate(" + margin.left+ "," + margin.top + ")");
+
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+            .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", ".71em")
+
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0,"+height+")")
+            .call(xAxis)
+            .selectAll("text")
+            .style("text-anchor","end")
+            .attr("dx", "-.4em")
+            .attr("dy", ".9em")
+            .attr("transform","rotate(-33)");
+        bars = svg.selectAll("bar")
+            .data(data);
+
+        bars
+            .enter().append("rect");
+        bars
+            .style("fill",color)
+            .attr("x", function(d){ return x(d.substance);})
+            .attr("width", x.rangeBand())
+            .attr("y", function(d){return y(d.sentiment);})
+            .attr("height", function(d){return height-y(d.sentiment); })
+            .append("title")
+                    .text(function(d) { return d.sentiment; })
+
+    }
+    window.onload = draw(data1, 'both')
+    var JSONdata = {{cannabis|tojson}}
+    var data4 = JSON.parse(JSONdata)
+    var JSONdata = {{ketamine|tojson}}
+    var data5 = JSON.parse(JSONdata)
+    var JSONdata = {{lsd|tojson}}
+    var data6 = JSON.parse(JSONdata)
+    var category = function(data){return data.category}
+    var sentiment = function(data){return data.sentiment}
+    
+
+
+     function updateData2(val, svg){
+        if (val == 'can'){
+            d3.select("#second").remove()
+            draw2(data4,val)
+        }
+        if (val == 'ket'){
+            d3.select("#second").remove()
+            draw2(data5, val)
+        }
+        if (val == 'lsd'){
+            d3.select("#second").remove()
+            draw2(data6, val)
+        }
+        
+    }
+    
+    function draw2(data){
+
+        var margin = {top: 5, right:-10, bottom:20, left:10},
+                width = 700 - margin.left - margin.right,
+                height = 300 - margin.top - margin.bottom;
+
+        var x = d3.scale.linear()
+            .range([0, width]);
+
+        var y = d3.scale.ordinal()
+            .rangeRoundBands([0, height], 0.1);
+
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom");
+
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left")
+            .tickSize(0)
+            .tickPadding(6);
+
+        x.domain(d3.extent(data, function(d) { return d.sentiment; })).nice();
+        y.domain(data.map(function(d) { return d.category; }));
+
+        var svg = d3.select("#area2").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .attr("id","second")
+          .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+        svg.selectAll(".bar")
+          .data(data)
+        .enter().append("rect")
+          .attr("class", function(d) { return "bar bar--" + (d.sentiment < 0 ? "negative" : "positive"); })
+          .attr("x", function(d) { return x(Math.min(0, d.sentiment)); })
+          .attr("y", function(d) { return y(d.category); })
+          .attr("width", function(d) { return Math.abs(x(d.sentiment) - x(0)); })
+          .attr("height", y.rangeBand());
+
+        svg.append("g")
+              .attr("class", "x axis")
+              .attr("transform", "translate(0," + height + ")")
+              .call(xAxis);
+
+        svg.append("g")
+              .attr("class", "y axis")
+              .attr("transform", "translate(" + x(0) + ",0)")
+              .call(yAxis);
+    };
+    window.onload = draw2(data6);
+    </script>
+    
+    <style>
+    .bar--positive {
+        fill:steelblue;;
+    }
+    .bar--negative{
+        fill:darkorange;
+    }
+    #option input{
+        width: 100px;
+        float:right;
+
+    }
+    #option input:focus{
+        fill:lightgrey;
+        shape-rendering: crispEdges;
+
+    }
+    .axis {
+      font: 10px sans-serif;
+    }
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+    .chart rect:hover {
+        opacity: .6;
+    }
+    #area1 svg{
+        display:block;
+        margin:auto;
+    }
+    #area2 svg{
+        display:block;
+        margin:auto;
+    }
+
+    </style>
+    
+{% endblock %}

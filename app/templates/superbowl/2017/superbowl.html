@@ -1,9 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 
-
-
-<iframe style="display: block; margin: auto;" width="560" height="315" src="https://www.youtube.com/embed/_SDNNC1YP_w" frameborder="5" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 <br>
     <p> I started thinking about this project as I was <a href="https://github.com/alexanderbcook/twitter_stream">building the Twitter Stream project.</a>
         Twitter has an API that allows you to filter and stream tweets based on hashtags, specific users, or geospatial restrictions. 
@@ -119,7 +116,8 @@
     d3.queue()
     .defer(d3.json, "https://d3js.org/us-10m.v1.json")
     .defer(d3.csv, "/static/data/2017_geo.csv", function(d) { 
-        superbowl2.set(d.id, +d.proportion); })
+        superbowl2.set(d.id, +d.proportion, +d.abb );
+        })
     .await(ready2);
 
     function ready2(error, us) {
@@ -133,7 +131,7 @@
                 .attr("fill", function(d) { return color2(d.proportion = superbowl2.get(d.id)); })
                 .attr("d", path)
             .append("title")
-                .text(function(d) { return d.proportion; });
+                .text(function(d) { return d.abb; });
 
         svg2.append("path")
             .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
