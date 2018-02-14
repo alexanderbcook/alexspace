@@ -67,8 +67,8 @@ def superbowl():
         html = '/superbowl/2018/superbowl.html'
     return render_template(html)
 
-@app.route('/erowid')
-def erowid():
+@app.route('/erowid/sentiment')
+def sentiment():
     conn = connect_to_database()
     cur = conn.cursor()
 
@@ -120,4 +120,37 @@ def erowid():
 
     close_connection(cur, conn)
 
-    return render_template('erowid.html', both = json.dumps(both), female= json.dumps(female), male = json.dumps(male), cannabis=json.dumps(cannabis), ketamine=json.dumps(ketamine), lsd=json.dumps(lsd))
+    return render_template('erowid/sentiment.html', both = json.dumps(both), female= json.dumps(female), male = json.dumps(male), cannabis=json.dumps(cannabis), ketamine=json.dumps(ketamine), lsd=json.dumps(lsd))
+
+@app.route('/erowid/users')
+def users():
+    conn = connect_to_database()
+    cur = conn.cursor()
+
+    genders = []
+
+    query = cur.execute("SELECT DISTINCT gender, count(gender) FROM erowid.main GROUP BY gender;") 
+
+    results = cur.fetchall()
+
+    for result in results:
+        genders.append({
+        "gender": result[0],
+        "count": result[1]
+                    })
+
+    years = []
+
+    query = cur.execute("SELECT EXTRACT(YEAR from date::DATE) AS extracted_year, count(EXTRACT(YEAR from date::DATE)), sum(REPLACE(views,',','')::INT) FROM erowid.main WHERE EXTRACT(YEAR from date::DATE) != '1969' GROUP BY extracted_year ORDER BY extracted_year;")
+
+    results = cur.fetchall()
+
+    for result in results:
+        years.append({
+                     "year":int(result[0]),
+                     "count":int(result[1]),
+                     "views":int(result[2])
+                     })
+
+    close_connection(cur, conn)
+    return render_template('erowid/users.html', genders=json.dumps(genders), years=json.dumps(years))

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+<br> 
+
+<p> I thought it would be interesting to use some of the forum's metadata I scraped to profile the sites demographics and popularity. In the previous section, I noted that the 'average'
+sentiment value tracked the 'male' average very closely. This led me to believe that the site was male dominated. Gender data is readily available in the forums metadata, so I thought I would
+test this assumption.
+</p>
+<hr>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<p><b>Forum Post Authors by Gender</b></p>
+<svg  viewBox='0 0 700 360' width="700" height="360" id="area1"></svg>
+<hr>
+<p>Poking around the Erowid site, you get the feeling that it's population is dwindling. Perhaps it's the UI, but the site just feels like it's from another era. The forum posts list a date, and interestingly,
+the view count for the forum post. I think that these two metrics, plotted side by side, are an effective metric detailing the sites decline.
+</p>
+<p><b>Forum Posts By View Count, Year</b><p>
+<svg width="700" height="360" id="area2"></svg>
+
+<hr>
+</p>
+<script>
+
+var JSONdata = {{genders|tojson}}    
+var data = JSON.parse(JSONdata)
+
+var svg = d3.select("#area1"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height"),
+    radius = Math.min(width, height) / 2,
+    g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+var color = d3.scaleOrdinal(["lightpink", "steelblue", "grey"]);
+
+var pie = d3.pie()
+    .sort(null)
+    .value(function(d) { return d.count; });
+
+var path = d3.arc()
+    .outerRadius(radius - 7.5)
+    .innerRadius(0);
+
+var label = d3.arc()
+    .outerRadius(radius - 35)
+    .innerRadius(radius - 35);
+
+var arc = g.selectAll(".arc")
+.data(pie(data))
+.enter().append("g")
+  .attr("class", "arc");
+
+    arc.append("path")
+      .attr("d", path)
+      .attr("fill", function(d) { return color(d.data.gender); })
+      .append("title")
+        .text(function(d) { return d.sentiment; });
+
+    arc.append("text")
+      .attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
+      .attr("dy", "0.35em")
+      .text(function(d) { return d.data.gender; })
+
+
+var JSONdata = {{years|tojson}}    
+var data2 = JSON.parse(JSONdata)
+
+</script>
+
+<style>
+.arc {
+    opacity:.85;
+}
+
+.arc path:hover {
+    opacity:.75;
+}
+
+.arc text {
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+
+.arc path {
+  stroke: #fff;
+}
+</style>
+
+{% endblock %}
