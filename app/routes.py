@@ -3,7 +3,7 @@ from app import app
 import json
 import datetime
 import utilities
-from utilities import connect_to_database, close_connection, json_object_reddit,json_object_sentiment,json_object_category
+from utilities import connect_to_database, close_connection, json_object_reddit,json_object_sentiment,json_object_category,json_object_views,json_object_gender,json_object_year,json_object_views
 
 @app.route('/')
 @app.route('/index')
@@ -128,29 +128,13 @@ def users():
     cur = conn.cursor()
 
     genders = []
-
-    query = cur.execute("SELECT DISTINCT gender, count(gender) FROM erowid.main GROUP BY gender;") 
-
-    results = cur.fetchall()
-
-    for result in results:
-        genders.append({
-        "gender": result[0],
-        "count": result[1]
-                    })
-
     years = []
+    views = []
 
-    query = cur.execute("SELECT EXTRACT(YEAR from date::DATE) AS extracted_year, count(EXTRACT(YEAR from date::DATE)), sum(REPLACE(views,',','')::INT) FROM erowid.main WHERE EXTRACT(YEAR from date::DATE) != '1969' GROUP BY extracted_year ORDER BY extracted_year;")
-
-    results = cur.fetchall()
-
-    for result in results:
-        years.append({
-                     "year":int(result[0]),
-                     "count":int(result[1]),
-                     "views":int(result[2])
-                     })
+    json_object_gender(genders, cur)
+    json_object_year(years, cur)
+    json_object_views(views, cur)
 
     close_connection(cur, conn)
-    return render_template('erowid/users.html', genders=json.dumps(genders), years=json.dumps(years))
+
+    return render_template('erowid/users.html', genders=json.dumps(genders), years=json.dumps(years), views=json.dumps(views))

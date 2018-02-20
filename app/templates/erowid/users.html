@@ -11,14 +11,37 @@ test this assumption.
 <p><b>Forum Post Authors by Gender</b></p>
 <svg  viewBox='0 0 700 360' width="700" height="360" id="area1"></svg>
 <hr>
-<p>Poking around the Erowid site, you get the feeling that it's population is dwindling. Perhaps it's the UI, but the site just feels like it's from another era. The forum posts list a date, and interestingly,
-the view count for the forum post. I think that these two metrics, plotted side by side, are an effective metric detailing the sites decline.
+<p>Indeed, the websites population (or at least active user base) is mostly male.</p>
+<p>Poking around the Erowid site, you get the feeling that its population is dwindling. Perhaps it's the UI, but the site just feels like it's from another era. The forum posts list a date, and interestingly,
+the view count for the forum post. I think that these two metrics, plotted side by side, are an effective metric detailing the sites decline. I'm unsure what took place in 2007 that resulted in such a spike in both
+forum posts and forum views. Organic growth? Increase in advertisement spending? It's hard to say, but clearly Erowid was not able to retain that usage.
 </p>
-<p><b>Forum Posts By View Count, Year</b><p>
-<svg width="700" height="360" id="area2"></svg>
-
 <hr>
+<div class="container">
+  <div class="row">
+    <div class="col">
+     <b><p>Number of Forum Posts by Year</p></b>
+    </div>
+    <div class="col">
+      <b><p>Number of Forum Views by Year</p></b>
+    </div>
+  </div>
+</div>
+<svg class="graphContainer" width="550" height="400" id="area2"> 
+</svg>
+<svg class="graphContainer" width="550" height="400" id="area3">
+</svg>
+<p>I'd like to briefly reflect on this project and some of the issues, that, if I had known better, could of made this project easier to work with. The biggest issue was the scraper I wrote. It's funny to think about now, but when I wrote the scraper,
+  I did not understanding the concept of database types. I pretty much stored in the backend as NVARCHAR type. This is not a good idea. Take for example these queries used to serve up the data via my Flask back-end.
 </p>
+<ul>
+  <li>query = cur.execute("SELECT EXTRACT(YEAR from date::DATE) AS extracted_year, count(EXTRACT(YEAR from date::DATE)) FROM erowid.main WHERE EXTRACT(YEAR from date::DATE) NOT IN ('1969') GROUP BY extracted_year ORDER BY extracted_year;")</li>
+  <li>query = cur.execute("SELECT EXTRACT(YEAR from date::DATE) AS extracted_year, sum(REPLACE(views,',','')::INT) FROM erowid.main WHERE EXTRACT(YEAR from date::DATE) NOT IN ('1969') GROUP BY extracted_year ORDER BY extracted_year;")</li>
+</ul>
+<p>Yikes. So dirty!</p>
+
+
+
 <script>
 
 var JSONdata = {{genders|tojson}}    
@@ -62,11 +85,131 @@ var arc = g.selectAll(".arc")
 
 
 var JSONdata = {{years|tojson}}    
-var data2 = JSON.parse(JSONdata)
+var data = JSON.parse(JSONdata)
+
+var svg = d3.select("#area2"),
+    margin = {top: 20, right: 0, bottom: 30, left: 60},
+    width = +svg.attr("width") - margin.left - margin.right,
+    height = +svg.attr("height") - margin.top - margin.bottom;
+
+var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+    y = d3.scaleLinear().rangeRound([height, 0]);
+
+var g = svg.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  
+data.forEach(function (d) {
+      d.year = d.year;
+      d.count = +d.count;
+    });
+
+x.domain(data.map(function(d) { return d.year; }));
+y.domain([0, d3.max(data, function(d) { return d.count; })]);
+
+g.append("g")
+    .attr("class", "axis axis--x")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x));
+
+g.append("g")
+    .attr("class", "axis axis--y")
+    .call(d3.axisLeft(y).ticks(10))
+  .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 6)
+    .attr("dy", "0.71em")
+    .attr("text-anchor", "end")
+    .text("Count");
+
+g.selectAll(".bar")
+  .data(data)
+  .enter().append("rect")
+    .attr("id","bar1")
+    .attr("class", "bar")
+    .attr("x", function(d) { return x(d.year); })
+    .attr("y", function(d) { return y(d.count); })
+    .attr("width", x.bandwidth())
+    .attr("height", function(d) { return height - y(d.count); });
+
+var JSONdata = {{views|tojson}}    
+var data = JSON.parse(JSONdata)
+
+var svg = d3.select("#area3"),
+    margin = {top: 20, right: 0, bottom: 30, left: 60},
+    width = +svg.attr("width") - margin.left - margin.right,
+    height = +svg.attr("height") - margin.top - margin.bottom;
+
+var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+    y = d3.scaleLinear().rangeRound([height, 0]);
+
+var g = svg.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  
+data.forEach(function (d) {
+      d.year = d.year;
+      d.views = +d.views;
+    });
+
+x.domain(data.map(function(d) { return d.year; }));
+y.domain([0, d3.max(data, function(d) { return d.views; })]);
+
+g.append("g")
+    .attr("class", "axis axis--x")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x));
+
+g.append("g")
+    .attr("class", "axis axis--y")
+    .call(d3.axisLeft(y).ticks(10))
+  .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 6)
+    .attr("dy", "0.71em")
+    .attr("text-anchor", "end")
+    .text("Count");
+
+g.selectAll(".bar")
+  .data(data)
+  .enter().append("rect")
+    .attr("id","bar2")
+    .attr("class", "bar")
+    .attr("x", function(d) { return x(d.year); })
+    .attr("y", function(d) { return y(d.views); })
+    .attr("width", x.bandwidth())
+    .attr("height", function(d) { return height - y(d.views); });
+
+
 
 </script>
 
 <style>
+
+.graphContainer {
+  float: left;
+}
+
+#bar1 {
+  fill: #9B59B6;
+  opacity:.75;
+}
+
+#bar1:hover {
+  fill:#884EA0
+}
+
+#bar2 {
+  fill: #E74C3C;
+  opacity:.75;
+}
+
+#bar2:hover {
+  fill:#CB4335
+}
+
+.axis--x path {
+  display: none;
+}
+
 .arc {
     opacity:.85;
 }
