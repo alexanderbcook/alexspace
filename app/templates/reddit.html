@@ -145,6 +145,7 @@
         .enter().append("div")
         .style("width", function(data) { return x3(data.count) + "px"; })
         .text(function(data) { return data.word; });
+
     var chart2 = d3.select("#area4")
         .selectAll("div")
         .data(data4)
@@ -189,7 +190,7 @@
     .chart div {
         font: 12px arial;
         background-color: darkslategray;
-        opacity: .8;
+        opacity: .75;
         text-align: right;
         padding: 4px;
         margin: 1px;
@@ -197,7 +198,7 @@
         shape-rendering: crispEdges;
     }
     .chart div:hover {
-        opacity: .6;
+        opacity: 1;
     }
 
     </style>
