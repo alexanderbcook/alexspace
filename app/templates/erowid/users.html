@@ -76,7 +76,8 @@ var arc = g.selectAll(".arc")
       .attr("d", path)
       .attr("fill", function(d) { return color(d.data.gender); })
       .append("title")
-        .text(function(d) { return d.sentiment; });
+          .text(function(d) { return d.data.gender+ ": " + d.count; });
+
 
     arc.append("text")
       .attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
@@ -129,7 +130,9 @@ g.selectAll(".bar")
     .attr("x", function(d) { return x(d.year); })
     .attr("y", function(d) { return y(d.count); })
     .attr("width", x.bandwidth())
-    .attr("height", function(d) { return height - y(d.count); });
+    .attr("height", function(d) { return height - y(d.count); })
+    .append("title")
+      .text(function(d) { return d.year+ ": " + d.count; });;
 
 var JSONdata = {{views|tojson}}    
 var data = JSON.parse(JSONdata)
@@ -176,7 +179,9 @@ g.selectAll(".bar")
     .attr("x", function(d) { return x(d.year); })
     .attr("y", function(d) { return y(d.views); })
     .attr("width", x.bandwidth())
-    .attr("height", function(d) { return height - y(d.views); });
+    .attr("height", function(d) { return height - y(d.views); })
+    .append("title")
+      .text(function(d) { return d.year+ ": " + d.views; });
 
 
 
@@ -210,7 +215,7 @@ g.selectAll(".bar")
   display: none;
 }
 
-.arc {
+.arc path{
     opacity:.75;
 }
 

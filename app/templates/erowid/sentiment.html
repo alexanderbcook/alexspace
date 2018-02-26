@@ -167,7 +167,7 @@
             .attr("y", function(d){return y(d.sentiment);})
             .attr("height", function(d){return height-y(d.sentiment); })
             .append("title")
-                    .text(function(d) { return d.sentiment; })
+                    .text(function(d) { return d.substance.charAt(0).toUpperCase() + d.substance.slice(1) + ": " + Math.round(10000*d.sentiment)/10000; })
 
     }
     window.onload = draw(data1, 'both')
@@ -235,7 +235,9 @@
           .attr("x", function(d) { return x(Math.min(0, d.sentiment)); })
           .attr("y", function(d) { return y(d.category); })
           .attr("width", function(d) { return Math.abs(x(d.sentiment) - x(0)); })
-          .attr("height", y.rangeBand());
+          .attr("height", y.rangeBand())
+          .append("title")
+              .text(function(d) { return d.category+ ": " + Math.round(10000*d.sentiment)/10000; });
 
         svg.append("g")
               .attr("class", "x axis")
@@ -276,8 +278,11 @@
       stroke: #000;
       shape-rendering: crispEdges;
     }
+    .chart rect{
+        opacity: .8;
+    }
     .chart rect:hover {
-        opacity: .6;
+        opacity: 1;
     }
     #area1 svg{
         display:block;
