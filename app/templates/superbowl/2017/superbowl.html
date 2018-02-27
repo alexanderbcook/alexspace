@@ -54,7 +54,7 @@
     d3.queue()
     .defer(d3.json, "https://d3js.org/us-10m.v1.json")
     .defer(d3.csv, "/static/data/2017_geo.csv", function(d) { 
-        superbowl1.set(d.id, +d.count); })
+        superbowl1.set(d.Abbr, +d.count); })
     .await(ready1);
 
     function ready1(error, us) {
@@ -65,10 +65,10 @@
             .selectAll("path")
             .data(topojson.feature(us, us.objects.states).features)
             .enter().append("path")
-                .attr("fill", function(d) { return color1(d.count = superbowl1.get(d.id)); })
+                .attr("fill", function(d) { return color1(d.count = superbowl1.get(d.Abbr)); })
                 .attr("d", path)
             .append("title")
-                .text(function(d) { return d.count; });
+                .text(function(d) { return d.Abbr + ": " + d.count });
 
         svg1.append("path")
             .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
@@ -116,7 +116,7 @@
     d3.queue()
     .defer(d3.json, "https://d3js.org/us-10m.v1.json")
     .defer(d3.csv, "/static/data/2017_geo.csv", function(d) { 
-        superbowl2.set(d.id, +d.proportion, +d.abb );
+        superbowl2.set(d.Abbr, +d.proportion);
         })
     .await(ready2);
 
@@ -128,10 +128,10 @@
             .selectAll("path")
             .data(topojson.feature(us, us.objects.states).features)
             .enter().append("path")
-                .attr("fill", function(d) { return color2(d.proportion = superbowl2.get(d.id)); })
+                .attr("fill", function(d) { return color2(d.proportion = superbowl2.get(d.Abbr)); })
                 .attr("d", path)
             .append("title")
-                .text(function(d) { return d.abb; });
+                .text(function(d) { return d.Abbr+": "+d.proportion; });
 
         svg2.append("path")
             .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))

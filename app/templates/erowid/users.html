@@ -76,7 +76,7 @@ var arc = g.selectAll(".arc")
       .attr("d", path)
       .attr("fill", function(d) { return color(d.data.gender); })
       .append("title")
-          .text(function(d) { return d.data.gender+ ": " + d.count; });
+          .text(function(d) { return d.data.gender+ ": " + Math.round(100*(d.data.count/(575+1361+6033)))+"%"; });
 
 
     arc.append("text")
@@ -132,7 +132,7 @@ g.selectAll(".bar")
     .attr("width", x.bandwidth())
     .attr("height", function(d) { return height - y(d.count); })
     .append("title")
-      .text(function(d) { return d.year+ ": " + d.count; });;
+      .text(function(d) { return d.year+ ": " + d.count + " forum posts" });;
 
 var JSONdata = {{views|tojson}}    
 var data = JSON.parse(JSONdata)
@@ -181,8 +181,13 @@ g.selectAll(".bar")
     .attr("width", x.bandwidth())
     .attr("height", function(d) { return height - y(d.views); })
     .append("title")
-      .text(function(d) { return d.year+ ": " + d.views; });
-
+      .text(function(d) { 
+          if (d.views > 1.0e+6){
+              return d.year+ ": " + Math.round(10*d.views / 1.0e+6)/10 +"M forum views"
+          }
+          else{
+              return d.year+": " + Math.round(10*d.views / 1.0e+4)/10+"K forum views"
+          }});
 
 
 </script>
@@ -199,7 +204,7 @@ g.selectAll(".bar")
 }
 
 #bar1:hover {
-  fill:#884EA0
+  opacity:.9;
 }
 
 #bar2 {
@@ -208,7 +213,7 @@ g.selectAll(".bar")
 }
 
 #bar2:hover {
-  fill:#CB4335
+  opacity:.9;
 }
 
 .axis--x path {

@@ -167,7 +167,13 @@
             .attr("y", function(d){return y(d.sentiment);})
             .attr("height", function(d){return height-y(d.sentiment); })
             .append("title")
-                    .text(function(d) { return d.substance.charAt(0).toUpperCase() + d.substance.slice(1) + ": " + Math.round(10000*d.sentiment)/10000; })
+                    .text(function(d) {  
+                            if (['mdma','lsd'].includes(d.substance)) {
+                                return d.substance.toUpperCase() + ": " + Math.round(10000*d.sentiment)/10000
+                            }
+                            else{
+                                return d.substance.charAt(0).toUpperCase() + d.substance.slice(1) + ": " + Math.round(10000*d.sentiment)/10000}
+                            });
 
     }
     window.onload = draw(data1, 'both')
@@ -279,10 +285,10 @@
       shape-rendering: crispEdges;
     }
     .chart rect{
-        opacity: .8;
+        opacity: .75;
     }
     .chart rect:hover {
-        opacity: 1;
+        opacity: .9;
     }
     #area1 svg{
         display:block;

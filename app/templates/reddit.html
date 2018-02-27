@@ -75,9 +75,9 @@
     <b>Here are the top words used on r/worldnews over the 
         {% if argument=='month'%} last 30 days.
         {% elif argument=='year' %} last 365 days.
-        {% else %} last 24 hours.</b>
+        {% else %} last 24 hours.
         {% endif %}
-
+    </b>
     <p></p>
     <div class="chart" id="area4">
     </div>
@@ -130,28 +130,32 @@
         .data(data1)
         .enter().append("div")
         .style("width", function(data) { return x1(data.count) + "px"; })
-        .text(function(data) { return data.word; });
+        .text(function(data) { return data.word; })
+        .attr("title", function(data) {return data.word.charAt(0).toUpperCase() + data.word.slice(1)+": " +data.count;});
 
     var chart2 = d3.select("#area2")
         .selectAll("div")
         .data(data2)
         .enter().append("div")
         .style("width", function(data) { return x2(data.count) + "px"; })
-        .text(function(data) { return data.word; });
+        .text(function(data) { return data.word; })
+        .attr("title", function(data) {return data.word.charAt(0).toUpperCase() + data.word.slice(1)+": " +data.count;});
 
     var chart2 = d3.select("#area3")
         .selectAll("div")
         .data(data3)
         .enter().append("div")
         .style("width", function(data) { return x3(data.count) + "px"; })
-        .text(function(data) { return data.word; });
+        .text(function(data) { return data.word; })
+        .attr("title", function(data) {return data.word.charAt(0).toUpperCase() + data.word.slice(1)+": " +data.count;});
 
     var chart2 = d3.select("#area4")
         .selectAll("div")
         .data(data4)
         .enter().append("div")
         .style("width", function(data) { return x4(data.count) + "px"; })
-        .text(function(data) { return data.word; });
+        .text(function(data) { return data.word; })
+        .attr("title", function(data) {return data.word.charAt(0).toUpperCase() + data.word.slice(1)+": " +data.count;});
 
 
 
@@ -198,7 +202,7 @@
         shape-rendering: crispEdges;
     }
     .chart div:hover {
-        opacity: 1;
+        opacity: .9;
     }
 
     </style>
