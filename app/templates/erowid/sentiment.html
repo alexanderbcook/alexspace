@@ -32,13 +32,15 @@
     <p>In the following chart, I graph the average sentiment by category and substance. So for example, the stories about cocaine use with a category of 'Festival/Large Crowd' were the most positive,
     while stories with a category of "Overdose" were most negative. This graph, I think, acts as a good proof of concept.</p>
     <hr>
-    <p><b>Average Sentiment by Category, Substance</b></p>
+    <b><p id="category"></p></b>
     <div class="btn-group" role="group" aria-label="Substance options">
-      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('ket')">Ketamine</button>
-      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('lsd')">LSD</button>
-      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('can')">Cannabis</button>
-      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('amp')">Amphetamines</button>
-      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('mus')">Mushrooms</button>
+      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('Ketamine')">Ketamine</button>
+      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('LSD')">LSD</button>
+      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('Cannabis')">Cannabis</button>
+      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('Amphetamines')">Amphetamines</button>
+      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('Mushrooms')">Mushrooms</button>
+      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('Cocaine')">Cocaine</button>
+      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('MDMA')">MDMA</button>
     </div>
     <div class="chart" id="area2"></div>
     <hr>
@@ -152,49 +154,61 @@
     }
 
     window.onload = draw(data1, 'both')
+
     var JSONdata = {{cannabis|tojson}}
-    var data4 = JSON.parse(JSONdata)
+    var can = JSON.parse(JSONdata)
     var JSONdata = {{amphetamines|tojson}}
-    var data5 = JSON.parse(JSONdata)
+    var amp = JSON.parse(JSONdata)
     var JSONdata = {{lsd|tojson}}
-    var data6 = JSON.parse(JSONdata)
+    var lsd = JSON.parse(JSONdata)
     var JSONdata = {{mushrooms|tojson}}
-    var data7 = JSON.parse(JSONdata)
+    var mus = JSON.parse(JSONdata)
     var JSONdata = {{mdma|tojson}}
-    var data8 = JSON.parse(JSONdata)
+    var mdm = JSON.parse(JSONdata)
     var JSONdata = {{ketamine|tojson}}
-    var data9 = JSON.parse(JSONdata)
+    var ket = JSON.parse(JSONdata)
     var JSONdata = {{cocaine|tojson}}
-    var data10 = JSON.parse(JSONdata)
+    var coc = JSON.parse(JSONdata)
     
-    function updateData2(val, svg){
-        if (val == 'can'){
+    function updateData2(val){
+        if (val == 'Cannabis'){
             d3.select("#second").remove()
-            draw2(data4,val)
+            draw2(can,val)
         }
-        if (val == 'amp'){
+        if (val == 'Amphetamines'){
             d3.select("#second").remove()
-            draw2(data5,val)
+            draw2(amp,val)
         }
-        if (val == 'lsd'){
+        if (val == 'LSD'){
             d3.select("#second").remove()
-            draw2(data6,val)
+            draw2(lsd,val)
         }
-        if (val == 'mus'){
+        if (val == 'Mushrooms'){
             d3.select("#second").remove()
-            draw2(data7,val)
+            draw2(mus,val)
         }
-        if (val == 'ket'){
+        if (val == 'Ketamine'){
             d3.select("#second").remove()
-            draw2(data9, val)
+            draw2(ket, val)
         }
+        if (val == 'Cocaine'){
+            d3.select("#second").remove()
+            draw2(coc, val)
+        }
+        if (val == 'MDMA'){
+            d3.select("#second").remove()
+            draw2(mdm, val)
+        }
+
+        document.getElementById("category").innerHTML = "Average Sentiment by Category for " + val;
+
         
     }
     
     function draw2(data){
 
-        var margin = {top: 5, right:0, bottom:20, left:36},
-                width = 700 - margin.left - margin.right,
+        var margin = {top: 5, right:-10, bottom:20, left:36},
+                width = 725 - margin.left - margin.right,
                 height = 350 - margin.top - margin.bottom;
 
         var x = d3.scale.linear()
@@ -245,7 +259,7 @@
               .attr("transform", "translate(" + x(0) + ",0)")
               .call(yAxis);
     };
-    window.onload = draw2(data6);
+    window.onload = updateData2('Cannabis')
     </script>
     
     <style>

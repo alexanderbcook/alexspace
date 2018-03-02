@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
     <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="/static/js/reddit.js"></script>
     <br>
     <p>I've always thought, from a political standpoint, Reddit is really interesting. Regardless of the political ideology, a community (or 'subreddit') exists where like-minded 
        individuals discuss current events through that ideological lens. In these subreddits, I noticed that the same problems are discussed, but using very different language. 
@@ -13,22 +12,24 @@
     You may notice that words such as 'the, and, then' etc. are not present in this data set. I consulted <a href='https://en.wikipedia.org/wiki/Most_common_words_in_English' >Wikipedia's list of most common words</a>
     and did not include the most common ~150 words. If you are interested, feel free to check out the project <a href='https://github.com/alexanderbcook/reddit_vocabulary'> on GitHub.</a>
     </p>
-
-    <div class="btn-group">
-        <button type="button" class="btn btn-secondary">Three datasets are available: you may select data from the
-            {% if argument=='month'%} last 30 days.
-            {% elif argument=='year' %} last 365 days.
-            {% else %} last 24 hours.
-            {% endif %}
-        </button>
-        <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="sr-only"></span>
-        </button>
-        <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" href="/reddit?interval=day">last 24 hours.</a>
-            <a class="dropdown-item" href="/reddit?interval=month">last 30 days.</a>
-            <a class="dropdown-item" href="/reddit?interval=year">last 365 days.</a>
-        </div>
+    <div>
+        <span> Display data from the </span>
+        <div class="btn-group">
+            <button type="button" class="btn btn-secondary">
+                {% if argument=='month'%}last 30 days.
+                {% elif argument=='year' %}last 365 days.
+                {% else %}last 24 hours.
+                {% endif %}
+            </button>
+            <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="sr-only"></span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="/reddit?interval=day">last 24 hours.</a>
+                <a class="dropdown-item" href="/reddit?interval=month">last 30 days.</a>
+                <a class="dropdown-item" href="/reddit?interval=year">last 365 days.</a>
+            </div>
+        </div> 
     </div>
     <hr>
     <b>Here are the top words used on r/politics over the 
@@ -203,6 +204,9 @@
     }
     .chart div:hover {
         opacity: .9;
+    }
+    .btn-group{
+        padding-bottom: 2px;
     }
 
     </style>
