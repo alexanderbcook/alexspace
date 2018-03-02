@@ -39,7 +39,13 @@
         width = +svg1.attr("width"),
         height = +svg1.attr("height");
 
+    var svg2 = d3.select(".second"),
+        width = +svg2.attr("width"),
+        height = +svg2.attr("height");
+
     var superbowl1 = d3.map();
+    var superbowl2 = d3.map();
+    var map = d3.map();
 
     var path = d3.geoPath();
 
@@ -51,32 +57,9 @@
         .domain([0, 2000, 4000, 8000, 16000, 32000])
         .range(["edf8fb", "#ccece6", "#99d8c9", "#66c2a4", "#2ca25f", "#006d2c"]);
 
-    var map = d3.map();
-
-    d3.queue()
-        .defer(d3.json, "https://d3js.org/us-10m.v1.json")
-        .defer(d3.csv, "/static/data/2017_geo.csv", function(d) { superbowl1.set(d.id, +d.count); })
-        .defer(d3.csv, "/static/data/2017_geo.csv", function(d) { map.set(d.id, d.abb); })
-        .await(ready1);
-
-    function ready1(error, us) {
-        if (error) throw error;
-
-      svg1.append("g")
-          .attr("class", "states")
-        .selectAll("path")
-        .data(topojson.feature(us, us.objects.states).features)
-        .enter().append("path")
-          .attr("fill", function(d) { return color1(d.count = superbowl1.get(d.id)); })
-          .attr("d", path)
-        .append("title")
-          .text(function(d) {return d.abb = map.get(d.id)+": "+d.count})
-
-      svg1.append("path")
-          .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
-          .attr("class", "states")
-          .attr("d", path)}; 
-
+    var color2 = d3.scaleThreshold()
+        .domain([0.0002, 0.0004, 0.0006, 0.0008, 0.001, 0.0012])
+        .range(["edf8fb", "#ccece6", "#99d8c9", "#66c2a4", "#2ca25f", "#006d2c"]);
 
     var legend = d3.select(".first").append("svg")
         .attr("class", "legend")
@@ -94,48 +77,6 @@
         .attr("dy", ".2em")
         .text(function(d) { return d; });
 
-
-    var superbowl2 = d3.map();
-
-    var svg2 = d3.select(".second"),
-        width = +svg2.attr("width"),
-        height = +svg2.attr("height");
-
-    var superbowl2 = d3.map();
-    var ids = d3.map();
-
-    var path = d3.geoPath();
-    var x = d3.scaleLinear()
-        .domain([1, 10])
-        .rangeRound([600, 860]);
-    var color2 = d3.scaleThreshold()
-        .domain([0.0002, 0.0004, 0.0006, 0.0008, 0.001, 0.0012])
-        .range(["edf8fb", "#ccece6", "#99d8c9", "#66c2a4", "#2ca25f", "#006d2c"]);
-
-    d3.queue()
-    .defer(d3.json, "https://d3js.org/us-10m.v1.json")
-    .defer(d3.csv, "/static/data/2017_geo.csv", function(d) { superbowl2.set(d.id, +d.proportion);})
-    .defer(d3.csv, "/static/data/2017_geo.csv", function(d) { map.set(d.id, d.abb); })
-    .await(ready2);
-
-    function ready2(error, us) {
-        if (error) throw error;
-        svg2.append("g")
-            .attr("class", "states")
-            .selectAll("path")
-            .data(topojson.feature(us, us.objects.states).features)
-            .enter().append("path")
-                .attr("fill", function(d) { return color2(d.proportion = superbowl2.get(d.id)); })
-                .attr("d", path)
-            .append("title")
-                .text(function(d) {return d.abb = map.get(d.id)+": "+d.proportion})
-        svg2.append("path")
-            .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
-            .attr("class", "states")
-            .attr("d", path);
-    }
-
-
     var legend = d3.select(".second").append("svg")
         .attr("class", "legend")
         .selectAll("g")
@@ -152,6 +93,46 @@
         .attr("dy", ".35em")
         .text(function(d) { return d; });
 
+    d3.queue()
+        .defer(d3.json, "https://d3js.org/us-10m.v1.json")
+        .defer(d3.csv, "/static/data/2017_geo.csv", function(d) { superbowl1.set(d.id, +d.count); superbowl2.set(d.id, +d.proportion); map.set(d.id, d.abb); })
+        .await(ready);
+
+    function ready(error, us) {
+    
+    if (error) throw error;
+    
+    svg1.append("g")
+        .attr("class", "states")
+        .selectAll("path")
+        .data(topojson.feature(us, us.objects.states).features)
+        .enter().append("path")
+          .attr("fill", function(d) { return color1(d.count = superbowl1.get(d.id)); })
+          .attr("d", path)
+        .append("title")
+          .text(function(d) {return d.abb = map.get(d.id)+": "+d.count})
+
+      svg1.append("path")
+        .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+        .attr("class", "states")
+        .attr("d", path)
+
+    svg2.append("g")
+        .attr("class", "states")
+        .selectAll("path")
+        .data(topojson.feature(us, us.objects.states).features)
+        .enter().append("path")
+            .attr("fill", function(d) { return color2(d.proportion = superbowl2.get(d.id)); })
+            .attr("d", path)
+        .append("title")
+            .text(function(d) {return d.abb = map.get(d.id)+": "+d.proportion})
+    svg2.append("path")
+        .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+        .attr("class", "states")
+        .attr("d", path);
+      }; 
+
+
 
     </script>
     
@@ -162,7 +143,7 @@
         stroke-linejoin: round;
         fill-opacity:.75;
     }
-    path:hover {
+    .states:hover {
         fill-opacity:1;
     }
     .legend {
