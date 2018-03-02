@@ -37,6 +37,10 @@
       <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('ket')">Ketamine</button>
       <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('lsd')">LSD</button>
       <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('can')">Cannabis</button>
+      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('amp')">Amphetamines</button>
+      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('mdm')">MDMA</button>
+      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('coc')">Cocaine</button>
+      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('mus')">Mushrooms</button>
     </div>
     <div class="chart" id="area2"></div>
     <hr>
@@ -70,6 +74,8 @@
         }
         
     }
+
+
     
     function draw(data, set){
 
@@ -146,27 +152,51 @@
                             });
 
     }
+
     window.onload = draw(data1, 'both')
     var JSONdata = {{cannabis|tojson}}
     var data4 = JSON.parse(JSONdata)
-    var JSONdata = {{ketamine|tojson}}
+    var JSONdata = {{amphetamines|tojson}}
     var data5 = JSON.parse(JSONdata)
     var JSONdata = {{lsd|tojson}}
     var data6 = JSON.parse(JSONdata)
-
-
-     function updateData2(val, svg){
+    var JSONdata = {{mushrooms|tojson}}
+    var data7 = JSON.parse(JSONdata)
+    var JSONdata = {{mdma|tojson}}
+    var data8 = JSON.parse(JSONdata)
+    var JSONdata = {{ketamine|tojson}}
+    var data9 = JSON.parse(JSONdata)
+    var JSONdata = {{cocaine|tojson}}
+    var data10 = JSON.parse(JSONdata)
+    
+    function updateData2(val, svg){
         if (val == 'can'){
             d3.select("#second").remove()
             draw2(data4,val)
         }
-        if (val == 'ket'){
+        if (val == 'amp'){
             d3.select("#second").remove()
-            draw2(data5, val)
+            draw2(data5,val)
         }
         if (val == 'lsd'){
             d3.select("#second").remove()
-            draw2(data6, val)
+            draw2(data6,val)
+        }
+        if (val == 'mus'){
+            d3.select("#second").remove()
+            draw2(data7,val)
+        }
+        if (val == 'mdm'){
+            d3.select("#second").remove()
+            draw2(data8,val)
+        }
+        if (val == 'ket'){
+            d3.select("#second").remove()
+            draw2(data9, val)
+        }
+        if (val == 'coc'){
+            d3.select("#second").remove()
+            draw2(data10, val)
         }
         
     }

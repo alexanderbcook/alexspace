@@ -45,7 +45,12 @@ def reddit():
 
 
 
-    return render_template('reddit.html', argument=argument, politics=json.dumps(json_politics), news=json.dumps(json_news), the_donald=json.dumps(json_thedonald), worldnews = json.dumps(json_worldnews))
+    return render_template('reddit.html',
+                    argument=argument, 
+                    politics=json.dumps(json_politics), 
+                    news=json.dumps(json_news), 
+                    the_donald=json.dumps(json_thedonald), 
+                    worldnews = json.dumps(json_worldnews))
 
 @app.route('/superbowl')
 def superbowl():
@@ -68,9 +73,14 @@ def sentiment():
     female = []
     male = []
 
-    ketamine = []
     cannabis = []
+    amphetamines = []
     lsd = []
+    mushrooms = []
+    mdma = []
+    ketamine = []
+    cocaine = []
+    
 
     # Both gendered sentiment query.
 
@@ -104,13 +114,28 @@ def sentiment():
 
     # Category query.
 
-    json_object_category("ketamine",ketamine,cur)
     json_object_category("cannabis",cannabis,cur)
+    json_object_category("amphetamines",amphetamines,cur)
     json_object_category("lsd",lsd,cur)
+    json_object_category("mushrooms",mushrooms,cur)
+    json_object_category("mdma",mdma,cur)
+    json_object_category("ketamine",ketamine,cur)
+    json_object_category("cocaine",cocaine,cur)
 
     close_connection(cur, conn)
 
-    return render_template('erowid/sentiment.html', both = json.dumps(both), female= json.dumps(female), male = json.dumps(male), cannabis=json.dumps(cannabis), ketamine=json.dumps(ketamine), lsd=json.dumps(lsd))
+    return render_template('erowid/sentiment.html', 
+                        both = json.dumps(both), 
+                        female= json.dumps(female),
+                        male = json.dumps(male),
+                        cannabis=json.dumps(cannabis),
+                        amphetamines=json.dumps(amphetamines),
+                        lsd=json.dumps(lsd),
+                        mushrooms=json.dumps(mushrooms),
+                        mdma=json.dumps(mdma), 
+                        ketamine=json.dumps(ketamine), 
+                        cocaine=json.dumps(cocaine)
+                        )
 
 @app.route('/erowid/users')
 def users():
@@ -127,4 +152,7 @@ def users():
 
     close_connection(cur, conn)
 
-    return render_template('erowid/users.html', genders=json.dumps(genders), years=json.dumps(years), views=json.dumps(views))
+    return render_template('erowid/users.html', 
+                    genders=json.dumps(genders), 
+                    years=json.dumps(years), 
+                    views=json.dumps(views))
