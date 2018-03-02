@@ -38,8 +38,6 @@
       <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('lsd')">LSD</button>
       <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('can')">Cannabis</button>
       <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('amp')">Amphetamines</button>
-      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('mdm')">MDMA</button>
-      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('coc')">Cocaine</button>
       <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('mus')">Mushrooms</button>
     </div>
     <div class="chart" id="area2"></div>
@@ -186,24 +184,16 @@
             d3.select("#second").remove()
             draw2(data7,val)
         }
-        if (val == 'mdm'){
-            d3.select("#second").remove()
-            draw2(data8,val)
-        }
         if (val == 'ket'){
             d3.select("#second").remove()
             draw2(data9, val)
-        }
-        if (val == 'coc'){
-            d3.select("#second").remove()
-            draw2(data10, val)
         }
         
     }
     
     function draw2(data){
 
-        var margin = {top: 5, right:-10, bottom:20, left:10},
+        var margin = {top: 5, right:0, bottom:20, left:36},
                 width = 700 - margin.left - margin.right,
                 height = 350 - margin.top - margin.bottom;
 
