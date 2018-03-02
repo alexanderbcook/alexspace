@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="/static/js/reddit.js"></script>
     <br>
     <p>I've always thought, from a political standpoint, Reddit is really interesting. Regardless of the political ideology, a community (or 'subreddit') exists where like-minded 
        individuals discuss current events through that ideological lens. In these subreddits, I noticed that the same problems are discussed, but using very different language. 
@@ -84,9 +86,6 @@
     <div class="axis" id="axis4">
     </div>
     <hr>
-
-    <script src="http://d3js.org/d3.v3.min.js"></script>
-
     <script>
   
     var JSONdata = {{politics|tojson}}    
@@ -101,6 +100,7 @@
 
     var word = function(data){return data.word}
     var count = function(data){return data.count}
+
     function getMax(data){
         var max;
         for (var i = 0; i < data.length ; i ++){

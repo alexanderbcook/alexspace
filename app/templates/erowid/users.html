@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
 <br> 
-
+<script src="https://d3js.org/d3.v4.min.js"></script>
 <p> I thought it would be interesting to use some of the forum's metadata I scraped to profile the sites demographics and popularity. In the previous section, I noted that the 'average'
 sentiment value tracked the 'male' average very closely. This led me to believe that the site was male dominated. Gender data is readily available in the forums metadata, so I thought I would
 test this assumption.
 </p>
 <hr>
-<script src="https://d3js.org/d3.v4.min.js"></script>
 <p><b>Forum Post Authors by Gender</b></p>
 <svg  viewBox='0 0 700 360' width="700" height="360" id="area1"></svg>
 <hr>
@@ -21,16 +20,17 @@ forum posts and forum views. Organic growth? Increase in advertisement spending?
   <div class="row">
     <div class="col">
      <b><p>Number of Forum Posts by Year</p></b>
+     <svg class="graphContainer" width="450" height="400" id="area2"> </svg>
     </div>
     <div class="col">
       <b><p>Number of Forum Views by Year</p></b>
+      <svg class="graphContainer" width="450" height="400" id="area3"></svg>
     </div>
   </div>
 </div>
-<svg class="graphContainer" width="550" height="400" id="area2"> 
-</svg>
-<svg class="graphContainer" width="550" height="400" id="area3">
-</svg>
+<hr>
+
+
 <p>I'd like to briefly reflect on this project and some of the issues, that, if I had known better, could of made this project easier to work with. The biggest issue was the scraper I wrote. It's funny to think about now, but when I wrote the scraper,
   I did not understanding the concept of database types. I pretty much stored in the backend as NVARCHAR type. This is not a good idea. Take for example these queries used to serve up the data via my Flask back-end.
 </p>
@@ -110,7 +110,13 @@ y.domain([0, d3.max(data, function(d) { return d.count; })]);
 g.append("g")
     .attr("class", "axis axis--x")
     .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x));
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+        .style("text-anchor","end")
+        .attr("dx", "-.5em")
+        .attr("dy", ".6em")
+        .attr("transform","rotate(-33)")
+
 
 g.append("g")
     .attr("class", "axis axis--y")
@@ -119,8 +125,6 @@ g.append("g")
     .attr("transform", "rotate(-90)")
     .attr("y", 6)
     .attr("dy", "0.71em")
-    .attr("text-anchor", "end")
-    .text("Count");
 
 g.selectAll(".bar")
   .data(data)
@@ -138,7 +142,7 @@ var JSONdata = {{views|tojson}}
 var data = JSON.parse(JSONdata)
 
 var svg = d3.select("#area3"),
-    margin = {top: 20, right: 0, bottom: 30, left: 60},
+    margin = {top: 20, right: -10, bottom: 30, left: 60},
     width = +svg.attr("width") - margin.left - margin.right,
     height = +svg.attr("height") - margin.top - margin.bottom;
 
@@ -159,17 +163,16 @@ y.domain([0, d3.max(data, function(d) { return d.views; })]);
 g.append("g")
     .attr("class", "axis axis--x")
     .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x));
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+        .style("text-anchor","end")
+        .attr("dx", "-.5em")
+        .attr("dy", ".6em")
+        .attr("transform","rotate(-33)")
 
 g.append("g")
     .attr("class", "axis axis--y")
     .call(d3.axisLeft(y).ticks(10))
-  .append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("y", 6)
-    .attr("dy", "0.71em")
-    .attr("text-anchor", "end")
-    .text("Count");
 
 g.selectAll(".bar")
   .data(data)

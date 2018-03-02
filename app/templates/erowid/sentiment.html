@@ -19,27 +19,12 @@
     <p> The first visualization I'll do is real simple - the average sentiment of stories about the seven most popular substances on the message board.</p>
     <hr>
     <p> <b>Average Sentiment by Substance, Gender</b></p>
-    <div class="chart" id="area1">
-    <div id="option" class="button">
-    <input name="updateButton" 
-                 type="button" 
-                value="Female" 
-                onclick="updateData('female')" />
-
+    <div class="btn-group" role="group" aria-label="Gender options">
+      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData('female')">Female</button>
+      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData('both')">Both Genders</button>
+      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData('male')">Male</button>
     </div>
-    <div id="option" class="button"> 
-    <input name="updateButton" 
-                 type="button" 
-                value="Both" 
-                onclick="updateData('both')" />
-    </div>
-    <div id="option" class="button">
-    <input name="updateButton" 
-                type="button" 
-                value="Male" 
-                onclick="updateData('male')" />
-    </div>
-    </div>
+    <div class="chart" id="area1"></div>
     <hr>
     <p> The results were not as drastic as I was anticipating. Few things to point out, though. Notice how closely the 'both genders' data tracks the 'male' options are. Given that I am recording 'average'  values, this implies that the vast majority
     of stories are written by men. Not shocked. Women share stories that are consistently more negative than the stories men share. This is not true for only two substances, MDMA and Mushrooms.
@@ -48,28 +33,13 @@
     while stories with a category of "Overdose" were most negative. This graph, I think, acts as a good proof of concept.</p>
     <hr>
     <p><b>Average Sentiment by Category, Substance</b></p>
-    <div class="chart" id="area2">
-    <div id="option" class="button"> 
-    <input name="updateButton" 
-                 type="button" 
-                value="Ketamine" 
-                onclick="updateData2('ket')" />
+    <div class="btn-group" role="group" aria-label="Substance options">
+      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('ket')">Ketamine</button>
+      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('lsd')">LSD</button>
+      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('can')">Cannabis</button>
     </div>
-    <div id="option" class="button">
-    <input name="updateButton" 
-                 type="button" 
-                value="LSD" 
-                onclick="updateData2('lsd')" />
-    </div>
-    <div id="option" class="button">
-    <input name="updateButton" 
-                type="button" 
-                value="Cannabis" 
-                onclick="updateData2('can')" />
-    </div>
-    </div>
+    <div class="chart" id="area2"></div>
     <hr>
-    </p>
     <script src="http://d3js.org/d3.v3.min.js"></script>
 
     <script>
@@ -103,9 +73,9 @@
     
     function draw(data, set){
 
-        var margin = {top: 15, right:0, bottom:75, left:40},
+        var margin = {top: 15, right:0, bottom:60, left:40},
                 width = 700 - margin.left - margin.right,
-                height = 300 - margin.top - margin.bottom;
+                height = 350 - margin.top - margin.bottom;
 
         var x = d3.scale.ordinal().rangeRoundBands([0,width], .05);
         var y = d3.scale.linear().range([height, 0]);
@@ -205,7 +175,7 @@
 
         var margin = {top: 5, right:-10, bottom:20, left:10},
                 width = 700 - margin.left - margin.right,
-                height = 300 - margin.top - margin.bottom;
+                height = 350 - margin.top - margin.bottom;
 
         var x = d3.scale.linear()
             .range([0, width]);
@@ -277,6 +247,7 @@
     }
     .axis {
       font: 10px sans-serif;
+      shape-rendering: crispEdges;
     }
     .axis path,
     .axis line {

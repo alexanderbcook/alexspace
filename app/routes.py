@@ -36,10 +36,10 @@ def reddit():
                                    
     # Populate JSON objects.
 
-    json_object_reddit(json_politics, "politics", interval, cur)
-    json_object_reddit(json_news, "news", interval, cur)
-    json_object_reddit(json_worldnews, "worldnews", interval, cur)
-    json_object_reddit(json_thedonald, "the_donald", interval, cur)
+    json_object_reddit(json_politics, "politics", interval, now, cur)
+    json_object_reddit(json_news, "news", interval, now, cur)
+    json_object_reddit(json_worldnews, "worldnews", interval, now, cur)
+    json_object_reddit(json_thedonald, "the_donald", interval, now, cur)
 
     close_connection(cur, conn)
 

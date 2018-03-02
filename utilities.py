@@ -12,7 +12,7 @@ def close_connection(cur, conn):
 
 # Reddit page
 
-def json_object_reddit(obj, subreddit, interval,cur):
+def json_object_reddit(obj, subreddit, interval, now, cur):
     query = cur.execute("SELECT word, SUM(count) FROM reddit."+subreddit+" WHERE day < %s AND day >= %s GROUP BY word ORDER BY SUM(count) DESC limit 10;", (now,interval))
     results = cur.fetchall()
     for result in results:
