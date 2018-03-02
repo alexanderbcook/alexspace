@@ -12,15 +12,17 @@ def close_connection(cur, conn):
 
 # Reddit page
 
-def json_object_reddit(subreddit, query):
-    for word in query:
-        subreddit.append(
+def json_object_reddit(obj, subreddit, interval,cur):
+    query = cur.execute("SELECT word, SUM(count) FROM reddit."+subreddit+" WHERE day < %s AND day >= %s GROUP BY word ORDER BY SUM(count) DESC limit 10;", (now,interval))
+    results = cur.fetchall()
+    for result in results:
+        obj.append(
             {
-                "word":word[0],
-                "count":word[1],
+                "word":result[0],
+                "count":result[1],
             }
         )
-    return subreddit
+    return obj
 
 # Erowid sentiment page
 
@@ -36,7 +38,6 @@ def json_object_sentiment(substance, obj, gender,cur):
             "sentiment": result
                })
     return obj
-
 
 def json_object_category(substance,obj,cur):
     query = cur.execute("SELECT avg(sentiment), category FROM erowid."+substance+" WHERE category NOT IN ('Not Applicable','Preparation / Recipes','Unknown Context','Poetry','Therapeutic Intent or Outcome', 'Performance Enhancement', 'Personal Preparation','Various','Second Hand Report', 'Music Discussion', 'What Was in That?', 'Combinations','HPPD / Lasting Visuals','Entities / Beings', 'Guides / Sitters', 'Loss of Magic', 'General', 'Health Beneftis') GROUP BY category ORDER by avg(sentiment) desc;")

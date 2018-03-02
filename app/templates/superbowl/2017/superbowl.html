@@ -58,7 +58,7 @@
         .range(["edf8fb", "#ccece6", "#99d8c9", "#66c2a4", "#2ca25f", "#006d2c"]);
 
     var color2 = d3.scaleThreshold()
-        .domain([0.0002, 0.0004, 0.0006, 0.0008, 0.001, 0.0012])
+        .domain([0, 0.0005, 0.0010, 0.0015, 0.0020, 0.0025])
         .range(["edf8fb", "#ccece6", "#99d8c9", "#66c2a4", "#2ca25f", "#006d2c"]);
 
     var legend = d3.select(".first").append("svg")
@@ -100,36 +100,36 @@
 
     function ready(error, us) {
     
-    if (error) throw error;
-    
-    svg1.append("g")
-        .attr("class", "states")
-        .selectAll("path")
-        .data(topojson.feature(us, us.objects.states).features)
-        .enter().append("path")
-          .attr("fill", function(d) { return color1(d.count = superbowl1.get(d.id)); })
-          .attr("d", path)
-        .append("title")
-          .text(function(d) {return d.abb = map.get(d.id)+": "+d.count})
+        if (error) throw error;
+        
+        svg1.append("g")
+            .attr("class", "states")
+            .selectAll("path")
+            .data(topojson.feature(us, us.objects.states).features)
+            .enter().append("path")
+              .attr("fill", function(d) { return color1(d.count = superbowl1.get(d.id)); })
+              .attr("d", path)
+            .append("title")
+              .text(function(d) {return d.abb = map.get(d.id)+": "+d.count + " tweets"})
 
-      svg1.append("path")
-        .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
-        .attr("class", "states")
-        .attr("d", path)
-
-    svg2.append("g")
-        .attr("class", "states")
-        .selectAll("path")
-        .data(topojson.feature(us, us.objects.states).features)
-        .enter().append("path")
-            .attr("fill", function(d) { return color2(d.proportion = superbowl2.get(d.id)); })
+          svg1.append("path")
+            .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+            .attr("class", "states")
             .attr("d", path)
-        .append("title")
-            .text(function(d) {return d.abb = map.get(d.id)+": "+d.proportion})
-    svg2.append("path")
-        .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
-        .attr("class", "states")
-        .attr("d", path);
+
+        svg2.append("g")
+            .attr("class", "states")
+            .selectAll("path")
+            .data(topojson.feature(us, us.objects.states).features)
+            .enter().append("path")
+                .attr("fill", function(d) { return color2(d.proportion = superbowl2.get(d.id)); })
+                .attr("d", path)
+            .append("title")
+                .text(function(d) {return d.abb = map.get(d.id)+": "+d.proportion + " tweets/person"})
+        svg2.append("path")
+            .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+            .attr("class", "states")
+            .attr("d", path);
       }; 
 
 
@@ -143,7 +143,7 @@
         stroke-linejoin: round;
         fill-opacity:.75;
     }
-    .states:hover {
+    path:hover {
         fill-opacity:1;
     }
     .legend {

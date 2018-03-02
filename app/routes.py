@@ -27,19 +27,6 @@ def reddit():
     else:
         interval = (datetime.datetime.now() - datetime.timedelta(hours=24)).strftime('%Y-%m-%d %H:%M:%S')
 
-    # SQL queries.
-
-    query = cur.execute("SELECT word, SUM(count) FROM reddit.politics WHERE day < %s AND day >= %s GROUP BY word ORDER BY SUM(count) DESC limit 10;", (now,interval))
-    politics = cur.fetchall()
-    query = cur.execute("SELECT word, SUM(count) FROM reddit.news WHERE day < %s AND day >= %s GROUP BY word ORDER BY SUM(count) DESC limit 10;", (now,interval))
-    news = cur.fetchall()
-    query = cur.execute("SELECT word, SUM(count) FROM reddit.the_donald WHERE day < %s AND day >= %s GROUP BY word  ORDER BY SUM(count) DESC limit 10;", (now,interval))
-    thedonald = cur.fetchall()
-    query = cur.execute("SELECT word, SUM(count) FROM reddit.worldnews WHERE day < %s AND day >= %s GROUP BY word ORDER BY SUM(count) DESC limit 10;", (now,interval))
-    worldnews = cur.fetchall()
-
-    close_connection(cur, conn)
-
     # Instantiate json objects.
 
     json_politics = []
@@ -47,12 +34,15 @@ def reddit():
     json_worldnews = []
     json_thedonald = []
                                    
-    # JSONify sql queries.
+    # Populate JSON objects.
 
-    json_object_reddit(json_politics, politics)
-    json_object_reddit(json_news, news)
-    json_object_reddit(json_worldnews, worldnews)
-    json_object_reddit(json_thedonald, thedonald)
+    json_object_reddit(json_politics, "politics", interval, cur)
+    json_object_reddit(json_news, "news", interval, cur)
+    json_object_reddit(json_worldnews, "worldnews", interval, cur)
+    json_object_reddit(json_thedonald, "the_donald", interval, cur)
+
+    close_connection(cur, conn)
+
 
 
     return render_template('reddit.html', argument=argument, politics=json.dumps(json_politics), news=json.dumps(json_news), the_donald=json.dumps(json_thedonald), worldnews = json.dumps(json_worldnews))
