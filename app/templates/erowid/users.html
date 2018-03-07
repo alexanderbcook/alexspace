@@ -89,7 +89,7 @@ var JSONdata = {{years|tojson}}
 var data = JSON.parse(JSONdata)
 
 var svg = d3.select("#area2"),
-    margin = {top: 20, right: 0, bottom: 30, left: 60},
+    margin = {top: 20, right: 0, bottom: 50, left: 60},
     width = +svg.attr("width") - margin.left - margin.right,
     height = +svg.attr("height") - margin.top - margin.bottom;
 
@@ -142,7 +142,7 @@ var JSONdata = {{views|tojson}}
 var data = JSON.parse(JSONdata)
 
 var svg = d3.select("#area3"),
-    margin = {top: 20, right: -10, bottom: 30, left: 60},
+    margin = {top: 20, right: -10, bottom: 50, left: 60},
     width = +svg.attr("width") - margin.left - margin.right,
     height = +svg.attr("height") - margin.top - margin.bottom;
 

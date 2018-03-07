@@ -51,8 +51,12 @@ def json_object_category(substance,obj,cur):
 
 # Erowid user page
 
-def json_object_gender(obj,cur):
-    query = cur.execute("SELECT DISTINCT gender, count(gender) FROM erowid.main GROUP BY gender;") 
+def json_object_gender(obj, substance, cur):
+    if substance == None:
+        query = cur.execute("SELECT DISTINCT gender, count(gender) FROM erowid.main GROUP BY gender;") 
+    else:
+        query = cur.execute("SELECT DISTINCT gender, count(gender) FROM erowid."+substance+" GROUP BY gender;")
+
     results = cur.fetchall()
     for result in results:
         obj.append({

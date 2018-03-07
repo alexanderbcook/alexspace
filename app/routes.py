@@ -143,16 +143,70 @@ def users():
     cur = conn.cursor()
 
     genders = []
+    genders_cannabis = []
+    genders_amphetamines = []
+    genders_lsd = []
+    genders_mushrooms = []
+    genders_mdma = []
+    genders_ketamine = []
+    genders_cocaine = []
+
     years = []
     views = []
 
-    json_object_gender(genders, cur)
+    json_object_gender(genders, None, cur)
+    json_object_gender(genders_cannabis, "cannabis", cur)
+    json_object_gender(genders_amphetamines,"amphetamines",cur)
+    json_object_gender(genders_lsd,"lsd",cur)
+    json_object_gender(genders_mushrooms,"mushrooms",cur)
+    json_object_gender(genders_mdma,"mdma",cur)
+    json_object_gender(genders_ketamine,"ketamine",cur)
+    json_object_gender(genders_cocaine,"cocaine",cur)
+
     json_object_year(years, cur)
     json_object_views(views, cur)
 
     close_connection(cur, conn)
 
     return render_template('erowid/users.html', 
-                    genders=json.dumps(genders), 
+                    genders=json.dumps(genders),
+                    genders_cannabis=json.dumps(genders_cannabis), 
+                    genders_amphetamines=json.dumps(genders_amphetamines),
+                    genders_lsd=json.dumps(genders_lsd),
+                    genders_mushrooms=json.dumps(genders_mushrooms),
+                    genders_mdma=json.dumps(genders_mdma),
+                    genders_ketamine=json.dumps(genders_ketamine),
+                    genders_cocaine=json.dumps(genders_cocaine),
                     years=json.dumps(years), 
                     views=json.dumps(views))
+
+
+@app.route('/timbers')
+def timbers():
+    conn = connect_to_database()
+    cur = conn.cursor()
+
+    argument = request.args['year']
+
+    games = []
+
+    cur.execute("SELECT date, opponent, sentiment, minutes, scorers, result FROM timbers WHERE EXTRACT(year FROM date) = "+argument+" ORDER BY date DESC;")
+
+    results = cur.fetchall()
+    for result in results:
+        print result
+        games.append(
+            {
+                "date":result[0].strftime("%m/%d/%Y"),
+                "opponent":result[1],
+                "sentiment":result[2],
+                "minutes":result[3],
+                "result":result[4],
+                "scorers":result[5]
+            }
+        )   
+
+
+    return render_template('timbers.html',
+                    games=json.dumps(games))
+

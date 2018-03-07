@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+
+	<script>
+    var JSONdata = {{games|tojson}}    
+    var data = JSON.parse(JSONdata)
+
+    data.forEach(function (d) {
+      d.date = d.date;
+      d.opponent = +d.opponent;
+      d.sentiment = +d.sentiment;
+      d.minutes = +d.minutes;
+      d.result = +d.result;
+      d.scorers = +d.scorers;
+    });
+    console.log(data)
+	</script>
+
+{% endblock %}
