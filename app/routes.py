@@ -27,14 +27,14 @@ def reddit():
     else:
         interval = (datetime.datetime.now() - datetime.timedelta(hours=24)).strftime('%Y-%m-%d %H:%M:%S')
 
-    # Instantiate json objects.
+    # Instantiate data arrays.
 
     json_politics = []
     json_news = []
     json_worldnews = []
     json_thedonald = []
                                    
-    # Populate JSON objects.
+    # Populate data arrays with JSON objects
 
     json_object_reddit(json_politics, "politics", interval, now, cur)
     json_object_reddit(json_news, "news", interval, now, cur)
@@ -42,8 +42,6 @@ def reddit():
     json_object_reddit(json_thedonald, "the_donald", interval, now, cur)
 
     close_connection(cur, conn)
-
-
 
     return render_template('reddit.html',
                     argument=argument, 
@@ -67,7 +65,7 @@ def sentiment():
     conn = connect_to_database()
     cur = conn.cursor()
 
-    #Instantiate JSON objects
+    #Instantiate data arrays.
 
     both = []
     female = []
@@ -81,6 +79,8 @@ def sentiment():
     ketamine = []
     cocaine = []
     
+
+    # Populate data arrays with JSON objects
 
     # Both gendered sentiment query.
 
@@ -142,6 +142,8 @@ def users():
     conn = connect_to_database()
     cur = conn.cursor()
 
+    # Instantiate data arrays.
+
     genders = []
     genders_cannabis = []
     genders_amphetamines = []
@@ -153,6 +155,8 @@ def users():
 
     years = []
     views = []
+
+    # Populate data arrays with JSON objects
 
     json_object_gender(genders, None, cur)
     json_object_gender(genders_cannabis, "cannabis", cur)
@@ -190,7 +194,7 @@ def timbers():
 
     games = []
 
-    cur.execute("SELECT date, opponent, sentiment, minutes, scorers, result FROM timbers WHERE EXTRACT(year FROM date) = "+argument+" ORDER BY date DESC;")
+    cur.execute("SELECT date, opponent, sentiment, minutes, scorers, result, url FROM timbers WHERE EXTRACT(year FROM date) = "+argument+" ORDER BY date DESC;")
 
     results = cur.fetchall()
     for result in results:
@@ -201,12 +205,14 @@ def timbers():
                 "opponent":result[1],
                 "sentiment":result[2],
                 "minutes":result[3],
-                "result":result[4],
-                "scorers":result[5]
+                "scorers":result[4],
+                "result":result[5],
+                "url":result[6]
             }
         )   
 
 
     return render_template('timbers.html',
-                    games=json.dumps(games))
+                    games=json.dumps(games),
+                    year=argument)
 
