@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://d3js.org/d3.v4.min.js"></script>
     <br>
     <p>I've always thought, from a political standpoint, Reddit is really interesting. Regardless of the political ideology, a community (or 'subreddit') exists where like-minded 
        individuals discuss current events through that ideological lens. In these subreddits, I noticed that the same problems are discussed, but using very different language. 
@@ -111,18 +111,18 @@
         return max.count;
     }   
 
-    var x1 = d3.scale.linear()
+    var x1 = d3.scaleLinear()
             .domain([0, getMax(data1)])
             .range([0, 700]);
 
-    var x2 = d3.scale.linear()
+    var x2 = d3.scaleLinear()
             .domain([0, getMax(data2)])
             .range([0, 700]);
 
-    var x3 = d3.scale.linear()
+    var x3 = d3.scaleLinear()
             .domain([0, getMax(data3)])
             .range([0, 700]);
-    var x4 = d3.scale.linear()
+    var x4 = d3.scaleLinear()
             .domain([0, getMax(data4)])
             .range([0, 700]);
 
@@ -161,23 +161,23 @@
 
 
     var axis1 = d3.select("#axis1").append("svg").attr("width", 850).attr("height", 20)
-    var axisScale = d3.scale.linear().domain([0, getMax(data1)]).range([-5,705])
-    var xAxis = d3.svg.axis().scale(axisScale).tickSubdivide(true)
+    var axisScale = d3.scaleLinear().domain([0, getMax(data1)]).range([-5,705])
+    var xAxis = d3.axisBottom(axisScale)
     var xAxisGroup = axis1.append("g").call(xAxis)
 
     var axis2 = d3.select("#axis2").append("svg").attr("width", 850).attr("height", 20)
-    var axisScale = d3.scale.linear().domain([0, getMax(data2)]).range([-5,705])
-    var xAxis = d3.svg.axis().scale(axisScale)
+    var axisScale = d3.scaleLinear().domain([0, getMax(data2)]).range([-5,705])
+    var xAxis = d3.axisBottom(axisScale)
     var xAxisGroup = axis2.append("g").call(xAxis)
 
     var axis3 = d3.select("#axis3").append("svg").attr("width", 850).attr("height", 20)
-    var axisScale = d3.scale.linear().domain([0, getMax(data3)]).range([-5,705])
-    var xAxis = d3.svg.axis().scale(axisScale)
+    var axisScale = d3.scaleLinear().domain([0, getMax(data3)]).range([-5,705])
+    var xAxis = d3.axisBottom(axisScale)
     var xAxisGroup = axis3.append("g").call(xAxis)
 
     var axis4 = d3.select("#axis4").append("svg").attr("width", 850).attr("height", 20)
-    var axisScale = d3.scale.linear().domain([0, getMax(data4)]).range([-5,705])
-    var xAxis = d3.svg.axis().scale(axisScale)
+    var axisScale = d3.scaleLinear().domain([0, getMax(data4)]).range([-5,705])
+    var xAxis = d3.axisBottom(axisScale)
     var xAxisGroup = axis4.append("g").call(xAxis)
     </script> 
     

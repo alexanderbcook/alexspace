@@ -44,7 +44,7 @@
     </div>
     <div class="chart" id="area2"></div>
     <hr>
-    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://d3js.org/d3.v4.min.js"></script>
 
     <script>
 
@@ -83,16 +83,11 @@
                 width = 700 - margin.left - margin.right,
                 height = 350 - margin.top - margin.bottom;
 
-        var x = d3.scale.ordinal().rangeRoundBands([0,width], .05);
-        var y = d3.scale.linear().range([height, 0]);
+        var x = d3.scaleBand().rangeRound([0,width]).padding(.05);
+        var y = d3.scaleLinear().range([height, 0]);
 
-        var xAxis = d3.svg.axis()
-                .scale(x)
-                .orient("bottom")
-        var yAxis = d3.svg.axis()
-                .scale(y)
-                .orient("left")
-                .ticks(5)
+        var xAxis = d3.axisBottom(x)
+        var yAxis = d3.axisLeft(y)
 
         if(set=="female"){
             color = "lightpink"
@@ -139,7 +134,7 @@
         bars
             .style("fill",color)
             .attr("x", function(d){ return x(d.substance);})
-            .attr("width", x.rangeBand())
+            .attr("width", x.bandwidth())
             .attr("y", function(d){return y(d.sentiment);})
             .attr("height", function(d){return height-y(d.sentiment); })
             .append("title")
@@ -211,21 +206,20 @@
                 width = 725 - margin.left - margin.right,
                 height = 350 - margin.top - margin.bottom;
 
-        var x = d3.scale.linear()
+        var x = d3.scaleLinear()
             .range([0, width]);
 
-        var y = d3.scale.ordinal()
-            .rangeRoundBands([0, height], 0.1);
+        var y = d3.scaleBand().rangeRound([0,height]).padding(.1);
 
-        var xAxis = d3.svg.axis()
-            .scale(x)
-            .orient("bottom");
-
+        var xAxis = d3.axisBottom(x);
+/*
         var yAxis = d3.svg.axis()
             .scale(y)
             .orient("left")
             .tickSize(0)
             .tickPadding(6);
+*/
+        var yAxis = d3.axisLeft(y);
 
         x.domain(d3.extent(data, function(d) { return d.sentiment; })).nice();
         y.domain(data.map(function(d) { return d.category; }));
@@ -245,7 +239,7 @@
           .attr("x", function(d) { return x(Math.min(0, d.sentiment)); })
           .attr("y", function(d) { return y(d.category); })
           .attr("width", function(d) { return Math.abs(x(d.sentiment) - x(0)); })
-          .attr("height", y.rangeBand())
+          .attr("height", y.bandwidth())
           .append("title")
               .text(function(d) { return d.category+ ": " + Math.round(10000*d.sentiment)/10000; });
 
