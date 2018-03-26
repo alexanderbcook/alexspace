@@ -126,12 +126,10 @@
             .attr("dx", "-.4em")
             .attr("dy", ".9em")
             .attr("transform","rotate(-33)");
-        bars = svg.selectAll("bar")
-            .data(data);
 
-        bars
-            .enter().append("rect");
-        bars
+        var bars = svg.selectAll("bar")
+            .data(data)
+            .enter().append("rect")
             .style("fill",color)
             .attr("x", function(d){ return x(d.substance);})
             .attr("width", x.bandwidth())
