@@ -24,7 +24,7 @@
       <button type="button" class="btn btn-secondary btn-sm" onclick="updateData('both')">Both Genders</button>
       <button type="button" class="btn btn-secondary btn-sm" onclick="updateData('male')">Male</button>
     </div>
-    <div class="chart" id="area1"></div>
+    <svg class="chart" id="area1" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
     <p> The results were not as drastic as I was anticipating. Few things to point out, though. Notice how closely the 'both genders' data tracks the 'male' options are. Given that I am recording 'average'  values, this implies that the vast majority
     of stories are written by men. Not shocked. Women share stories that are consistently more negative than the stories men share. This is not true for only two substances, MDMA and Mushrooms.
@@ -42,7 +42,7 @@
       <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('Cocaine')">Cocaine</button>
       <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('MDMA')">MDMA</button>
     </div>
-    <div class="chart" id="area2"></div>
+    <svg class="chart" id="area2" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
     <script src="http://d3js.org/d3.v4.min.js"></script>
 
@@ -264,7 +264,6 @@
     #option input{
         width: 100px;
         float:right;
-
     }
     #option input:focus{
         fill:lightgrey;
