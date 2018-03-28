@@ -194,7 +194,7 @@ def timbers():
 
     games = []
 
-    cur.execute("SELECT date, opponent, sentiment, minutes, scorers, result, url FROM timbers WHERE EXTRACT(year FROM date) = "+argument+" ORDER BY date DESC;")
+    cur.execute("SELECT date, opponent, sentiment, minutes, scorers, result, url FROM timbers.games WHERE EXTRACT(year FROM date) = "+argument+" ORDER BY date DESC;")
 
     results = cur.fetchall()
     for result in results:

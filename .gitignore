@@ -3,3 +3,4 @@ __pycache__git
 app/.DS_Store
 .DS_Store
 app/static/.DS_Store
+wsgi.py
