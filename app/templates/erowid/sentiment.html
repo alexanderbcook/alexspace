@@ -33,14 +33,19 @@
     while stories with a category of "Overdose" were most negative. This graph, I think, acts as a good proof of concept.</p>
     <hr>
     <b><p id="category"></p></b>
-    <div class="btn-group" role="group" aria-label="Substance options">
-      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('Ketamine')">Ketamine</button>
-      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('LSD')">LSD</button>
-      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('Cannabis')">Cannabis</button>
-      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('Amphetamines')">Amphetamines</button>
-      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('Mushrooms')">Mushrooms</button>
-      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('Cocaine')">Cocaine</button>
-      <button type="button" class="btn btn-secondary btn-sm" onclick="updateData2('MDMA')">MDMA</button>
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{data}}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" onclick="updateData2('Ketamine')">Ketamine</a>
+            <a class="dropdown-item" onclick="updateData2('LSD')">LSD</a>
+            <a class="dropdown-item" onclick="updateData2('Cannabis')">Cannabis</a>
+            <a class="dropdown-item" onclick="updateData2('Amphetamines')">Amphetamines</a>
+            <a class="dropdown-item" onclick="updateData2('Mushrooms')">Mushrooms</a>
+            <a class="dropdown-item" onclick="updateData2('Cocaine')">Cocaine</a>
+            <a class="dropdown-item" onclick="updateData2('MDMA')">MDMA</a>
+        </div>
     </div>
     <svg class="chart" id="area2" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
@@ -48,18 +53,17 @@
 
     <script>
 
-
     var JSONdata = {{both|tojson}}
     var data1 = JSON.parse(JSONdata)
     var JSONdata = {{female|tojson}}
     var data2 = JSON.parse(JSONdata)
     var JSONdata = {{male|tojson}}
     var data3 = JSON.parse(JSONdata)
+
     var substance = function(data){return data.substance}
     var sentiment = function(data){return data.sentiment}
     
-
-     function updateData(set){
+    function updateData(set){
         if (set == 'both'){
             d3.select("#first").remove()
             draw(data1, set)
@@ -71,11 +75,8 @@
         if (set == 'male'){
             d3.select("#first").remove()
             draw(data3, set)
-        }
-        
+        }        
     }
-
-
     
     function draw(data, set){
 
@@ -193,9 +194,9 @@
             draw2(mdm, val)
         }
 
-        document.getElementById("category").innerHTML = "Average Sentiment by Category for " + val;
-
-        
+        document.getElementById("category").innerHTML = "Average Sentiment by Category for " + val; 
+        document.getElementById('dropdownMenuButton').innerHTML = val;
+     
     }
     
     function draw2(data){
@@ -210,13 +211,7 @@
         var y = d3.scaleBand().rangeRound([0,height]).padding(.1);
 
         var xAxis = d3.axisBottom(x);
-/*
-        var yAxis = d3.svg.axis()
-            .scale(y)
-            .orient("left")
-            .tickSize(0)
-            .tickPadding(6);
-*/
+
         var yAxis = d3.axisLeft(y);
 
         x.domain(d3.extent(data, function(d) { return d.sentiment; })).nice();
@@ -250,6 +245,8 @@
               .attr("class", "y axis")
               .attr("transform", "translate(" + x(0) + ",0)")
               .call(yAxis);
+
+
     };
     window.onload = updateData2('Cannabis')
     </script>
