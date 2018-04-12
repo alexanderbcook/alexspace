@@ -52,7 +52,6 @@ def json_object_category(substance,obj,cur):
 # Erowid user page
 
 def json_object_gender(obj, substance, cur):
-
     if substance == None:
         query = cur.execute("SELECT DISTINCT gender, count(gender) FROM erowid.main GROUP BY gender") 
 
@@ -78,8 +77,11 @@ def json_object_gender(obj, substance, cur):
     return obj
 
 
-def json_object_year(obj, cur):
-    query = cur.execute("SELECT EXTRACT(YEAR from date::DATE) AS extracted_year, count(EXTRACT(YEAR from date::DATE)) FROM erowid.main WHERE EXTRACT(YEAR from date::DATE) NOT IN ('1969', '2017') GROUP BY extracted_year ORDER BY extracted_year;")
+def json_object_year(obj, substance, cur):
+    if substance == None:
+        query = cur.execute("SELECT EXTRACT(YEAR from date::DATE) AS extracted_year, count(EXTRACT(YEAR from date::DATE)) FROM erowid.main WHERE EXTRACT(YEAR from date::DATE) NOT IN ('1969', '2017') GROUP BY extracted_year ORDER BY extracted_year;")
+    else:
+        query = cur.execute("SELECT EXTRACT(YEAR from date::DATE) AS extracted_year, count(EXTRACT(YEAR from date::DATE)) FROM erowid."+substance+" WHERE EXTRACT(YEAR from date::DATE) NOT IN ('1969', '2017') GROUP BY extracted_year ORDER BY extracted_year;")
     results = cur.fetchall()
     for result in results:
         obj.append({
@@ -88,8 +90,11 @@ def json_object_year(obj, cur):
                     })
     return obj
 
-def json_object_views(obj,cur):
-    query = cur.execute("SELECT EXTRACT(YEAR from date::DATE) AS extracted_year, sum(REPLACE(views,',','')::INT) FROM erowid.main WHERE EXTRACT(YEAR from date::DATE) NOT IN ('1969', '2017') GROUP BY extracted_year ORDER BY extracted_year;")
+def json_object_view(obj, substance, cur):
+    if substance == None:
+        query = cur.execute("SELECT EXTRACT(YEAR from date::DATE) AS extracted_year, sum(REPLACE(views,',','')::INT) FROM erowid.main WHERE EXTRACT(YEAR from date::DATE) NOT IN ('1969', '2017') GROUP BY extracted_year ORDER BY extracted_year;")
+    else:
+        query = cur.execute("SELECT EXTRACT(YEAR from date::DATE) AS extracted_year, sum(REPLACE(views,',','')::INT) FROM erowid."+substance+" WHERE EXTRACT(YEAR from date::DATE) NOT IN ('1969', '2017') GROUP BY extracted_year ORDER BY extracted_year;")
     results = cur.fetchall()
     for result in results:
         obj.append({

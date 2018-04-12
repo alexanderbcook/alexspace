@@ -3,7 +3,7 @@ from app import app
 import json
 import datetime
 import utilities
-from utilities import connect_to_database, close_connection, json_object_reddit,json_object_sentiment,json_object_category,json_object_views,json_object_gender,json_object_year,json_object_views
+from utilities import connect_to_database, close_connection, json_object_reddit,json_object_sentiment,json_object_category,json_object_view,json_object_gender,json_object_year
 
 @app.route('/')
 @app.route('/index')
@@ -82,7 +82,7 @@ def sentiment():
 
     # Populate data arrays with JSON objects
 
-    # Both gendered sentiment query.
+    # Both viewed sentiment query.
 
     json_object_sentiment("cannabis",both,None,cur)
     json_object_sentiment("amphetamines",both,None,cur)
@@ -92,7 +92,7 @@ def sentiment():
     json_object_sentiment("ketamine",both,None,cur)
     json_object_sentiment("cocaine",both,None,cur)
 
-    # Female gendered sentiment query.
+    # Female viewed sentiment query.
 
     json_object_sentiment("cannabis",female,'\'Female\'',cur)
     json_object_sentiment("amphetamines",female,'\'Female\'',cur)
@@ -102,7 +102,7 @@ def sentiment():
     json_object_sentiment("ketamine",female,'\'Female\'',cur)
     json_object_sentiment("cocaine",female,'\'Female\'',cur)
 
-    # Male gendered sentiment query. 
+    # Male viewed sentiment query. 
 
     json_object_sentiment("cannabis",male,'\'Male\'',cur)
     json_object_sentiment("amphetamines",male,'\'Male\'',cur)
@@ -154,7 +154,22 @@ def users():
     genders_cocaine = []
 
     years = []
+    years_cannabis = []
+    years_amphetamines = []
+    years_lsd = []
+    years_mushrooms = []
+    years_mdma = []
+    years_ketamine = []
+    years_cocaine = []
+
     views = []
+    views_cannabis = []
+    views_amphetamines = []
+    views_lsd = []
+    views_mushrooms = []
+    views_mdma = []
+    views_ketamine = []
+    views_cocaine = []
 
     # Populate data arrays with JSON objects
 
@@ -167,8 +182,23 @@ def users():
     json_object_gender(genders_ketamine,"ketamine",cur)
     json_object_gender(genders_cocaine,"cocaine",cur)
 
-    json_object_year(years, cur)
-    json_object_views(views, cur)
+    json_object_year(years, None, cur)
+    json_object_year(years_cannabis, "cannabis", cur)
+    json_object_year(years_amphetamines, "amphetamines", cur)
+    json_object_year(years_lsd, "lsd", cur)
+    json_object_year(years_mushrooms, "mushrooms", cur)
+    json_object_year(years_mdma, "mdma", cur)
+    json_object_year(years_ketamine, "ketamine", cur)
+    json_object_year(years_cocaine, "cocaine", cur)
+
+    json_object_view(views, None, cur)
+    json_object_view(views_cannabis, "cannabis", cur)
+    json_object_view(views_amphetamines, "amphetamines", cur)
+    json_object_view(views_lsd, "lsd", cur)
+    json_object_view(views_mushrooms, "mushrooms", cur)
+    json_object_view(views_mdma, "mdma", cur)
+    json_object_view(views_ketamine, "ketamine", cur)
+    json_object_view(views_cocaine, "cocaine", cur)
 
     close_connection(cur, conn)
 
@@ -181,7 +211,22 @@ def users():
                     genders_mdma=json.dumps(genders_mdma),
                     genders_ketamine=json.dumps(genders_ketamine),
                     genders_cocaine=json.dumps(genders_cocaine),
-                    years=json.dumps(years), 
-                    views=json.dumps(views))
+                    years=json.dumps(years),
+                    years_cannabis=json.dumps(years_cannabis), 
+                    years_amphetamines=json.dumps(years_amphetamines),
+                    years_lsd=json.dumps(years_lsd),
+                    years_mushrooms=json.dumps(years_mushrooms),
+                    years_mdma=json.dumps(years_mdma),
+                    years_ketamine=json.dumps(years_ketamine),
+                    years_cocaine=json.dumps(years_cocaine),
+                    views=json.dumps(views),
+                    views_cannabis=json.dumps(views_cannabis), 
+                    views_amphetamines=json.dumps(views_amphetamines),
+                    views_lsd=json.dumps(views_lsd),
+                    views_mushrooms=json.dumps(views_mushrooms),
+                    views_mdma=json.dumps(views_mdma),
+                    views_ketamine=json.dumps(views_ketamine),
+                    views_cocaine=json.dumps(views_cocaine))
+                    
 
 

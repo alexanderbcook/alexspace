@@ -7,9 +7,9 @@ sentiment value tracked the 'male' average very closely. This led me to believe 
 test this assumption.
 </p>
 <hr>
-<b><p id="category"></p></b>
+<b><p id="pie"></p></b>
 <div class="dropdown">
-    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a class="dropdown-item" onclick="updateData('aggregate')">Display aggregate data.</a>
@@ -33,11 +33,26 @@ forum posts and forum views. Organic growth? Increase in advertisement spending?
 <div class="container">
   <div class="row">
     <div class="col">
-     <b><p>Number of Forum Posts by Year</p></b>
+    <b><p id="posts"></p></b>
+     <div class="dropdown">
+       <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+       </button>
+       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" onclick="updateData2('aggregate')">Display aggregate data.</a>
+          <a class="dropdown-item" onclick="updateData2('ketamine')">Display ketamine data.</a>
+          <a class="dropdown-item" onclick="updateData2('LSD')">Display LSD data.</a>
+          <a class="dropdown-item" onclick="updateData2('cannabis')">Display cannabis data.</a>
+          <a class="dropdown-item" onclick="updateData2('amphetamines')">Display amphetamines data.</a>
+          <a class="dropdown-item" onclick="updateData2('mushrooms')">Display mushrooms data.</a>
+          <a class="dropdown-item" onclick="updateData2('cocaine')">Display cocaine data.</a>
+          <a class="dropdown-item" onclick="updateData2('MDMA')">Display MDMA data.</a>
+        </div>
+      </div>
      <svg class="graphContainer" width="400" height="400" id="area2"> </svg>
     </div>
     <div class="col">
-      <b><p>Number of Forum Views by Year</p></b>
+      <b><p id="views"></p></b>
+      <br>
       <svg class="graphContainer" width="400" height="400" id="area3"></svg>
     </div>
   </div>
@@ -109,16 +124,16 @@ function updateData(val){
         draw(genders_mdma, val)
     }
     if (val == "MDMA" || val == "LSD"){
-                document.getElementById('category').innerHTML = "Forum Post Authors by Gender for " + val; 
+                document.getElementById('pie').innerHTML = val + " Forum Post Authors by Gender"; 
             }
     else if (val == "aggregate"){
-                document.getElementById('category').innerHTML = "Forum Post Authors by Gender"    
+                document.getElementById('pie').innerHTML = "Forum Post Authors by Gender"    
     }
     else{
-                document.getElementById('category').innerHTML = "Forum Post Authors by Gender for " + val.charAt(0).toUpperCase() + val.slice(1); 
+                document.getElementById('pie').innerHTML = val.charAt(0).toUpperCase() + val.slice(1) + " Forum Post Authors by Gender for "; 
             }
 
-    document.getElementById('dropdownMenuButton').innerHTML = "Display " + val + " data.";
+    document.getElementById('dropdownMenuButton1').innerHTML = "Display " + val + " data.";
  
 }
 
@@ -173,112 +188,216 @@ function draw(data,set){
 window.onload = updateData('MDMA')
 
 
+
 var JSONdata = {{years|tojson}}    
-var data = JSON.parse(JSONdata)
-
-var svg = d3.select("#area2"),
-    margin = {top: 20, right: 0, bottom: 50, left: 60},
-    width = +svg.attr("width") - margin.left - margin.right,
-    height = +svg.attr("height") - margin.top - margin.bottom;
-
-var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
-    y = d3.scaleLinear().rangeRound([height, 0]);
-
-var g = svg.append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-  
-data.forEach(function (d) {
-      d.year = d.year;
-      d.count = +d.count;
-    });
-
-x.domain(data.map(function(d) { return d.year; }));
-y.domain([0, d3.max(data, function(d) { return d.count; })]);
-
-g.append("g")
-    .attr("class", "axis axis--x")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x))
-    .selectAll("text")
-        .style("text-anchor","end")
-        .attr("dx", "-.5em")
-        .attr("dy", ".6em")
-        .attr("transform","rotate(-33)")
-
-
-g.append("g")
-    .attr("class", "axis axis--y")
-    .call(d3.axisLeft(y).ticks(10))
-  .append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("y", 6)
-    .attr("dy", "0.71em")
-
-g.selectAll(".bar")
-  .data(data)
-  .enter().append("rect")
-    .attr("id","bar1")
-    .attr("class", "bar")
-    .attr("x", function(d) { return x(d.year); })
-    .attr("y", function(d) { return y(d.count); })
-    .attr("width", x.bandwidth())
-    .attr("height", function(d) { return height - y(d.count); })
-    .append("title")
-      .text(function(d) { return d.year+ ": " + d.count + " forum posts" });;
+var years = JSON.parse(JSONdata)
+var JSONdata = {{years_cannabis|tojson}}
+var years_cannabis = JSON.parse(JSONdata)
+var JSONdata = {{years_amphetamines|tojson}}
+var years_amphetamines = JSON.parse(JSONdata)
+var JSONdata = {{years_lsd|tojson}}
+var years_lsd = JSON.parse(JSONdata)
+var JSONdata = {{years_mushrooms|tojson}}
+var years_mushrooms = JSON.parse(JSONdata)
+var JSONdata = {{years_mdma|tojson}}
+var years_mdma = JSON.parse(JSONdata)
+var JSONdata = {{years_ketamine|tojson}}
+var years_ketamine = JSON.parse(JSONdata)
+var JSONdata = {{years_cocaine|tojson}}
+var years_cocaine = JSON.parse(JSONdata)
 
 var JSONdata = {{views|tojson}}    
-var data = JSON.parse(JSONdata)
+var views = JSON.parse(JSONdata)
+var JSONdata = {{views_cannabis|tojson}}
+var views_cannabis = JSON.parse(JSONdata)
+var JSONdata = {{views_amphetamines|tojson}}
+var views_amphetamines = JSON.parse(JSONdata)
+var JSONdata = {{views_lsd|tojson}}
+var views_lsd = JSON.parse(JSONdata)
+var JSONdata = {{views_mushrooms|tojson}}
+var views_mushrooms = JSON.parse(JSONdata)
+var JSONdata = {{views_mdma|tojson}}
+var views_mdma = JSON.parse(JSONdata)
+var JSONdata = {{views_ketamine|tojson}}
+var views_ketamine = JSON.parse(JSONdata)
+var JSONdata = {{views_cocaine|tojson}}
+var views_cocaine = JSON.parse(JSONdata)
 
-var svg = d3.select("#area3"),
-    margin = {top: 20, right: -10, bottom: 50, left: 60},
-    width = +svg.attr("width") - margin.left - margin.right,
-    height = +svg.attr("height") - margin.top - margin.bottom;
+function updateData2(val){
+    if (val == 'aggregate'){
+        d3.select("#second").remove()
+        d3.select("#third").remove()
+        draw2(views,years,val)
+    }
+    if (val == 'cannabis'){
+        d3.select("#second").remove()
+        d3.select("#third").remove()
+        draw2(views_cannabis,years_cannabis,val)
+    }
+    if (val == 'amphetamines'){
+        d3.select("#second").remove()
+        d3.select("#third").remove()
+        draw2(views_amphetamines,years_amphetamines,val)
+    }
+    if (val == 'LSD'){
+        d3.select("#second").remove()
+        d3.select("#third").remove()
+        draw2(views_lsd,years_lsd,val)
+    }
+    if (val == 'mushrooms'){
+        d3.select("#second").remove()
+        d3.select("#third").remove()
+        draw2(views_mushrooms,years_mushrooms,val)
+    }
+    if (val == 'ketamine'){
+        d3.select("#second").remove()
+        d3.select("#third").remove()
+        draw2(views_ketamine,years_ketamine,val)
+    }
+    if (val == 'cocaine'){
+        d3.select("#second").remove()
+        d3.select("#third").remove()
+        draw2(views_cocaine,years_cocaine,val)
+    }
+    if (val == 'MDMA'){
+        d3.select("#second").remove()
+        d3.select("#third").remove()
+        draw2(views_mdma,years_mdma,val)
+    }
+    if (val == "MDMA" || val == "LSD"){
+                document.getElementById('posts').innerHTML = "Number of "+ val + " Forum Posts by Year"; 
+                document.getElementById('views').innerHTML = "Number of "+ val + " Forum Views by Year"; 
 
-var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
-    y = d3.scaleLinear().rangeRound([height, 0]);
+            }
+    else if (val == "aggregate"){
+                document.getElementById('posts').innerHTML = "Number of Forum Posts by Year" 
+                document.getElementById('views').innerHTML = "Number of Forum Views by Year"    
+   
+    }
+    else{
+                document.getElementById('posts').innerHTML = "Number of "+ val.charAt(0).toUpperCase() + val.slice(1) +  " Forum Posts by Year" 
+                document.getElementById('views').innerHTML = "Number of "+ val.charAt(0).toUpperCase() + val.slice(1) +  " Forum Views by Year" 
+            }
 
-var g = svg.append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-  
-data.forEach(function (d) {
-      d.year = d.year;
-      d.views = +d.views;
-    });
+    document.getElementById('dropdownMenuButton2').innerHTML = "Display " + val + " data.";
+ 
+}
+window.onload = updateData2('aggregate')
 
-x.domain(data.map(function(d) { return d.year; }));
-y.domain([0, d3.max(data, function(d) { return d.views; })]);
 
-g.append("g")
-    .attr("class", "axis axis--x")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x))
-    .selectAll("text")
-        .style("text-anchor","end")
-        .attr("dx", "-.5em")
-        .attr("dy", ".6em")
-        .attr("transform","rotate(-33)")
+function draw2(viewData, yearData, set){
 
-g.append("g")
-    .attr("class", "axis axis--y")
-    .call(d3.axisLeft(y).ticks(10))
+  var margin = {top: 20, right:0, bottom:50, left:60},
+          width = 400 - margin.left - margin.right,
+          height = 400 - margin.top - margin.bottom
 
-g.selectAll(".bar")
-  .data(data)
-  .enter().append("rect")
-    .attr("id","bar2")
-    .attr("class", "bar")
-    .attr("x", function(d) { return x(d.year); })
-    .attr("y", function(d) { return y(d.views); })
-    .attr("width", x.bandwidth())
-    .attr("height", function(d) { return height - y(d.views); })
-    .append("title")
-      .text(function(d) { 
-          if (d.views > 1.0e+6){
-              return d.year+ ": " + Math.round(10*d.views / 1.0e+6)/10 +"M forum views"
-          }
-          else{
-              return d.year+": " + Math.round(10*d.views / 1.0e+4)/10+"K forum views"
-          }})
+  var svg = d3.select("#area2").append("svg")
+        .attr("width", width+margin.left+margin.right)
+        .attr("height", height+margin.top+margin.bottom)
+        .attr("id", "second")
+
+  var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+      y = d3.scaleLinear().rangeRound([height, 0]);
+
+  var g = svg.append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+  yearData.forEach(function (d) {
+        d.year = d.year;
+        d.count = +d.count;
+      });
+
+  x.domain(yearData.map(function(d) { return d.year; }));
+  y.domain([0, d3.max(yearData, function(d) { return d.count; })]);
+
+  g.append("g")
+      .attr("class", "axis axis--x")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x))
+      .selectAll("text")
+          .style("text-anchor","end")
+          .attr("dx", "-.5em")
+          .attr("dy", ".6em")
+          .attr("transform","rotate(-33)")
+
+
+  g.append("g")
+      .attr("class", "axis axis--y")
+      .call(d3.axisLeft(y).ticks(10))
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", "0.71em")
+
+  g.selectAll(".bar")
+    .data(yearData)
+    .enter().append("rect")
+      .attr("id","bar1")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.year); })
+      .attr("y", function(d) { return y(d.count); })
+      .attr("width", x.bandwidth())
+      .attr("height", function(d) { return height - y(d.count); })
+      .append("title")
+        .text(function(d) { return d.year+ ": " + d.count + " forum posts" });;
+
+  var margin = {top: 20, right:0, bottom:50, left:60},
+          width = 400 - margin.left - margin.right,
+          height = 400 - margin.top - margin.bottom
+
+  var svg = d3.select("#area3").append("svg")
+        .attr("width", width+margin.left+margin.right)
+        .attr("height", height+margin.top+margin.bottom)
+        .attr("id", "third")
+
+
+  var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+      y = d3.scaleLinear().rangeRound([height, 0]);
+
+  var g = svg.append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+  viewData.forEach(function (d) {
+        d.year = d.year;
+        d.views = +d.views;
+      });
+
+  x.domain(viewData.map(function(d) { return d.year; }));
+  y.domain([0, d3.max(viewData, function(d) { return d.views; })]);
+
+  g.append("g")
+      .attr("class", "axis axis--x")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x))
+      .selectAll("text")
+          .style("text-anchor","end")
+          .attr("dx", "-.5em")
+          .attr("dy", ".6em")
+          .attr("transform","rotate(-33)")
+
+  g.append("g")
+      .attr("class", "axis axis--y")
+      .call(d3.axisLeft(y).ticks(10))
+
+  g.selectAll(".bar")
+    .data(viewData)
+    .enter().append("rect")
+      .attr("id","bar2")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.year); })
+      .attr("y", function(d) { return y(d.views); })
+      .attr("width", x.bandwidth())
+      .attr("height", function(d) { return height - y(d.views); })
+      .append("title")
+        .text(function(d) { 
+            if (d.views > 1.0e+6){
+                return d.year+ ": " + Math.round(10*d.views / 1.0e+6)/10 +"M forum views"
+            }
+            else{
+                return d.year+": " + Math.round(10*d.views / 1.0e+4)/10+"K forum views"
+            }})
+
+}
 
 
 </script>
