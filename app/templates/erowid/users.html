@@ -48,12 +48,12 @@ forum posts and forum views. Organic growth? Increase in advertisement spending?
           <a class="dropdown-item" onclick="updateData2('MDMA')">Display MDMA data.</a>
         </div>
       </div>
-     <svg class="graphContainer" width="400" height="400" id="area2"> </svg>
+     <svg class="graphContainer" viewBox="0 0 400 400"  preserveAspectRatio="xMidYMid meet" id="area2"> </svg>
     </div>
     <div class="col">
       <b><p id="views"></p></b>
       <br>
-      <svg class="graphContainer" width="400" height="400" id="area3"></svg>
+      <svg class="graphContainer" viewBox="0 0 400 400"  preserveAspectRatio="xMidYMid meet" id="area3"></svg>
     </div>
   </div>
 </div>
@@ -130,7 +130,7 @@ function updateData(val){
                 document.getElementById('pie').innerHTML = "Forum Post Authors by Gender"    
     }
     else{
-                document.getElementById('pie').innerHTML = val.charAt(0).toUpperCase() + val.slice(1) + " Forum Post Authors by Gender for "; 
+                document.getElementById('pie').innerHTML = val.charAt(0).toUpperCase() + val.slice(1) + " Forum Post Authors by Gender "; 
             }
 
     document.getElementById('dropdownMenuButton1').innerHTML = "Display " + val + " data.";
