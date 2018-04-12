@@ -185,34 +185,3 @@ def users():
                     views=json.dumps(views))
 
 
-@app.route('/timbers')
-def timbers():
-    conn = connect_to_database()
-    cur = conn.cursor()
-
-    argument = request.args['year']
-
-    games = []
-
-    cur.execute("SELECT date, opponent, sentiment, minutes, scorers, result, url FROM timbers.games WHERE EXTRACT(year FROM date) = "+argument+" ORDER BY date DESC;")
-
-    results = cur.fetchall()
-    for result in results:
-        print result
-        games.append(
-            {
-                "date":result[0].strftime("%m/%d/%Y"),
-                "opponent":result[1],
-                "sentiment":result[2],
-                "minutes":result[3],
-                "scorers":result[4],
-                "result":result[5],
-                "url":result[6]
-            }
-        )   
-
-
-    return render_template('timbers.html',
-                    games=json.dumps(games),
-                    year=argument)
-

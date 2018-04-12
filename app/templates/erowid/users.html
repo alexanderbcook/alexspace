@@ -7,8 +7,22 @@ sentiment value tracked the 'male' average very closely. This led me to believe 
 test this assumption.
 </p>
 <hr>
-<p><b>Forum Post Authors by Gender</b></p>
-<svg  viewBox='0 0 700 360' width="700" height="360" id="area1"></svg>
+<b><p id="category"></p></b>
+<div class="dropdown">
+    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" onclick="updateData('aggregate')">Display aggregate data.</a>
+        <a class="dropdown-item" onclick="updateData('ketamine')">Display ketamine data.</a>
+        <a class="dropdown-item" onclick="updateData('LSD')">Display LSD data.</a>
+        <a class="dropdown-item" onclick="updateData('cannabis')">Display cannabis data.</a>
+        <a class="dropdown-item" onclick="updateData('amphetamines')">Display amphetamines data.</a>
+        <a class="dropdown-item" onclick="updateData('mushrooms')">Display mushrooms data.</a>
+        <a class="dropdown-item" onclick="updateData('cocaine')">Display cocaine data.</a>
+        <a class="dropdown-item" onclick="updateData('MDMA')">Display MDMA data.</a>
+    </div>
+</div>
+<svg viewBox="0 0 600 250"  preserveAspectRatio="xMidYMid meet" id="area1"></svg>
 <hr>
 <p>Indeed, the websites population (or at least active user base) is mostly male.</p>
 <p>Poking around the Erowid site, you get the feeling that its population is dwindling. Perhaps it's the UI, but the site just feels like it's from another era. The forum posts list a date, and interestingly,
@@ -45,44 +59,118 @@ forum posts and forum views. Organic growth? Increase in advertisement spending?
 <script>
 
 var JSONdata = {{genders|tojson}}    
-var data = JSON.parse(JSONdata)
+var genders = JSON.parse(JSONdata)
+var JSONdata = {{genders_cannabis|tojson}}
+var genders_cannabis = JSON.parse(JSONdata)
+var JSONdata = {{genders_amphetamines|tojson}}
+var genders_amphetamines = JSON.parse(JSONdata)
+var JSONdata = {{genders_lsd|tojson}}
+var genders_lsd = JSON.parse(JSONdata)
+var JSONdata = {{genders_mushrooms|tojson}}
+var genders_mushrooms = JSON.parse(JSONdata)
+var JSONdata = {{genders_mdma|tojson}}
+var genders_mdma = JSON.parse(JSONdata)
+var JSONdata = {{genders_ketamine|tojson}}
+var genders_ketamine = JSON.parse(JSONdata)
+var JSONdata = {{genders_cocaine|tojson}}
+var genders_cocaine = JSON.parse(JSONdata)
 
-var svg = d3.select("#area1"),
-    width = +svg.attr("width"),
-    height = +svg.attr("height"),
-    radius = Math.min(width, height) / 2,
-    g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+function updateData(val){
+    if (val == 'aggregate'){
+        d3.select("#first").remove()
+        draw(genders,val)
+    }
+    if (val == 'cannabis'){
+        d3.select("#first").remove()
+        draw(genders_cannabis,val)
+    }
+    if (val == 'amphetamines'){
+        d3.select("#first").remove()
+        draw(genders_amphetamines,val)
+    }
+    if (val == 'LSD'){
+        d3.select("#first").remove()
+        draw(genders_lsd,val)
+    }
+    if (val == 'mushrooms'){
+        d3.select("#first").remove()
+        draw(genders_mushrooms,val)
+    }
+    if (val == 'ketamine'){
+        d3.select("#first").remove()
+        draw(genders_ketamine, val)
+    }
+    if (val == 'cocaine'){
+        d3.select("#first").remove()
+        draw(genders_cocaine, val)
+    }
+    if (val == 'MDMA'){
+        d3.select("#first").remove()
+        draw(genders_mdma, val)
+    }
+    if (val == "MDMA" || val == "LSD"){
+                document.getElementById('category').innerHTML = "Forum Post Authors by Gender for " + val; 
+            }
+    else if (val == "aggregate"){
+                document.getElementById('category').innerHTML = "Forum Post Authors by Gender"    
+    }
+    else{
+                document.getElementById('category').innerHTML = "Forum Post Authors by Gender for " + val.charAt(0).toUpperCase() + val.slice(1); 
+            }
 
-var color = d3.scaleOrdinal(["lightpink", "steelblue", "grey"]);
+    document.getElementById('dropdownMenuButton').innerHTML = "Display " + val + " data.";
+ 
+}
 
-var pie = d3.pie()
-    .sort(null)
-    .value(function(d) { return d.count; });
+function draw(data,set){
 
-var path = d3.arc()
-    .outerRadius(radius - 7.5)
-    .innerRadius(0);
+  var margin = {top: 0, right:250, bottom:0, left:0},
+          width = 600 - margin.left - margin.right,
+          height = 250 - margin.top - margin.bottom,
+          radius = Math.min(width, height) / 2;
 
-var label = d3.arc()
-    .outerRadius(radius - 35)
-    .innerRadius(radius - 35);
+  var svg = d3.select("#area1").append("svg")
+        .attr("width", width+margin.left+margin.right)
+        .attr("height", height+margin.top+margin.bottom)
+        .attr("id", "first")
+        .attr("radius", radius)
 
-var arc = g.selectAll(".arc")
-.data(pie(data))
-.enter().append("g")
-  .attr("class", "arc");
+  var g = svg.append("g")
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-    arc.append("path")
-      .attr("d", path)
-      .attr("fill", function(d) { return color(d.data.gender); })
-      .append("title")
-          .text(function(d) { return d.data.gender+ ": " + Math.round(100*(d.data.count/(575+1361+6033)))+"%"; });
+  var color = d3.scaleOrdinal(["lightpink", "steelblue", "grey"]);
+
+  var pie = d3.pie()
+      .sort(null)
+      .value(function(d) { return d.count; });
+
+  var path = d3.arc()
+      .outerRadius(radius - 7.5)
+      .innerRadius(0);
+
+  var label = d3.arc()
+      .outerRadius(radius - 35)
+      .innerRadius(radius - 35);
+
+  var arc = g.selectAll(".arc")
+  .data(pie(data))
+  .enter().append("g")
+    .attr("class", "arc");
+
+      arc.append("path")
+        .attr("d", path)
+        .attr("fill", function(d) { return color(d.data.gender); })
+        .append("title")
+            .text(function(d) { return d.data.gender+ ": " + Math.round(100*(d.data.count/(d.data.total)))+"%"; });
 
 
-    arc.append("text")
-      .attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
-      .attr("dy", "0.35em")
-      .text(function(d) { return d.data.gender; })
+      arc.append("text")
+        .attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
+        .attr("dy", "0.35em")
+        .text(function(d) { return d.data.gender; })
+
+}
+window.onload = updateData('MDMA')
 
 
 var JSONdata = {{years|tojson}}    
@@ -232,7 +320,7 @@ g.selectAll(".bar")
 }
 
 .arc text {
-  font: 10px sans-serif;
+  font: 7px sans-serif;
   text-anchor: middle;
 }
 

@@ -34,17 +34,16 @@
     <hr>
     <b><p id="category"></p></b>
     <div class="dropdown">
-        Select substance:
         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" onclick="updateData2('Ketamine')">Ketamine</a>
-            <a class="dropdown-item" onclick="updateData2('LSD')">LSD</a>
-            <a class="dropdown-item" onclick="updateData2('Cannabis')">Cannabis</a>
-            <a class="dropdown-item" onclick="updateData2('Amphetamines')">Amphetamines</a>
-            <a class="dropdown-item" onclick="updateData2('Mushrooms')">Mushrooms</a>
-            <a class="dropdown-item" onclick="updateData2('Cocaine')">Cocaine</a>
-            <a class="dropdown-item" onclick="updateData2('MDMA')">MDMA</a>
+            <a class="dropdown-item" onclick="updateData2('ketamine')">Display ketamine data.</a>
+            <a class="dropdown-item" onclick="updateData2('LSD')">Display LSD data.</a>
+            <a class="dropdown-item" onclick="updateData2('cannabis')">Display cannabis data.</a>
+            <a class="dropdown-item" onclick="updateData2('amphetamines')">Display amphetamines data.</a>
+            <a class="dropdown-item" onclick="updateData2('mushrooms')">Display mushrooms data.</a>
+            <a class="dropdown-item" onclick="updateData2('cocaine')">Display cocaine data.</a>
+            <a class="dropdown-item" onclick="updateData2('MDMA')">Display MDMA data.</a>
         </div>
     </div>
     <svg class="chart" id="area2" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet"></svg>
@@ -165,11 +164,11 @@
     var coc = JSON.parse(JSONdata)
     
     function updateData2(val){
-        if (val == 'Cannabis'){
+        if (val == 'cannabis'){
             d3.select("#second").remove()
             draw2(can,val)
         }
-        if (val == 'Amphetamines'){
+        if (val == 'amphetamines'){
             d3.select("#second").remove()
             draw2(amp,val)
         }
@@ -177,15 +176,15 @@
             d3.select("#second").remove()
             draw2(lsd,val)
         }
-        if (val == 'Mushrooms'){
+        if (val == 'mushrooms'){
             d3.select("#second").remove()
             draw2(mus,val)
         }
-        if (val == 'Ketamine'){
+        if (val == 'ketamine'){
             d3.select("#second").remove()
             draw2(ket, val)
         }
-        if (val == 'Cocaine'){
+        if (val == 'cocaine'){
             d3.select("#second").remove()
             draw2(coc, val)
         }
@@ -194,8 +193,13 @@
             draw2(mdm, val)
         }
 
-        document.getElementById("category").innerHTML = "Average Sentiment by Category for " + val; 
-        document.getElementById('dropdownMenuButton').innerHTML = val;
+        if (val == "MDMA" || val == "LSD"){
+            document.getElementById('category').innerHTML = "Average Sentiment by Category for " + val; 
+        }
+        else{
+            document.getElementById('category').innerHTML = "Average Sentiment by Category for " + val.charAt(0).toUpperCase() + val.slice(1); 
+        }
+        document.getElementById('dropdownMenuButton').innerHTML = "Display " + val + " data.";
      
     }
     
@@ -248,7 +252,7 @@
 
 
     };
-    window.onload = updateData2('Cannabis')
+    window.onload = updateData2('cannabis')
     </script>
     
     <style>

@@ -52,16 +52,28 @@ def json_object_category(substance,obj,cur):
 # Erowid user page
 
 def json_object_gender(obj, substance, cur):
+
     if substance == None:
-        query = cur.execute("SELECT DISTINCT gender, count(gender) FROM erowid.main GROUP BY gender;") 
+        query = cur.execute("SELECT DISTINCT gender, count(gender) FROM erowid.main GROUP BY gender") 
+
     else:
         query = cur.execute("SELECT DISTINCT gender, count(gender) FROM erowid."+substance+" GROUP BY gender;")
 
     results = cur.fetchall()
+
+    if substance == None:
+        query = cur.execute("SELECT count(id) FROM erowid.main;") 
+
+    else:
+        query = cur.execute("SELECT count(id) FROM erowid."+substance+";")
+
+    total = cur.fetchall()
+
     for result in results:
         obj.append({
-        "gender": result[0],
-        "count": result[1]
+            "gender": result[0],
+            "count": result[1],
+            "total": total
                     })
     return obj
 
@@ -71,8 +83,8 @@ def json_object_year(obj, cur):
     results = cur.fetchall()
     for result in results:
         obj.append({
-                   "year":int(result[0]),
-                    "count":result[1]
+               "year":int(result[0]),
+                "count":result[1]
                     })
     return obj
 
