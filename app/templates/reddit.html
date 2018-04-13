@@ -111,8 +111,8 @@
               .attr("width", function(d) {return x(d.count); } )
               .attr("y", function(d) { return y(d.word); })
               .attr("height", y.bandwidth())
-              .append('text').text(function(data){return data.word})
-              .attr("title", function(data) {return data.word.charAt(0).toUpperCase() + data.word.slice(1)+": " +data.count;});
+              .append("title")
+                .text(function(d) {return d.word.charAt(0).toUpperCase() + d.word.slice(1)+": " +d.count;});
 
 
           svg.append("g")
