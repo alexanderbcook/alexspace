@@ -32,44 +32,31 @@
         {% elif argument=='year' %} last 365 days.
         {% else %} last 24 hours.
         {% endif %}
-
     </b>
-    <p>
-    </p>
-    <div class="chart" id="area1">
-    </div>
-    <div class="axis" id="axis1">
-    </div>
+    <p></p>
+    <svg class="chart" id="area1" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
-
-    <b>Here are the top words used on r/news over the  
+    <p></p>
+    <b>Here are the top words used on r/news over the 
         {% if argument=='month'%} last 30 days.
         {% elif argument=='year' %} last 365 days.
         {% else %} last 24 hours.
         {% endif %}
-
     </b>
     <p></p>
-    <div class="chart" id="area2">
-    </div>
-    <div class="axis" id="axis2">
-    </div>
+    <svg class="chart" id="area2" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
-    
+    <p></p>
     <b>Here are the top words used on r/the_donald over the 
         {% if argument=='month'%} last 30 days.
         {% elif argument=='year' %} last 365 days.
         {% else %} last 24 hours.
         {% endif %}
-
     </b>
     <p></p>
-    <div class="chart" id="area3">
-    </div>
-    <div class="axis" id="axis3">
-    </div>
+    <svg class="chart" id="area3" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
-
+    <p></p>
     <b>Here are the top words used on r/worldnews over the 
         {% if argument=='month'%} last 30 days.
         {% elif argument=='year' %} last 365 days.
@@ -77,10 +64,7 @@
         {% endif %}
     </b>
     <p></p>
-    <div class="chart" id="area4">
-    </div>
-    <div class="axis" id="axis4">
-    </div>
+    <svg class="chart" id="area4" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
     <script>
   
@@ -94,86 +78,56 @@
     var data4 = JSON.parse(JSONdata)
 
 
-    var word = function(data){return data.word}
-    var count = function(data){return data.count}
+    function draw(data, area){
+        var margin = {top: 20, right: 20, bottom: 30, left: 75},
+            width = 800 - margin.left - margin.right,
+            height = 200 - margin.top - margin.bottom;
 
-    function getMax(data){
-        var max;
-        for (var i = 0; i < data.length ; i ++){
-            if(!max || parseInt(data[i][count]) > parseInt(max[count]))
-                max = data[i]
-        }
-        return max.count;
-    }   
+        var y = d3.scaleBand()
+                  .range([height, 0])
+                  .padding(0.1);
 
-    var x1 = d3.scaleLinear()
-            .domain([0, getMax(data1)])
-            .range([0, 700]);
+        var x = d3.scaleLinear()
+                  .range([0, width]);
+                  
+        var svg = d3.select(area).append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform", 
+                  "translate(" + margin.left + "," + margin.top + ")");
 
-    var x2 = d3.scaleLinear()
-            .domain([0, getMax(data2)])
-            .range([0, 700]);
+          data.forEach(function(d) {
+            d.count = +d.count;
+          });
 
-    var x3 = d3.scaleLinear()
-            .domain([0, getMax(data3)])
-            .range([0, 700]);
-    var x4 = d3.scaleLinear()
-            .domain([0, getMax(data4)])
-            .range([0, 700]);
+          x.domain([0, d3.max(data, function(d){ return d.count; })])
+          y.domain(data.map(function(d) { return d.word; }));
 
-    var chart1 = d3.select("#area1")
-        .selectAll("div")
-        .data(data1)
-        .enter().append("div")
-        .style("width", function(data) { return x1(data.count) + "px"; })
-        .text(function(data) { return data.word; })
-        .attr("title", function(data) {return data.word.charAt(0).toUpperCase() + data.word.slice(1)+": " +data.count;});
-
-    var chart2 = d3.select("#area2")
-        .selectAll("div")
-        .data(data2)
-        .enter().append("div")
-        .style("width", function(data) { return x2(data.count) + "px"; })
-        .text(function(data) { return data.word; })
-        .attr("title", function(data) {return data.word.charAt(0).toUpperCase() + data.word.slice(1)+": " +data.count;});
-
-    var chart2 = d3.select("#area3")
-        .selectAll("div")
-        .data(data3)
-        .enter().append("div")
-        .style("width", function(data) { return x3(data.count) + "px"; })
-        .text(function(data) { return data.word; })
-        .attr("title", function(data) {return data.word.charAt(0).toUpperCase() + data.word.slice(1)+": " +data.count;});
-
-    var chart2 = d3.select("#area4")
-        .selectAll("div")
-        .data(data4)
-        .enter().append("div")
-        .style("width", function(data) { return x4(data.count) + "px"; })
-        .text(function(data) { return data.word; })
-        .attr("title", function(data) {return data.word.charAt(0).toUpperCase() + data.word.slice(1)+": " +data.count;});
+          svg.selectAll(".bar")
+              .data(data)
+            .enter().append("rect")
+              .attr("class", "bar")
+              .attr("width", function(d) {return x(d.count); } )
+              .attr("y", function(d) { return y(d.word); })
+              .attr("height", y.bandwidth())
+              .append('text').text(function(data){return data.word})
+              .attr("title", function(data) {return data.word.charAt(0).toUpperCase() + data.word.slice(1)+": " +data.count;});
 
 
+          svg.append("g")
+              .attr("transform", "translate(0," + height + ")")
+              .call(d3.axisBottom(x));
 
-    var axis1 = d3.select("#axis1").append("svg").attr("width", 850).attr("height", 20)
-    var axisScale = d3.scaleLinear().domain([0, getMax(data1)]).range([-5,705])
-    var xAxis = d3.axisBottom(axisScale)
-    var xAxisGroup = axis1.append("g").call(xAxis)
+          svg.append("g")
+              .call(d3.axisLeft(y));
+    }
 
-    var axis2 = d3.select("#axis2").append("svg").attr("width", 850).attr("height", 20)
-    var axisScale = d3.scaleLinear().domain([0, getMax(data2)]).range([-5,705])
-    var xAxis = d3.axisBottom(axisScale)
-    var xAxisGroup = axis2.append("g").call(xAxis)
+    draw(data1, "#area1")
+    draw(data2, "#area2")
+    draw(data3, "#area3")
+    draw(data4, "#area4")
 
-    var axis3 = d3.select("#axis3").append("svg").attr("width", 850).attr("height", 20)
-    var axisScale = d3.scaleLinear().domain([0, getMax(data3)]).range([-5,705])
-    var xAxis = d3.axisBottom(axisScale)
-    var xAxisGroup = axis3.append("g").call(xAxis)
-
-    var axis4 = d3.select("#axis4").append("svg").attr("width", 850).attr("height", 20)
-    var axisScale = d3.scaleLinear().domain([0, getMax(data4)]).range([-5,705])
-    var xAxis = d3.axisBottom(axisScale)
-    var xAxisGroup = axis4.append("g").call(xAxis)
     </script> 
     
     <style>
@@ -181,7 +135,9 @@
     p {
       margin-bottom: .33em;
     }
-
+    text {
+        color:;
+    }
     .axis text{
         font: 11px arial;
     }
@@ -191,17 +147,14 @@
         stroke: #aaa;
         shape-rendering: crispEdges;
     }
-    .chart div {
-        font: 12px arial;
-        background-color: darkslategray;
+    .chart rect {
+        fill: darkslategrey;
         opacity: .75;
-        text-align: right;
         padding: 4px;
-        margin: 1px;
         color: white;
         shape-rendering: crispEdges;
     }
-    .chart div:hover {
+    .chart rect:hover {
         opacity: .9;
     }
     .btn-group{
