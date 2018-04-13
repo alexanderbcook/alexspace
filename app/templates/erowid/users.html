@@ -33,26 +33,32 @@ forum posts and forum views. Organic growth? Increase in advertisement spending?
 <div class="container">
   <div class="row">
     <div class="col">
-    <b><p id="posts"></p></b>
-     <div class="dropdown">
-       <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-       </button>
-       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item" onclick="updateData2('aggregate')">Display aggregate data.</a>
-          <a class="dropdown-item" onclick="updateData2('ketamine')">Display ketamine data.</a>
-          <a class="dropdown-item" onclick="updateData2('LSD')">Display LSD data.</a>
-          <a class="dropdown-item" onclick="updateData2('cannabis')">Display cannabis data.</a>
-          <a class="dropdown-item" onclick="updateData2('amphetamines')">Display amphetamines data.</a>
-          <a class="dropdown-item" onclick="updateData2('mushrooms')">Display mushrooms data.</a>
-          <a class="dropdown-item" onclick="updateData2('cocaine')">Display cocaine data.</a>
-          <a class="dropdown-item" onclick="updateData2('MDMA')">Display MDMA data.</a>
-        </div>
-      </div>
-     <svg class="graphContainer" viewBox="0 0 400 400"  preserveAspectRatio="xMidYMid meet" id="area2"> </svg>
+      <b><p id="posts"></p></b>
     </div>
     <div class="col">
       <b><p id="views"></p></b>
-      <br>
+    </div>
+  </div>
+  <div class="row" id="buttonContainer">
+    <div class="dropdown">
+      <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" onclick="updateData2('aggregate')">Display aggregate data.</a>
+        <a class="dropdown-item" onclick="updateData2('ketamine')">Display ketamine data.</a>
+        <a class="dropdown-item" onclick="updateData2('LSD')">Display LSD data.</a>
+        <a class="dropdown-item" onclick="updateData2('cannabis')">Display cannabis data.</a>
+        <a class="dropdown-item" onclick="updateData2('amphetamines')">Display amphetamines data.</a>
+        <a class="dropdown-item" onclick="updateData2('mushrooms')">Display mushrooms data.</a>
+        <a class="dropdown-item" onclick="updateData2('cocaine')">Display cocaine data.</a>
+        <a class="dropdown-item" onclick="updateData2('MDMA')">Display MDMA data.</a>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <svg class="graphContainer" viewBox="0 0 400 400"  preserveAspectRatio="xMidYMid meet" id="area2"> </svg>
+    </div>
+    <div class="col">
       <svg class="graphContainer" viewBox="0 0 400 400"  preserveAspectRatio="xMidYMid meet" id="area3"></svg>
     </div>
   </div>
@@ -139,7 +145,7 @@ function updateData(val){
 
 function draw(data,set){
 
-  var margin = {top: 0, right:250, bottom:0, left:0},
+  var margin = {top: 0, right:200, bottom:0, left:0},
           width = 600 - margin.left - margin.right,
           height = 250 - margin.top - margin.bottom,
           radius = Math.min(width, height) / 2;
@@ -185,7 +191,7 @@ function draw(data,set){
         .text(function(d) { return d.data.gender; })
 
 }
-window.onload = updateData('MDMA')
+window.onload = updateData('aggregate')
 
 
 
@@ -265,18 +271,18 @@ function updateData2(val){
         draw2(views_mdma,years_mdma,val)
     }
     if (val == "MDMA" || val == "LSD"){
-                document.getElementById('posts').innerHTML = "Number of "+ val + " Forum Posts by Year"; 
-                document.getElementById('views').innerHTML = "Number of "+ val + " Forum Views by Year"; 
+                document.getElementById('posts').innerHTML = val + " Forum Posts by Year"; 
+                document.getElementById('views').innerHTML = val + " Forum Views by Year"; 
 
             }
     else if (val == "aggregate"){
-                document.getElementById('posts').innerHTML = "Number of Forum Posts by Year" 
-                document.getElementById('views').innerHTML = "Number of Forum Views by Year"    
+                document.getElementById('posts').innerHTML = "Forum Posts by Year" 
+                document.getElementById('views').innerHTML = "Forum Views by Year"    
    
     }
     else{
-                document.getElementById('posts').innerHTML = "Number of "+ val.charAt(0).toUpperCase() + val.slice(1) +  " Forum Posts by Year" 
-                document.getElementById('views').innerHTML = "Number of "+ val.charAt(0).toUpperCase() + val.slice(1) +  " Forum Views by Year" 
+                document.getElementById('posts').innerHTML = val.charAt(0).toUpperCase() + val.slice(1) +  " Forum Posts by Year" 
+                document.getElementById('views').innerHTML = val.charAt(0).toUpperCase() + val.slice(1) +  " Forum Views by Year" 
             }
 
     document.getElementById('dropdownMenuButton2').innerHTML = "Display " + val + " data.";
@@ -287,7 +293,7 @@ window.onload = updateData2('aggregate')
 
 function draw2(viewData, yearData, set){
 
-  var margin = {top: 20, right:0, bottom:50, left:60},
+  var margin = {top: 20, right:0, bottom:30, left:60},
           width = 400 - margin.left - margin.right,
           height = 400 - margin.top - margin.bottom
 
@@ -341,9 +347,6 @@ function draw2(viewData, yearData, set){
       .append("title")
         .text(function(d) { return d.year+ ": " + d.count + " forum posts" });;
 
-  var margin = {top: 20, right:0, bottom:50, left:60},
-          width = 400 - margin.left - margin.right,
-          height = 400 - margin.top - margin.bottom
 
   var svg = d3.select("#area3").append("svg")
         .attr("width", width+margin.left+margin.right)
@@ -394,7 +397,7 @@ function draw2(viewData, yearData, set){
                 return d.year+ ": " + Math.round(10*d.views / 1.0e+6)/10 +"M forum views"
             }
             else{
-                return d.year+": " + Math.round(10*d.views / 1.0e+4)/10+"K forum views"
+                return d.year+": " + Math.round(10*d.views / 1.0e3)/10+"K forum views"
             }})
 
 }
@@ -439,12 +442,16 @@ function draw2(viewData, yearData, set){
 }
 
 .arc text {
-  font: 7px sans-serif;
+  font: 6px sans-serif;
   text-anchor: middle;
 }
 
 .arc path {
   stroke: #fff;
+}
+
+#buttonContainer{
+  padding-left:1em
 }
 </style>
 
