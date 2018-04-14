@@ -13,7 +13,11 @@ def close_connection(cur, conn):
 # Reddit page
 
 def json_object_reddit(obj, subreddit, interval, now, cur):
-    query = cur.execute("SELECT word, SUM(count) FROM reddit."+subreddit+" WHERE day < %s AND day >= %s GROUP BY word ORDER BY SUM(count) DESC limit 10;", (now,interval))
+    if now != None:
+        query = cur.execute("SELECT word, SUM(count) FROM reddit."+subreddit+" WHERE day < %s AND day >= %s GROUP BY word ORDER BY SUM(count) DESC limit 10;", (now,interval))
+    else:
+        query = cur.execute("SELECT word, SUM(count) FROM reddit."+subreddit+" WHERE day::varchar LIKE '%"+ interval +"%' GROUP BY word ORDER BY SUM(count) DESC limit 10;")
+    
     results = cur.fetchall()
     for result in results:
         obj.append(
@@ -66,7 +70,7 @@ def json_object_gender(obj, substance, cur):
     else:
         query = cur.execute("SELECT count(id) FROM erowid."+substance+";")
 
-    total = cur.fetchall()
+    total = cur.fetchone()
 
     for result in results:
         obj.append({

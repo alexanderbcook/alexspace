@@ -12,6 +12,9 @@
     You may notice that words such as 'the, and, then' etc. are not present in this data set. I consulted <a href='https://en.wikipedia.org/wiki/Most_common_words_in_English' >Wikipedia's list of most common words</a>
     and did not include the most common ~150 words. If you are interested, feel free to check out the project <a href='https://github.com/alexanderbcook/reddit_vocabulary'> on GitHub.</a>
     </p>
+
+    <p> Two options are available, you may either select one of three pre establish datasets or look up words from a specific day.</p>
+    <div> Available datasets:</div>
     <div class="dropdown">
         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {% if argument=='month'%}Display data from the last 30 days.
@@ -25,49 +28,72 @@
             <a class="dropdown-item" href="/reddit?interval=year">Display data from the last 365 days.</a>
         </div>
     </div>
-    <p></p>
+    <br>
+    <div> Select a date:</div>
+    <div class="form-row">
+        <form name="date" action="/reddit?interval=custom" method="POST" onsubmit="return validateForm()">
+            <div class="row">
+                <div class="col">
+                    <input type="text" class="form-control form-control-sm" name = "year" placeholder="yyyy">
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control form-control-sm" name = "month" placeholder="mm">
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control form-control-sm" name = "day" placeholder="dd">
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-outline-secondary btn-sm">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
     <hr>
-    <b>Here are the top words used on r/politics over the 
-        {% if argument=='month'%} last 30 days.
-        {% elif argument=='year' %} last 365 days.
-        {% else %} last 24 hours.
+    <b>Here are the top words used on r/politics 
+        {% if argument=='month'%} over the last 30 days.
+        {% elif argument=='year' %} over the last 365 days.
+        {% elif argument=='custom' %} on {{interval}}
+        {% else %} over the last 24 hours.
         {% endif %}
     </b>
     <p></p>
     <svg class="chart" id="area1" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
     <p></p>
-    <b>Here are the top words used on r/news over the 
-        {% if argument=='month'%} last 30 days.
-        {% elif argument=='year' %} last 365 days.
-        {% else %} last 24 hours.
+    <b>Here are the top words used on r/news 
+        {% if argument=='month'%} over the last 30 days.
+        {% elif argument=='year' %} over the last 365 days.
+        {% elif argument=='custom' %} on {{interval}}
+        {% else %} over the last 24 hours.
         {% endif %}
     </b>
     <p></p>
     <svg class="chart" id="area2" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
     <p></p>
-    <b>Here are the top words used on r/the_donald over the 
-        {% if argument=='month'%} last 30 days.
-        {% elif argument=='year' %} last 365 days.
-        {% else %} last 24 hours.
+    <b>Here are the top words used on r/the_donald 
+        {% if argument=='month'%} over the last 30 days.
+        {% elif argument=='year' %} over the last 365 days.
+        {% elif argument=='custom' %} on {{interval}}
+        {% else %} over the last 24 hours.
         {% endif %}
     </b>
     <p></p>
     <svg class="chart" id="area3" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
     <p></p>
-    <b>Here are the top words used on r/worldnews over the 
-        {% if argument=='month'%} last 30 days.
-        {% elif argument=='year' %} last 365 days.
-        {% else %} last 24 hours.
+    <b>Here are the top words used on r/worldnews 
+        {% if argument=='month'%} over the last 30 days.
+        {% elif argument=='year' %} over the last 365 days.
+        {% elif argument=='custom' %} on {{interval}}
+        {% else %} over the last 24 hours.
         {% endif %}
     </b>
     <p></p>
     <svg class="chart" id="area4" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
     <script>
-  
+    
     var JSONdata = {{politics|tojson}}    
     var data1 = JSON.parse(JSONdata)
     var JSONdata = {{news|tojson}}    
@@ -76,6 +102,52 @@
     var data3 = JSON.parse(JSONdata)
     var JSONdata = {{worldnews|tojson}}    
     var data4 = JSON.parse(JSONdata)
+
+    function isValidDate(dateString)
+    {
+        // First check for the pattern
+        if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString))
+            return false;
+
+        // Parse the date parts to integers
+        var parts = dateString.split("/");
+        var day = parseInt(parts[1], 10);
+        var month = parseInt(parts[0], 10);
+        var year = parseInt(parts[2], 10);
+
+        console.log(day, month, year)
+        // Check the ranges of month and year
+        if(year < 1000 || year > 3000 || month == 0 || month > 12)
+            return false;
+
+        var monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+
+        // Adjust for leap years
+        if(year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
+            monthLength[1] = 29;
+
+        if(year<=2018 && month<=3 && day<24){
+            return false;
+        }
+
+        // Check the range of the day
+        return day > 0 && day <= monthLength[month - 1];
+    };
+
+
+    function validateForm(){
+        var year = document.forms["date"]["year"].value;
+        console.log(year)
+        var month = document.forms["date"]["month"].value;
+        console.log(month)
+        var day = document.forms["date"]["day"].value;
+        console.log(day)
+
+        if (!isValidDate(month + '/' + day + '/' + year)){
+            alert("Date must be in yyyy/mm/dd format and date must be after 2018/03/24.")
+            return false;
+        }
+    }
 
 
     function draw(data, area){
@@ -128,8 +200,9 @@
     draw(data3, "#area3")
     draw(data4, "#area4")
 
-    </script> 
     
+    </script> 
+
     <style>
 
     p {
@@ -162,5 +235,4 @@
     }
 
     </style>
-
 {% endblock %}

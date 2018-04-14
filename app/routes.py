@@ -10,22 +10,10 @@ from utilities import connect_to_database, close_connection, json_object_reddit,
 def index():
     return render_template('index.html')
 
-@app.route('/reddit') 
+@app.route('/reddit', methods=['GET','POST']) 
 def reddit():
-    conn = connect_to_database()
-    cur = conn.cursor()
 
     argument = request.args['interval']
-
-    # Calculate time intervals via query string params.
-    
-    now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    if argument == 'month':
-        interval = (datetime.datetime.now() - datetime.timedelta(days=30)).strftime('%Y-%m-%d %H:%M:%S')
-    elif argument == 'year':
-        interval = (datetime.datetime.now() - datetime.timedelta(days=365)).strftime('%Y-%m-%d %H:%M:%S')
-    else:
-        interval = (datetime.datetime.now() - datetime.timedelta(hours=24)).strftime('%Y-%m-%d %H:%M:%S')
 
     # Instantiate data arrays.
 
@@ -33,22 +21,53 @@ def reddit():
     json_news = []
     json_worldnews = []
     json_thedonald = []
-                                   
-    # Populate data arrays with JSON objects
 
-    json_object_reddit(json_politics, "politics", interval, now, cur)
-    json_object_reddit(json_news, "news", interval, now, cur)
-    json_object_reddit(json_worldnews, "worldnews", interval, now, cur)
-    json_object_reddit(json_thedonald, "the_donald", interval, now, cur)
+    conn = connect_to_database()
+    cur = conn.cursor()
+
+    if request.method == 'GET':
+
+        # Calculate time intervals via query string params.
+        
+        now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        if argument == 'month':
+            interval = (datetime.datetime.now() - datetime.timedelta(days=30)).strftime('%Y-%m-%d %H:%M:%S')
+        elif argument == 'year':
+            interval = (datetime.datetime.now() - datetime.timedelta(days=365)).strftime('%Y-%m-%d %H:%M:%S')
+        else:
+            interval = (datetime.datetime.now() - datetime.timedelta(hours=24)).strftime('%Y-%m-%d %H:%M:%S')
+
+                                       
+        # Populate data arrays with JSON objects
+
+        json_object_reddit(json_politics, "politics", interval, now, cur)
+        json_object_reddit(json_news, "news", interval, now, cur)
+        json_object_reddit(json_worldnews, "worldnews", interval, now, cur)
+        json_object_reddit(json_thedonald, "the_donald", interval, now, cur)
+
+    if request.method == 'POST':
+
+        # Form custom interval object.
+
+        interval = request.form['year'] + '-' + request.form['month'] + '-' + request.form['day']
+
+        # Populate data arrays with JSON objects
+
+        json_object_reddit(json_politics, "politics", interval, None, cur)
+        json_object_reddit(json_news, "news", interval, None, cur)
+        json_object_reddit(json_worldnews, "worldnews", interval, None, cur)
+        json_object_reddit(json_thedonald, "the_donald", interval, None, cur)
 
     close_connection(cur, conn)
 
     return render_template('reddit.html',
+                    interval=interval,
                     argument=argument, 
                     politics=json.dumps(json_politics), 
                     news=json.dumps(json_news), 
                     the_donald=json.dumps(json_thedonald), 
                     worldnews = json.dumps(json_worldnews))
+
 
 @app.route('/superbowl')
 def superbowl():
@@ -82,7 +101,7 @@ def sentiment():
 
     # Populate data arrays with JSON objects
 
-    # Both viewed sentiment query.
+    # Both gendered sentiment query.
 
     json_object_sentiment("cannabis",both,None,cur)
     json_object_sentiment("amphetamines",both,None,cur)
@@ -92,7 +111,7 @@ def sentiment():
     json_object_sentiment("ketamine",both,None,cur)
     json_object_sentiment("cocaine",both,None,cur)
 
-    # Female viewed sentiment query.
+    # Female gendered sentiment query.
 
     json_object_sentiment("cannabis",female,'\'Female\'',cur)
     json_object_sentiment("amphetamines",female,'\'Female\'',cur)
@@ -102,7 +121,7 @@ def sentiment():
     json_object_sentiment("ketamine",female,'\'Female\'',cur)
     json_object_sentiment("cocaine",female,'\'Female\'',cur)
 
-    # Male viewed sentiment query. 
+    # Male gendered sentiment query. 
 
     json_object_sentiment("cannabis",male,'\'Male\'',cur)
     json_object_sentiment("amphetamines",male,'\'Male\'',cur)
