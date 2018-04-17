@@ -47,23 +47,16 @@
     var data4 = JSON.parse(JSONdata) 
 
     function validateForm(){
-        var year = document.forms["wordSearch"]["word"].value;
+        var year = document.forms["wordSearch"]["word"].value
     }
 
     function draw(data, element){
 
-        var margin = {top: 20, right: 20, bottom: 70, left: 40},
+        var margin = {top: 20, right: 20, bottom: 45, left: 40},
         width = 800 - margin.left - margin.right,
         height = 200 - margin.top - margin.bottom;
 
-        var x = d3.scaleBand().rangeRound([0,width]).padding(.05);
-        var y = d3.scaleLinear().range([height, 0]);
 
-        var xAxis = d3.axisBottom(x)
-        var yAxis = d3.axisLeft(y).ticks(5)
-
-        x.domain(data.map(function(d){return d.date;}))
-        y.domain([d3.max(data, function(d) { return d.count; })])
 
         var svg = d3.select(element).append("svg")
             .attr("width", width + margin.left + margin.right)
@@ -76,6 +69,12 @@
             d.date = d.date;
             d.count = +d.count;
         });
+
+        var x = d3.scaleBand().rangeRound([0,width]).domain(data.map(function(d){ return d.date}));
+        var y = d3.scaleLinear().range([height, 0]);
+
+        var xAxis = d3.axisBottom(x).tickValues(x.domain().filter(function(d){ return d.substring(8,10) == ('01')}));
+        var yAxis = d3.axisLeft(y).ticks(5);
             
         x.domain(data.map(function(d) { return d.date; }));
         y.domain([0, d3.max(data, function(d) { return d.count; })]);

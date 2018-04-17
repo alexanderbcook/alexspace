@@ -88,7 +88,7 @@ def search():
 
     if request.method == 'POST':
 
-        word = request.form['word']
+        word = request.form['word'].lower()
 
     json_object_search(json_politics, "politics", word,  cur)
     json_object_search(json_news, "news", word,  cur)
