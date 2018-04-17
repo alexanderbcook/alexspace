@@ -1,4 +1,5 @@
 import psycopg2
+import datetime
 
 # General utilites
 
@@ -31,7 +32,7 @@ def json_object_reddit(obj, subreddit, interval, now, cur):
 # Reddit search page
 
 def json_object_search(obj, subreddit, word, cur):
-    query = cur.execute("SELECT day::date, SUM(count) as count FROM reddit."+subreddit+" WHERE word = '"+word+"' GROUP BY day::date UNION ALL SELECT date_trunc('day', dd):: date,0 FROM generate_series( '2018-03-24'::timestamp, '2018-04-17'::timestamp, '1 day'::interval) dd WHERE (SELECT date_trunc('day', dd):: date) NOT IN (SELECT day::date FROM reddit."+subreddit+" WHERE word = '"+word+"' GROUP BY day::date)")
+    query = cur.execute("SELECT day::date, SUM(count) as count FROM reddit."+subreddit+" WHERE word = '"+word+"' GROUP BY day::date UNION ALL SELECT date_trunc('day', dd):: date,0 FROM generate_series( '2018-03-24'::timestamp, '"+datetime.datetime.now().strftime('%Y-%m-%d')+"'::timestamp, '1 day'::interval) dd WHERE (SELECT date_trunc('day', dd):: date) NOT IN (SELECT day::date FROM reddit."+subreddit+" WHERE word = '"+word+"' GROUP BY day::date) ORDER BY day")
 
     results = cur.fetchall()
     for result in results:
