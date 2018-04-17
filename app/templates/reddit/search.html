@@ -56,10 +56,6 @@
         width = 800 - margin.left - margin.right,
         height = 200 - margin.top - margin.bottom;
 
-        // Parse the date / time
-        var parseDate = d3.timeParse("%Y-%m-%d")
-
-        console.log(parseDate('2018-01-28'))
         var x = d3.scaleBand().rangeRound([0,width]).padding(.05);
         var y = d3.scaleLinear().range([height, 0]);
 
