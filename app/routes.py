@@ -2,16 +2,19 @@ from flask import render_template, request
 from app import app
 import json
 import datetime
+import random
 import utilities
-from utilities import connect_to_database, close_connection, json_object_reddit,json_object_sentiment,json_object_category,json_object_view,json_object_gender,json_object_year
+from utilities import connect_to_database, close_connection, json_object_reddit,json_object_search,json_object_sentiment,json_object_category,json_object_view,json_object_gender,json_object_year
 
 @app.route('/')
 @app.route('/index')
 def index():
     return render_template('index.html')
 
-@app.route('/reddit', methods=['GET','POST']) 
-def reddit():
+@app.route('/topwords', methods=['GET','POST']) 
+def topwords():
+    conn = connect_to_database()
+    cur = conn.cursor()
 
     argument = request.args['interval']
 
@@ -21,9 +24,6 @@ def reddit():
     json_news = []
     json_worldnews = []
     json_thedonald = []
-
-    conn = connect_to_database()
-    cur = conn.cursor()
 
     if request.method == 'GET':
 
@@ -60,7 +60,7 @@ def reddit():
 
     close_connection(cur, conn)
 
-    return render_template('reddit.html',
+    return render_template('/reddit/topwords.html',
                     interval=interval,
                     argument=argument, 
                     politics=json.dumps(json_politics), 
@@ -68,11 +68,48 @@ def reddit():
                     the_donald=json.dumps(json_thedonald), 
                     worldnews = json.dumps(json_worldnews))
 
+@app.route('/search', methods=['GET','POST']) 
+def search():
+    conn = connect_to_database()
+    cur = conn.cursor()
+
+    json_politics = []
+    json_news = []
+    json_worldnews = []
+    json_thedonald = []
+
+    if request.method == 'GET':
+        
+        index = random.randint(0, 9)
+
+        words = ['war','love','democrats','guns','corruption','libtards','comey','mueller','obama','clinton']
+
+        word = words[index]
+
+    if request.method == 'POST':
+
+        word = request.form['word']
+
+    json_object_search(json_politics, "politics", word,  cur)
+    json_object_search(json_news, "news", word,  cur)
+    json_object_search(json_worldnews, "worldnews", word,  cur)
+    json_object_search(json_thedonald, "the_donald", word,  cur)
+
+    close_connection(cur, conn)
+
+    return render_template('/reddit/search.html',   
+                    word = word,                
+                    politics=json.dumps(json_politics, default=str), 
+                    news=json.dumps(json_news, default=str), 
+                    the_donald=json.dumps(json_thedonald, default=str), 
+                    worldnews = json.dumps(json_worldnews, default=str))
+
 
 @app.route('/superbowl')
 def superbowl():
 
     argument = request.args['year']
+
     if argument == '2017':
         html = '/superbowl/2017/superbowl.html'
     else:

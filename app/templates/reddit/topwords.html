@@ -23,15 +23,15 @@
                 {% endif %}
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="/reddit?interval=day">Display data from the last 24 hours.</a>
-            <a class="dropdown-item" href="/reddit?interval=month">Display data from the last 30 days.</a>
-            <a class="dropdown-item" href="/reddit?interval=year">Display data from the last 365 days.</a>
+            <a class="dropdown-item" href="/topwords?interval=day">Display data from the last 24 hours.</a>
+            <a class="dropdown-item" href="/topwords?interval=month">Display data from the last 30 days.</a>
+            <a class="dropdown-item" href="/topwords?interval=year">Display data from the last 365 days.</a>
         </div>
     </div>
     <br>
     <div> Select a date:</div>
     <div class="form-row">
-        <form name="date" action="/reddit?interval=custom" method="POST" onsubmit="return validateForm()">
+        <form name="date" action="/topwords?interval=custom" method="POST" onsubmit="return validateForm()">
             <div class="row">
                 <div class="col">
                     <input type="text" class="form-control form-control-sm" name = "year" placeholder="yyyy">
@@ -105,43 +105,52 @@
 
     function isValidDate(dateString)
     {
-        // First check for the pattern
         if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString))
             return false;
 
-        // Parse the date parts to integers
         var parts = dateString.split("/");
         var day = parseInt(parts[1], 10);
         var month = parseInt(parts[0], 10);
         var year = parseInt(parts[2], 10);
 
-        console.log(day, month, year)
-        // Check the ranges of month and year
+        var currentDate = new Date();
+        var currentDay = currentDate.getDate();
+        var currentMonth = currentDate.getMonth()+1;
+
+        var currentYear = currentDate.getFullYear();
+
+        if(currentDay<10){
+            currentDay='0'+currentDay;
+        } 
+
+        if(currentMonth<10){
+            currentMonth='0'+currentMonth;
+        } 
+
+        var currentDate = new Date(currentMonth+'/'+currentDay+'/'+currentYear);
+        var inputDate = new Date(dateString);
+        var firstDate = new Date('2018/03/24')
+
         if(year < 1000 || year > 3000 || month == 0 || month > 12)
             return false;
 
         var monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
 
-        // Adjust for leap years
         if(year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
             monthLength[1] = 29;
 
-        if(year<=2018 && month<=3 && day<24){
+        if (inputDate < firstDate || inputDate > currentDate){
             return false;
         }
 
-        // Check the range of the day
         return day > 0 && day <= monthLength[month - 1];
     };
 
 
     function validateForm(){
         var year = document.forms["date"]["year"].value;
-        console.log(year)
         var month = document.forms["date"]["month"].value;
-        console.log(month)
         var day = document.forms["date"]["day"].value;
-        console.log(day)
 
         if (!isValidDate(month + '/' + day + '/' + year)){
             alert("Date must be in yyyy/mm/dd format and date must be after 2018/03/24.")
@@ -206,7 +215,7 @@
     <style>
 
     p {
-      margin-bottom: .33em;
+      margin-bottom: .5em;
     }
     text {
         color:;

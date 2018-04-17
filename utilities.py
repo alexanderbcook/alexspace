@@ -10,7 +10,7 @@ def close_connection(cur, conn):
     conn.close()
     return
 
-# Reddit page
+# Reddit top words page
 
 def json_object_reddit(obj, subreddit, interval, now, cur):
     if now != None:
@@ -24,6 +24,21 @@ def json_object_reddit(obj, subreddit, interval, now, cur):
             {
                 "word":result[0],
                 "count":result[1],
+            }
+        )
+    return obj
+
+# Reddit search page
+
+def json_object_search(obj, subreddit, word, cur):
+    query = cur.execute("SELECT day::date, SUM(count) FROM reddit."+subreddit+" WHERE word = '"+word+"' GROUP BY day::date;")
+
+    results = cur.fetchall()
+    for result in results:
+        obj.append(
+            {
+                "date":result[0],
+                "count":result[1]
             }
         )
     return obj

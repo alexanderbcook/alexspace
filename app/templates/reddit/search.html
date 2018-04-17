@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block content %}
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <p> After spending some time working with the 'top words' aggregation tool, I realised that it really isn't that useful. The words are often very similar and I felt like that my observations were a little speculative.</p>
+    <p> I thought adding search functionality to the dataset might be useful, so I decided to build a way to create a timeseries bar chart so that I could compare word usage across the communities at a glance.</p>
+    <p> I'm pleased with the way this turned out. I think the appearance is stylish and the usage is intuitive.</p>
+    <div> Input a word to search:</div>
+    <div class="form-row">
+        <form name="wordSearch" action="/search" method="POST" onsubmit="return validateForm()">
+            <div class="row">
+                <div class="col">
+                    <input type="text" class="form-control form-control-sm" name = "word">
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-outline-secondary btn-sm">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <b>Here is the usage pattern of the word '{{word}}' on r/politics.</b>
+    <p></p>
+    <svg class="chart" id="area1" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
+    <hr>
+    <p></p>
+    <b>Here is the usage pattern of the word '{{word}}' on r/news.</b>
+    <p></p>
+    <svg class="chart" id="area2" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
+    <hr>
+    <p></p>
+    <b>Here is the usage pattern of the word '{{word}}' on r/the_donald.</b>
+    <p></p>
+    <svg class="chart" id="area3" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
+    <hr>
+    <p></p>
+    <b>Here is the usage pattern of the word '{{word}}' on r/worldnews.</b>
+    <p></p>
+    <svg class="chart" id="area4" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
+    <hr>
+    <script>
+    var JSONdata = {{politics|tojson}}    
+    var data1 = JSON.parse(JSONdata)
+    var JSONdata = {{news|tojson}}    
+    var data2 = JSON.parse(JSONdata)
+    var JSONdata = {{the_donald|tojson}}    
+    var data3 = JSON.parse(JSONdata)
+    var JSONdata = {{worldnews|tojson}}    
+    var data4 = JSON.parse(JSONdata) 
+
+    function validateForm(){
+        var year = document.forms["wordSearch"]["word"].value;
+    }
+
+    function draw(data, element){
+
+        var margin = {top: 20, right: 20, bottom: 70, left: 40},
+        width = 800 - margin.left - margin.right,
+        height = 200 - margin.top - margin.bottom;
+
+        // Parse the date / time
+        var parseDate = d3.timeParse("%Y-%m-%d")
+
+        console.log(parseDate('2018-01-28'))
+        var x = d3.scaleBand().rangeRound([0,width]).padding(.05);
+        var y = d3.scaleLinear().range([height, 0]);
+
+        var xAxis = d3.axisBottom(x)
+        var yAxis = d3.axisLeft(y).ticks(5)
+
+        x.domain(data.map(function(d){return d.date;}))
+        y.domain([d3.max(data, function(d) { return d.count; })])
+
+        var svg = d3.select(element).append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform", 
+                  "translate(" + margin.left + "," + margin.top + ")");
+
+        data.forEach(function(d) {
+            d.date = d.date;
+            d.count = +d.count;
+        });
+            
+        x.domain(data.map(function(d) { return d.date; }));
+        y.domain([0, d3.max(data, function(d) { return d.count; })]);
+
+        svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis)
+        .selectAll("text")
+          .style("text-anchor", "end")
+          .attr("dx", "-.4em")
+          .attr("dy", ".9em")
+          .attr("transform", "rotate(-33)" );
+
+        svg.append("g")
+          .attr("class", "y axis")
+          .call(yAxis)
+        .append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 6)
+          .attr("dy", ".71em")
+          .style("text-anchor", "end")
+
+        svg.selectAll("bar")
+          .data(data)
+        .enter().append("rect")
+          .style("fill", "rosybrown")
+          .attr("x", function(d) { return x(d.date); })
+          .attr("width", x.bandwidth())
+          .attr("y", function(d) { return y(d.count); })
+          .attr("height", function(d) { return height - y(d.count); })
+          .append("title")
+            .text(function(d){
+                return d.date + ": " + d.count
+            })
+
+
+    };
+
+    draw(data1, "#area1");
+    draw(data2, "#area2");
+    draw(data3, "#area3");
+    draw(data4, "#area4");
+
+    </script> 
+
+    <style>
+        .axis {
+          font: 10px sans-serif;
+        }
+
+        .chart rect{
+            opacity: .75;
+        }
+        .chart rect:hover {
+            opacity: .9;
+        }
+
+        .axis path,
+        .axis line {
+          fill: none;
+          stroke: #000;
+          shape-rendering: crispEdges;
+        }
+    </style>
+{% endblock %}
