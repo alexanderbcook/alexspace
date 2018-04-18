@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template, request, url_for
 from app import app
 import json
 import datetime
@@ -10,7 +10,7 @@ from utilities import connect_to_database, close_connection, json_object_reddit,
 @app.route('/index')
 def index():
     return render_template('index.html')
-
+    
 @app.route('/topwords', methods=['GET','POST']) 
 def topwords():
     conn = connect_to_database()
