@@ -10,7 +10,10 @@ from utilities import connect_to_database, close_connection, json_object_reddit,
 @app.route('/index')
 def index():
     return render_template('index.html')
-    
+
+@app.route('/resume')
+    return redirect(url_for('static', filename='../static/pdf/Resume.pdf'), code=301)
+
 @app.route('/topwords', methods=['GET','POST']) 
 def topwords():
     conn = connect_to_database()
