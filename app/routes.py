@@ -11,9 +11,6 @@ from utilities import connect_to_database, close_connection, json_object_reddit,
 def index():
     return render_template('index.html')
 
-@app.route('/resume')
-    return redirect(url_for('static', filename='../static/pdf/Resume.pdf'), code=301)
-
 @app.route('/topwords', methods=['GET','POST']) 
 def topwords():
     conn = connect_to_database()
@@ -108,16 +105,13 @@ def search():
                     worldnews = json.dumps(json_worldnews, default=str))
 
 
-@app.route('/superbowl')
-def superbowl():
+@app.route('/superbowl/scalability')
+def scalability():
+    return render_template('superbowl/scalability.html')
 
-    argument = request.args['year']
-
-    if argument == '2017':
-        html = '/superbowl/2017/superbowl.html'
-    else:
-        html = '/superbowl/2018/superbowl.html'
-    return render_template(html)
+@app.route('/superbowl/geography')
+def geography():
+    return render_template('/superbowl/geography.html')
 
 @app.route('/erowid/sentiment')
 def sentiment():

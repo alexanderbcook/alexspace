@@ -8,12 +8,14 @@
 
     <p>In an effort to quantify these differences, I use <a href="https://praw.readthedocs.io/en/latest/">Reddit's open API, PRAW</a>, to scrape the most popular threads from four politically engaged subreddits.
     I utilize Python to process the comments, Redis to push the words into a PSQL database, and Postgres to form the data objects on this page. This process is automated, running every 15 minutes on an EC2 instance.
-    In order to ensure that the same data is not processed twice, I store the unique comment ID and exlude these comments from the crawler.
+    In order to ensure that the same data is not processed twice, I store the unique comment ID of processed comments and exlude these ID from the crawler.
     You may notice that words such as 'the, and, then' etc. are not present in this data set. I consulted <a href='https://en.wikipedia.org/wiki/Most_common_words_in_English' >Wikipedia's list of most common words</a>
-    and did not include the most common ~150 words. If you are interested, feel free to check out the project <a href='https://github.com/alexanderbcook/reddit_vocabulary'> on GitHub.</a>
+    and did not include the most common ~150 words. </p>
+    <p>If you are interested, feel free to check out the project <a href='https://github.com/alexanderbcook/reddit_vocabulary'> on GitHub.</a>
     </p>
 
     <p> Two options are available, you may either select one of three pre establish datasets or look up words from a specific day.</p>
+    <br>
     <div> Available datasets:</div>
     <div class="dropdown">
         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -49,7 +51,7 @@
         </form>
     </div>
     <hr>
-    <b>Here are the top words used on r/politics 
+    <b>Most commonly used words on r/politics 
         {% if argument=='month'%} over the last 30 days.
         {% elif argument=='year' %} over the last 365 days.
         {% elif argument=='custom' %} on {{interval}}
@@ -60,7 +62,7 @@
     <svg class="chart" id="area1" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
     <p></p>
-    <b>Here are the top words used on r/news 
+    <b>Most commonly used words on r/news 
         {% if argument=='month'%} over the last 30 days.
         {% elif argument=='year' %} over the last 365 days.
         {% elif argument=='custom' %} on {{interval}}
@@ -71,7 +73,7 @@
     <svg class="chart" id="area2" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
     <p></p>
-    <b>Here are the top words used on r/the_donald 
+    <b>Most commonly used words on r/the_donald 
         {% if argument=='month'%} over the last 30 days.
         {% elif argument=='year' %} over the last 365 days.
         {% elif argument=='custom' %} on {{interval}}
@@ -82,7 +84,7 @@
     <svg class="chart" id="area3" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
     <p></p>
-    <b>Here are the top words used on r/worldnews 
+    <b>Most commonly used words on r/worldnews 
         {% if argument=='month'%} over the last 30 days.
         {% elif argument=='year' %} over the last 365 days.
         {% elif argument=='custom' %} on {{interval}}

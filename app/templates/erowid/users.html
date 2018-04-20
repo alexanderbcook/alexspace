@@ -24,8 +24,8 @@ test this assumption.
 </div>
 <svg viewBox="0 0 600 250"  preserveAspectRatio="xMidYMid meet" id="area1"></svg>
 <hr>
-<p>Indeed, the websites population (or at least active user base) is mostly male.</p>
-<p>Poking around the Erowid site, you get the feeling that its population is dwindling. Perhaps it's the UI, but the site just feels like it's from another era. The forum posts list a date, and interestingly,
+<p>Indeed, the websites population (or at least active user base) is mostly male. The most popular substances for female authors are MDMA and cocaine. I'm a little surprised that cannabis stories are heavily male dominated, given the accessibility of the drug.</p>
+<p>Poking around the Erowid site, you get the feeling that its population is dwindling. Perhaps it's the UI, but the site just feels like it's from another era. The forum posts list a date, 
 the view count for the forum post. I think that these two metrics, plotted side by side, are an effective metric detailing the sites decline. I'm unsure what took place in 2007 that resulted in such a spike in both
 forum posts and forum views. Organic growth? Increase in advertisement spending? It's hard to say, but clearly Erowid was not able to retain that usage.
 </p>
@@ -66,16 +66,8 @@ forum posts and forum views. Organic growth? Increase in advertisement spending?
 <hr>
 
 
-<p>I'd like to briefly reflect on this project and some of the issues, that, if I had known better, could of made this project easier to work with. The biggest issue was the scraper I wrote. It's funny to think about now, but when I wrote the scraper,
-  I did not understanding the concept of database types. I pretty much stored in the backend as NVARCHAR type. This is not a good idea. Take for example these queries used to serve up the data via my Flask back-end.
-</p>
-<ul>
-  <li>query = cur.execute("SELECT EXTRACT(YEAR from date::DATE) AS extracted_year, count(EXTRACT(YEAR from date::DATE)) FROM erowid.main WHERE EXTRACT(YEAR from date::DATE) NOT IN ('1969') GROUP BY extracted_year ORDER BY extracted_year;")</li>
-  <li>query = cur.execute("SELECT EXTRACT(YEAR from date::DATE) AS extracted_year, sum(REPLACE(views,',','')::INT) FROM erowid.main WHERE EXTRACT(YEAR from date::DATE) NOT IN ('1969') GROUP BY extracted_year ORDER BY extracted_year;")</li>
-</ul>
-<p>Yikes. So dirty!</p>
-
-
+<p>I'm quite pleased with the way this project turned out. I have many more ideas I'd like to explore with this dataset. I'm interested in plotting sentiment and dose size side by side. I imagine there is some correlation- specifically, I imagine after a certain dose size, sentiment trends downward rapidly. The barrier to this analysis is that the dose size is self-reported. In other words, how many grams is a 'hit' of cannabis or a 'tab' of acid? Regardless, lots still to explore with this data.</p>
+<br>
 
 <script>
 

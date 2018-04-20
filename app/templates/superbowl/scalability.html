@@ -2,10 +2,9 @@
 {% block content %}
 
 <br>
-<p> This year I revisited my <a href='https://github.com/alexanderbcook/twitter_stream' > twitter stream </a> with two goals in mind - I wanted to improve data fidelity and throughput. Last year, I was not doing 
+<p> In 2018, a year after I wrote my <a href='https://github.com/alexanderbcook/twitter_stream' > twitter stream tool,</a> I revisited the project with two goals in mind - I wanted to improve data fidelity and throughput. Last year, I was not doing 
 enough data cleansing and I ended up having to do a ton of manual work to the dataset. A lot of this was due to not encoding the tweets in utf-8, so Emojis and letters from foreign alphabets were troublesome
-Additionally, last year, my program crashed due to read/write limitations of my machine. To improve performance, I split read and write into two different mechanisms- the first is a listener which reads tweets
-from the Twitter API and shoves them into a Redis queue- the second piece is the writer, which pulls the same information out from Redis and writes to JSON files.</p>
+Additionally, last year, I intended to graph tweets over time, but due to a crash during the third quarter, I was unable to complete the chart. To improve performance, I split read and write into two different mechanisms- the first is a listener which reads tweet from the Twitter API and shoves them into a Redis queue- the second piece is the writer, which pulls the same information out from Redis and writes to JSON files.</p>
 
 <p>I was pleased with the result. This is a video of the program streaming about 5k/tweets per minute to the file. 
 The left pane is a Redis monitor, which just prints push/pull operations. The middle and right panes are two instances of the program, streaming tweets mentioning the Eagles or Patriots.

@@ -8,10 +8,9 @@
         Analysis was done in Python. This page serves up a static .csv file with total count and proportion data.</a>
         </p>
 
-    <p> This first graph is the total number of tweets. Pretty much as you would expect - dominated by the largest states and the two states principally involved in 
+    <p> The first chart is the total number of tweets. Pretty much as you would expect - dominated by the largest states and the two states principally involved in 
         the game. Twitter rate limits streaming through the API. Usually they limit streaming capabilities to 1/10 of the total stream and moreso during periods of
-        high traffic- like the Superbowl. The count listed here is far lower than true tweet total. I screened the tweets geographically by checking the location of the user, if available.
-        Many users do not include their location, so we further lose data fidelity.
+        high traffic- like the Superbowl. The count listed here is far lower than true tweet total. 
     </p>
     <hr>
     <h1>total number of tweets</h1>
@@ -19,16 +18,18 @@
     <svg class="first", version="1.1" viewBox="0 0 1260 600"></svg>
     </div>
     <hr>
-    <p> This graph is the number of tweets per person. Lots to comment on here. One thing is apparent between both graphs: Texans love football. It's interesting 
-    that Nevada tweets a lot about the Superbowl. I imagine this is due to legalized sports gambling. In states where there are no NFL teams, people do not watch the Superbowl. I'm shocked.</p>
-    <p> South Carolinians tweeted the most frequently (0.0039 tweets/person), tweeting at nearly twice the rate of the second highest state, Georgia. South Carolinians must be huge 
-    Falcons fans or at least, relished in the neighbor's misery. Massachusettans(?) tweeted at a rate of 0.0015 tweets/person. Keep in mind that due to API limiting, 
-    this is <i> not </i> the true rate of tweeting and should be only thought of as a vague 'frequency metric'.
+    <p> The second chart is the number of tweets per person.
     <hr>
     <h1>tweets per person</h1>
     <div>
     <svg class="second", version="1.1" viewBox="0 0 1260 600""></svg>
     </div>
+    <p>
+    This chart shows much more clearly the parties involved in the super bowl (in case you've forgotten, the game was between the New England Patriots and the Atlant Falcons). Lots to comment on here. One thing is apparent between both graphs: Texans love football. It's interesting 
+    that Nevada tweets a lot about the Superbowl. I imagine this is due to legalized sports gambling. In states where there are no NFL teams, people do not watch the Superbowl. I'm shocked.</p>
+    <p> South Carolinians tweeted the most frequently (0.0039 tweets/person), tweeting at nearly twice the rate of the second highest state, Georgia. South Carolinians must be huge 
+    Falcons fans or at least, relished in the neighbor's misery. Massachusettans(?) tweeted at a rate of 0.0015 tweets/person. I also appreciate that Alaska and Hawaii, despite the geographical distance, seemingly talk about the SuperBowl quite a lot. Keep in mind that due to API limiting, 
+    this is <i> not </i> the true rate of tweeting and should be only thought of as a vague 'frequency metric'.
     <hr> 
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>

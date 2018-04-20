@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
     <script src="https://d3js.org/d3.v4.min.js"></script>
-    <p> After spending some time working with the 'top words' aggregation tool, I realised that it really isn't that useful. The words are often very similar and I felt like that my observations were a little speculative.</p>
+    <p> After spending some time observing the 'common words' data, I realised that, on its own
+    , it really isn't that useful. The words are often very similar and I felt like that my observations were a little speculative.</p>
     <p> I thought adding search functionality to the dataset might be useful, so I decided to build a way to create a timeseries bar chart so that I could compare word usage across the communities at a glance.</p>
-    <p> I'm pleased with the way this turned out. I think the appearance is stylish and the usage is intuitive.</p>
+    <p> I'm pleased with the way this turned out. This utilizes the same data as the 'common words' visualization, just formatted in a different way.</p>
     <div> Input a word to search:</div>
     <div class="form-row">
         <form name="wordSearch" action="/search" method="POST" onsubmit="return validateForm()">
@@ -17,22 +18,22 @@
             </div>
         </form>
     </div>
-    <b>Here is the usage pattern of the word '{{word}}' on r/politics.</b>
+    <b>Usage over time of the word '{{word}}' on r/politics.</b>
     <p></p>
     <svg class="chart" id="area1" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
     <p></p>
-    <b>Here is the usage pattern of the word '{{word}}' on r/news.</b>
+    <b>Usage over time of the word '{{word}}' on r/news.</b>
     <p></p>
     <svg class="chart" id="area2" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
     <p></p>
-    <b>Here is the usage pattern of the word '{{word}}' on r/the_donald.</b>
+    <b>Usage over time of the word '{{word}}' on r/the_donald.</b>
     <p></p>
     <svg class="chart" id="area3" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
     <p></p>
-    <b>Here is the usage pattern of the word '{{word}}' on r/worldnews.</b>
+    <b>Usage over time of the word '{{word}}' on r/worldnews.</b>
     <p></p>
     <svg class="chart" id="area4" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
@@ -117,7 +118,7 @@
         svg.selectAll("bar")
           .data(data)
         .enter().append("rect")
-          .style("fill", "rosybrown")
+          .style("fill", "palevioletred")
           .attr("x", function(d) { return x(d.date); })
           .attr("width", x.bandwidth())
           .attr("y", function(d) { return y(d.count); })
