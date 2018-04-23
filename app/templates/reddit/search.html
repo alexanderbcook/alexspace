@@ -13,12 +13,26 @@
                     <input type="text" class="form-control form-control-sm" name = "word">
                 </div>
                 <div class="col">
-                    <button type="submit" class="btn btn-outline-secondary btn-sm">Submit</button>
+                    <button type="submit" class="btn btn-outline-secondary btn-sm float-right">Submit</button>
                 </div>
             </div>
         </form>
     </div>
-    <b>Usage over time of the word '{{word}}' on r/politics.</b>
+    <div class="row">
+        <div class="col">
+            <b>Usage over time of the word '{{word}}' on r/politics.</b>
+        </div>
+        <div class="col">
+            <div class="btn-group btn-group-toggle float-right" data-toggle="buttons" >
+                <label class="btn btn-outline-secondary btn-sm active" onclick="updateData('count')">
+                    <input type="radio" name="options" id="option1" autocomplete="off" checked > Count
+                </label>
+                <label class="btn btn-outline-secondary btn-sm" onclick="updateData('rate')">
+                    <input type="radio" name="options" id="option2" autocomplete="off""> Rate
+                </label>
+            </div>
+        </div>
+    </div>
     <p></p>
     <svg class="chart" id="area1" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
@@ -38,6 +52,7 @@
     <svg class="chart" id="area4" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
     <script>
+
     var JSONdata = {{politics|tojson}}    
     var data1 = JSON.parse(JSONdata)
     var JSONdata = {{news|tojson}}    
@@ -46,6 +61,10 @@
     var data3 = JSON.parse(JSONdata)
     var JSONdata = {{worldnews|tojson}}    
     var data4 = JSON.parse(JSONdata) 
+
+    function updateData(argument) {
+        console.log(argument)
+    }
 
     function validateForm(){
         var year = document.forms["wordSearch"]["word"].value
@@ -61,6 +80,7 @@
         var svg = d3.select(element).append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
+            .attr("id", "charts")
           .append("g")
             .attr("transform", 
                   "translate(" + margin.left + "," + margin.top + ")");

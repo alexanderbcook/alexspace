@@ -15,8 +15,12 @@ def close_connection(cur, conn):
 
 def json_object_reddit(obj, subreddit, interval, now, cur):
     if now != None:
+        total = cur.execute("SELECT SUM(count) FROM reddit."+subreddit+" WHERE day < %s AND day >= %s", (now,interval))
+        total = cur.fetchone()
         query = cur.execute("SELECT word, SUM(count) FROM reddit."+subreddit+" WHERE day < %s AND day >= %s GROUP BY word ORDER BY SUM(count) DESC limit 10;", (now,interval))
     else:
+        total = cur.execute("SELECT SUM(count) FROM reddit."+subreddit+" WHERE day::varchar LIKE '%"+ interval +"%'")
+        total = cur.fetchone()
         query = cur.execute("SELECT word, SUM(count) FROM reddit."+subreddit+" WHERE day::varchar LIKE '%"+ interval +"%' GROUP BY word ORDER BY SUM(count) DESC limit 10;")
     
     results = cur.fetchall()
@@ -25,6 +29,7 @@ def json_object_reddit(obj, subreddit, interval, now, cur):
             {
                 "word":result[0],
                 "count":result[1],
+                "total":total
             }
         )
     return obj
