@@ -45,7 +45,7 @@
                     <input type="text" class="form-control form-control-sm" name = "day" placeholder="dd">
                 </div>
                 <div class="col">
-                    <button type="submit" class="btn btn-outline-secondary btn-sm  float-right">Submit</button>
+                    <button type="submit" class="btn btn-outline-secondary btn-sm float-right">Submit</button>
                 </div>
             </div>
         </form>
@@ -56,7 +56,7 @@
             <b>Most commonly used words on r/politics 
             {% if argument=='month'%} over the last 30 days.
             {% elif argument=='year' %} over the last 365 days.
-            {% elif argument=='custom' %} on {{interval}}
+            {% elif argument=='custom' %} on {{interval}}.
             {% else %} over the last 24 hours.
             {% endif %}
             </b>
@@ -79,7 +79,7 @@
     <b>Most commonly used words on r/news 
         {% if argument=='month'%} over the last 30 days.
         {% elif argument=='year' %} over the last 365 days.
-        {% elif argument=='custom' %} on {{interval}}
+        {% elif argument=='custom' %} on {{interval}}.
         {% else %} over the last 24 hours.
         {% endif %}
     </b>
@@ -90,7 +90,7 @@
     <b>Most commonly used words on r/the_donald 
         {% if argument=='month'%} over the last 30 days.
         {% elif argument=='year' %} over the last 365 days.
-        {% elif argument=='custom' %} on {{interval}}
+        {% elif argument=='custom' %} on {{interval}}.
         {% else %} over the last 24 hours.
         {% endif %}
     </b>
@@ -101,7 +101,7 @@
     <b>Most commonly used words on r/worldnews 
         {% if argument=='month'%} over the last 30 days.
         {% elif argument=='year' %} over the last 365 days.
-        {% elif argument=='custom' %} on {{interval}}
+        {% elif argument=='custom' %} on {{interval}}.
         {% else %} over the last 24 hours.
         {% endif %}
     </b>
@@ -196,23 +196,32 @@
                   "translate(" + margin.left + "," + margin.top + ")");
 
           data.forEach(function(d) {
-            d.count = +d.count;
-            d.rate = d.count/d.total;
-            console.log(d.count, d.rate, d.total)
+            if(argument==="count"){
+                d.value = +d.count;
+            }
+            if(argument==="rate"){
+                d.value = +d.count/d.total
+            }
+
           });
 
-          x.domain([0, d3.max(data, function(d){ return d.count; })])
+          x.domain([0, d3.max(data, function(d){ return d.value; })])
           y.domain(data.map(function(d) { return d.word; }));
 
           svg.selectAll(".bar")
               .data(data)
             .enter().append("rect")
               .attr("class", "bar")
-              .attr("width", function(d) {return x(d.count); } )
+              .attr("width", function(d) {return x(d.value); } )
               .attr("y", function(d) { return y(d.word); })
               .attr("height", y.bandwidth())
               .append("title")
-                .text(function(d) {return d.word.charAt(0).toUpperCase() + d.word.slice(1)+": " +d.count;});
+                .text(function(d) {
+                        if(argument==="count"){
+                            return d.word.charAt(0).toUpperCase() + d.word.slice(1)+": " +d.value;}
+                        if(argument==="rate"){
+                            return d.word.charAt(0).toUpperCase() + d.word.slice(1)+": " +Math.round(10000*d.value)/10000;}
+                        });
 
 
           svg.append("g")
