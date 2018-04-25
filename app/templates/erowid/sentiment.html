@@ -66,13 +66,13 @@
         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" onclick="updateData2('amphetamines')">Display amphetamines data.</a>
+            <a class="dropdown-item" onclick="updateData2('cannabis')">Display cannabis data.</a>
+            <a class="dropdown-item" onclick="updateData2('cocaine')">Display cocaine data.</a>
             <a class="dropdown-item" onclick="updateData2('ketamine')">Display ketamine data.</a>
             <a class="dropdown-item" onclick="updateData2('LSD')">Display LSD data.</a>
-            <a class="dropdown-item" onclick="updateData2('cannabis')">Display cannabis data.</a>
-            <a class="dropdown-item" onclick="updateData2('amphetamines')">Display amphetamines data.</a>
-            <a class="dropdown-item" onclick="updateData2('mushrooms')">Display mushrooms data.</a>
-            <a class="dropdown-item" onclick="updateData2('cocaine')">Display cocaine data.</a>
             <a class="dropdown-item" onclick="updateData2('MDMA')">Display MDMA data.</a>
+            <a class="dropdown-item" onclick="updateData2('mushrooms')">Display mushrooms data.</a>
         </div>
     </div>
     <svg class="chart" id="area2" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet"></svg>
@@ -284,7 +284,7 @@
 
 
     };
-    window.onload = updateData2('cannabis')
+    window.onload = updateData2('amphetamines')
     </script>
     
     <style>
