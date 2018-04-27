@@ -70,24 +70,32 @@
         var year = document.forms["wordSearch"]["word"].value
     }
 
-    function draw(data, element){
-
+    function draw(data, area, chart, argument){
         var margin = {top: 20, right: 20, bottom: 45, left: 40},
             width = 800 - margin.left - margin.right,
             height = 200 - margin.top - margin.bottom;
 
-
-        var svg = d3.select(element).append("svg")
+        var svg = d3.select(area).append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
-            .attr("id", "charts")
+            .attr("id", chart)
           .append("g")
             .attr("transform", 
                   "translate(" + margin.left + "," + margin.top + ")");
 
         data.forEach(function(d) {
-            d.date = d.date;
-            d.count = +d.count;
+            if(argument==="count"){
+                d.value = +d.count
+            }
+            if(argument==="rate"){
+                if(d.total!=0){
+                    d.value = +d.count/d.total    
+                }
+                else{
+                    d.value =+ 0
+                }
+                
+            }
         });
 
         var today = new Date();
@@ -114,7 +122,7 @@
         var yAxis = d3.axisLeft(y).ticks(5);
             
         x.domain(data.map(function(d) { return d.date; }));
-        y.domain([0, d3.max(data, function(d) { return d.count; })]);
+        y.domain([0, d3.max(data, function(d) { return d.value; })]);
 
         svg.append("g")
           .attr("class", "x axis")
@@ -141,20 +149,31 @@
           .style("fill", "palevioletred")
           .attr("x", function(d) { return x(d.date); })
           .attr("width", x.bandwidth())
-          .attr("y", function(d) { return y(d.count); })
-          .attr("height", function(d) { return height - y(d.count); })
+          .attr("y", function(d) { return y(d.value); })
+          .attr("height", function(d) { return height - y(d.value); })
           .append("title")
             .text(function(d){
-                return d.date + ": " + d.count
-            })
+                    if(argument==="count"){
+                        return d.date+": " +d.value;}
+                    if(argument==="rate"){
+                        return d.date+": " +Math.round(10000*d.value)/10000;}
+                    });
 
 
     };
 
-    draw(data1, "#area1");
-    draw(data2, "#area2");
-    draw(data3, "#area3");
-    draw(data4, "#area4");
+    function updateData(argument){
+        d3.select("#chart1").remove()
+        draw(data1, "#area1", "chart1", argument)
+        d3.select("#chart2").remove()
+        draw(data2, "#area2", "chart2", argument)
+        d3.select("#chart3").remove()
+        draw(data3, "#area3", "chart3",  argument)
+        d3.select("#chart4").remove()
+        draw(data4, "#area4", "chart4",  argument)
+    }
+
+    window.onload = updateData('count')
 
     </script> 
 

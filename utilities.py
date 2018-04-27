@@ -1,5 +1,6 @@
 import psycopg2
 import datetime
+import itertools
 
 # General utilites
 
@@ -38,16 +39,24 @@ def json_object_reddit(obj, subreddit, interval, now, cur):
 
 def json_object_search(obj, subreddit, word, cur):
     query = cur.execute("SELECT day::date, SUM(count) as count FROM reddit."+subreddit+" WHERE word = '"+word+"' GROUP BY day::date UNION ALL SELECT date_trunc('day', dd):: date,0 FROM generate_series( '2018-03-24'::timestamp, '"+datetime.datetime.now().strftime('%Y-%m-%d')+"'::timestamp, '1 day'::interval) dd WHERE (SELECT date_trunc('day', dd):: date) NOT IN (SELECT day::date FROM reddit."+subreddit+" WHERE word = '"+word+"' GROUP BY day::date) ORDER BY day")
-
     results = cur.fetchall()
-    for result in results:
+    query = cur.execute("SELECT day::date, SUM(count) as total FROM reddit."+subreddit+" GROUP BY day::date UNION ALL SELECT date_trunc('day', dd):: date,0 FROM generate_series( '2018-03-24'::timestamp, '"+datetime.datetime.now().strftime('%Y-%m-%d')+"'::timestamp, '1 day'::interval) dd WHERE (SELECT date_trunc('day', dd):: date) NOT IN (SELECT day::date FROM reddit."+subreddit+" GROUP BY day::date) ORDER BY day")
+    totals = cur.fetchall()
+
+    i = 0
+    while i < len(results):
+
         obj.append(
             {
-                "date":result[0],
-                "count":result[1]
+                "date":results[i][0],
+                "count": results[i][1],
+                "total": totals[i][1]
             }
         )
+        i += 1
+
     return obj
+
 
 # Erowid sentiment page
 
