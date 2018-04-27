@@ -62,12 +62,13 @@
     var JSONdata = {{worldnews|tojson}}    
     var data4 = JSON.parse(JSONdata) 
 
-    function updateData(argument) {
-        console.log(argument)
-    }
 
     function validateForm(){
-        var year = document.forms["wordSearch"]["word"].value
+        var word = document.forms["wordSearch"]["word"].value
+        if(word==''){
+            alert('Empty strings are not permitted.')
+            return false
+        }
     }
 
     function draw(data, area, chart, argument){

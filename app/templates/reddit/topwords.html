@@ -169,7 +169,7 @@
         var day = document.forms["date"]["day"].value;
 
         if (!isValidDate(month + '/' + day + '/' + year)){
-            alert("Date must be in yyyy/mm/dd format and date must be after 2018/03/24.")
+            alert("Date must be prior to today, after 2018/03/24, and in yyyy/mm/dd format.")
             return false;
         }
     }
