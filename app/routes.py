@@ -40,10 +40,10 @@ def topwords():
                                        
         # Populate data arrays with JSON objects
 
-        json_object_reddit(json_politics, "politics", interval, now, cur)
-        json_object_reddit(json_news, "news", interval, now, cur)
-        json_object_reddit(json_worldnews, "worldnews", interval, now, cur)
-        json_object_reddit(json_thedonald, "the_donald", interval, now, cur)
+        json_object_reddit(json_politics, "politics", argument, now, cur)
+        json_object_reddit(json_news, "news", argument, now, cur)
+        json_object_reddit(json_worldnews, "worldnews", argument, now, cur)
+        json_object_reddit(json_thedonald, "the_donald", argument, now, cur)
 
     if request.method == 'POST':
 
