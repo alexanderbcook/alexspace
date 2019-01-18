@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block content %}
+    <br>
+    <p> The Reddit crawler that I wrote runs every 15 minutes and stores every word used more than once during that period of time. As you may imagine, the database grew quite quickly. Roughly one year after the projects inception, the database now contains more than 12 million rows. Performance gradually decreased and the database design that I initally created needed to be refactored.</p>
+    <p>Before diving in to the specific changes that I made, let's set some benchmarks.</p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">API Call</th>
+          <th scope="col">Time Elapsed</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+            <td>/topwords?interval=day</td>
+            <td>~12-15s</td> 
+        </tr>
+        <tr>
+            <td>/topwords?interval=month</td>
+            <td>~15-20s</td>
+        </tr>
+        <tr>
+            <td>/topwords?interval=year</td>
+            <td>~25-30s</td>
+        </tr>
+        <tr>
+            <td>/topwords?interval=custom</td>
+            <td>~30s</td>
+        </tr>
+        <tr>
+            <td>/search</td>
+            <td>~30s</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>The database schema looked this:</p>
+    <hr>
+    <span>
+        <img src="../static/assets/preschema.png" class="center" alt=""/>
+    </span>
+    <hr>
+    <p> Notice that the last column is a datetime. The data that I really needed, however, was a date. This resulted in a lot of operations casting this column to a date (e.g. date_trunc(day, 'date')). I indexed the 'day' column, but these operations did not take advantage of the index, resulting in very slow queries.</p>
+    <p> To fix this issue, I renamed the 'day' column to 'full_day' and then created a true 'day' column with a corresponding index.</p>
+    <p>The database schema now looks like this:</p>
+    <hr>
+    <span>
+        <img src="../static/assets/postschema.png" class="center" alt=""/>
+    </span>
+    <hr>
+    <p>This change improved performance significantly, reducing load times by about 30%, to between 9-20s. While a step in the right direction, the application was not nearly snappy enough.</p>
+    <p>All of my queries involved summation of word counts over multiple days and distinct crawler runs (e.g. find the 10 most common words over the last day, month, year or get sum for everyday the word is present in the database). Additionally, since I was interested in word usage rates, I also needed total word counts for each time period. Enter the <a href='https://www.postgresql.org/docs/9.3/rules-materializedviews.html'>materialized view.</a></p>
+    <p>Here is the definition for one of the materialized views I use in this application.</p>
+    <hr>
+    <span>
+        <img src="../static/assets/creatematview.png" class="center_thin" alt=""/>
+    </span>
+    <hr>
+    <p>What makes materialized views so perfect for this application is the ability to dynamically refresh the view. In this case, I just refresh the materialized views at the end of each crawler run, preprocessing the data that needs to be returned for each API call. Here are a few examples of what these ultimately look like.</p>
+    <hr>
+    <span>
+        <img src="../static/assets/matview_words.png" class="center" alt=""/>
+    </span>
+    <hr>
+    <span>
+        <img src="../static/assets/matview_totals.png" class="center" alt=""/>
+    </span>
+    <hr>
+    <p>The creation of these materialized views (and the corresponding API manager refactor) resulted in enormous performance gains. The crawler, in effect, now takes on the work of compiling the expensive summation queries. This happens behind the scenes, instead of at request time. I encourage you to take a look at the <a href='https://github.com/alexanderbcook/alexspace/blob/master/utilities.py'> SQL queries</a> I now use to fetch the data for these pages.</p>
+    <p>In conclusion, let's take a look at the current benchmarks for the API calls against the Reddit databases. All in all, I am really pleased with this effort. I learned a ton about database design, materialized views, and indexes.</p>
+        <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">API Call</th>
+          <th scope="col">Time Elapsed</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+            <td>/topwords?interval=day</td>
+            <td><.5s</td> 
+        </tr>
+        <tr>
+            <td>/topwords?interval=month</td>
+            <td><.5s</td>
+        </tr>
+        <tr>
+            <td>/topwords?interval=year</td>
+            <td><.5s</td>
+        </tr>
+        <tr>
+            <td>/topwords?interval=custom</td>
+            <td>~3s</td>
+        </tr>
+        <tr>
+            <td>/search</td>
+            <td>~3s</td>
+        </tr>
+      </tbody>
+    </table>
+    <style>
+    .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+    }
+    .center_thin {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 92%;
+        height:16%;
+    }
+    </style>
+{% endblock %}

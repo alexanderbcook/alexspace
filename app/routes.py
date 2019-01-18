@@ -11,7 +11,11 @@ from utilities import connect_to_database, close_connection, json_object_reddit,
 def index():
     return render_template('index.html')
 
-@app.route('/topwords', methods=['GET','POST']) 
+@app.route('/reddit/performance')
+def performance():
+    return render_template('/reddit/performance.html')
+
+@app.route('/reddit/topwords', methods=['GET','POST']) 
 def topwords():
     conn = connect_to_database()
     cur = conn.cursor()
@@ -68,7 +72,7 @@ def topwords():
                     the_donald=json.dumps(json_thedonald), 
                     worldnews = json.dumps(json_worldnews))
 
-@app.route('/search', methods=['GET','POST']) 
+@app.route('/reddit/search', methods=['GET','POST']) 
 def search():
     conn = connect_to_database()
     cur = conn.cursor()
@@ -82,7 +86,7 @@ def search():
         
         index = random.randint(0, 9)
 
-        words = ['war','love','democrats','guns','corruption','libtards','comey','mueller','obama','clinton']
+        words = ['wall','shutdown','democrats','guns','libtard','cuck','comey','mueller','obama','clinton']
 
         word = words[index]
 
