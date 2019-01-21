@@ -46,7 +46,7 @@ def json_object_search(obj, subreddit, word, cur):
             {
                 "date":results[i][0],
                 "count": results[i][1],
-                "total": totals[i]
+                "total": totals[i][1]
             }
         )
         i += 1
