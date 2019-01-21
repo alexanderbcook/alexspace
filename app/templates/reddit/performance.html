@@ -40,7 +40,7 @@
     </span>
     <hr>
     <p> Notice that the last column is a datetime. The data that I really needed, however, was a date. This resulted in a lot of operations casting this column to a date (e.g. date_trunc(day, 'date')). I indexed the 'day' column, but these operations did not take advantage of the index, resulting in very slow queries.</p>
-    <p> To fix this issue, I renamed the 'day' column to 'full_day' and then created a true 'day' column with a corresponding index.</p>
+    <p> To fix this issue, I renamed the 'day' column to 'full_date' and then created a true 'day' column with a corresponding index.</p>
     <p>The database schema now looks like this:</p>
     <hr>
     <span>
