@@ -127,7 +127,7 @@
         	var x = d3.scaleBand().rangeRound([0,width]).padding(.075).domain(data.map(function(d){ return d.date}));
         	var y = d3.scaleLinear().range([height, 0]);
 
-        	var xAxis = d3.axisBottom(x).tickValues(x.domain().filter(function(d){ return (d.substring(8,10) == '01' || d.substring(8,10) == '15' || d == '2018-03-24' || d == today) }));
+        	var xAxis = d3.axisBottom(x).tickValues(x.domain().filter(function(d){ return ((d.substring(8,10) == '01' || d == today) && (d.substring(8,10) != '02') && d.substring(8,10) != '03' && d.substring(8,10) != '31' && d.substring(8,10) != '30' ) }));
         	var yAxis = d3.axisLeft(y).ticks(5);
             
         	x.domain(data.map(function(d) { return d.date; }));
