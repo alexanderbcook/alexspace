@@ -176,20 +176,14 @@
     };
 
     function noData(data, area, chart, argument){
-	console.log(data);
-        console.log(area);
-	console.log(area.substring(1));
-        console.log(chart);
-        console.log(argument);
 	d3.select("#"+chart).remove()
-	var svg = d3.select(area).append("svg")
-            .attr("width", 800)
-            .attr("height", 400)
-            .attr("id", "noData")
-          .append("g")
-            .attr("transform",
-                  "translate")
-	    .append("text").text(function(d){return d});
+	var svg = d3.select(area).append("text")
+				.attr("x", "200")
+				.attr("y", "100")
+				.attr("dy", ".75em")
+				.attr("dx", ".75em")
+				.attr("class","no-data")
+				.text(function(){return "This word was not used in this dataset.";})
     }
 
     function updateData(argument){
@@ -218,7 +212,10 @@
         .chart rect:hover {
             opacity: .9;
         }
-
+	.no-data {
+	  font: italic 14px;
+          opacity: .9;
+	}
         .axis path,
         .axis line {
           fill: none;
