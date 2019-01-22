@@ -72,7 +72,7 @@
     }
 
     function draw(data, area, chart, argument){
-        console.log(data);
+
         var margin = {top: 20, right: 20, bottom: 45, left: 40},
             width = 800 - margin.left - margin.right,
             height = 200 - margin.top - margin.bottom;
@@ -86,6 +86,7 @@
                   "translate(" + margin.left + "," + margin.top + ")");
 
 	var emptyFlag = true;
+
         data.forEach(function(d) {
 	    if(d.count > 0){
 		emptyFlag = false;
@@ -97,7 +98,7 @@
                 if(d.total!=0){
                     d.value = +d.count/d.total    
                 }
-                else{
+                else{0
                     d.value =+ 0
                 }
                 
@@ -167,9 +168,29 @@
                        	 			return d.date+": " +Math.round(10000*d.value)/10000;}
                     		});
 	}
+	else{
+		noData(data, area, chart, argument);		
+	}
 
 
     };
+
+    function noData(data, area, chart, argument){
+	console.log(data);
+        console.log(area);
+	console.log(area.substring(1));
+        console.log(chart);
+        console.log(argument);
+	d3.select("#"+chart).remove()
+	var svg = d3.select(area).append("svg")
+            .attr("width", 800)
+            .attr("height", 400)
+            .attr("id", "noData")
+          .append("g")
+            .attr("transform",
+                  "translate")
+	    .append("text").text(function(d){return d});
+    }
 
     function updateData(argument){
         d3.select("#chart1").remove()
