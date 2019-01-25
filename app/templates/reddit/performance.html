@@ -61,7 +61,7 @@
     <hr>
     <p>This change improved performance significantly, reducing load times by about 30%, to between 9-20s. While a step in the right direction, the application was not nearly snappy enough.</p>
     <p>All of my queries involved summation of word counts over multiple days and distinct crawler runs (e.g. find the 10 most common words over the last day, month, year or get sum for everyday the word is present in the database). Additionally, since I was interested in word usage rates, I also needed total word counts for each time period. Enter the <a href='https://www.postgresql.org/docs/9.3/rules-materializedviews.html'>materialized view.</a></p>
-    <p>Here is the definition for one of the materialized views I use in this application.</p>
+    <p>Here is the definition for a few of the materialized views I use in this application.</p>
     <hr>
     <span>
         <img id="creatematview"src="../static/assets/creatematview.png" style="width:100%;max-width:450px" class="center" alt="test"/>
@@ -129,7 +129,7 @@
       </tbody>
     </table>
 <script>
-
+    /*
     function renderModal(imageName, imageIndex){
         var modal = document.getElementById(imageName + '-modal');
 
@@ -156,56 +156,41 @@
     renderModal('creatematview', 2);
     renderModal('matview_words', 3);
     renderModal('matview_totals', 4);
-
+    */
 
 </script>
 <style>
     .center {
       display: block;
-      margin-left: 33%;
+      margin-left: auto;
       margin-right: auto;
       width: 50%;
     }
     /* Style the Image Used to Trigger the Modal */
     #preschema {
-      border-radius: 5px;
-      cursor: pointer;
-      transition: 0.3s;
+      border-radius: 8px;
+      transition: 0.15s;
     }
-
-    #preschema:hover {opacity: 0.7;}
 
     #postschema {
-      border-radius: 5px;
-      cursor: pointer;
+      border-radius: 8px;
       transition: 0.15s;
     }
-
-    #postschema:hover {opacity: 0.7;}
 
     #creatematview {
-      border-radius: 5px;
-      cursor: pointer;
+      border-radius: 8px;
       transition: 0.15s;
     }
-
-    #creatematview:hover {opacity: 0.7;}
 
     #matview_words {
-      border-radius: 5px;
-      cursor: pointer;
+      border-radius: 8px;
       transition: 0.15s;
     }
-
-    #matview_words:hover {opacity: 0.7;}
 
     #matview_totals {
-      border-radius: 5px;
-      cursor: pointer;
+      border-radius: 8px;
       transition: 0.15s;
     }
-
-    #matview_totals:hover {opacity: 0.7;}
 
     /* The Modal (background) */
     .modal {
@@ -213,8 +198,8 @@
       position: fixed; /* Stay in place */
       z-index: 1; /* Sit on top */
       padding-top: 100px; /* Location of the box */
-      left: 0;
-      top: 0;
+      left: 25%;
+      top: 25%;
       width: 60%; /* Full width */
       height: 40%; /* Full height */
       overflow: auto; /* Enable scroll if needed */
