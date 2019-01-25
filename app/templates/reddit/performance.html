@@ -36,7 +36,7 @@
     <p>The database schema looked this:</p>
     <hr>
     <span>
-        <img id="preschema"src="../static/assets/preschema.png" style="width:100%;max-width:300px"  alt="test"/>
+        <img id="preschema"src="../static/assets/preschema.png" style="width:100%;max-width:450px" class="center" alt="test"/>
 
 	<div id="preschema-modal" class="modal">
 	  <span class="close">&times;</span>
@@ -50,7 +50,13 @@
     <p>The database schema now looks like this:</p>
     <hr>
     <span>
-        <img src="../static/assets/postschema.png" class="center" alt=""/>
+        <img id="postschema"src="../static/assets/postschema.png" style="width:100%;max-width:450px" class="center" alt="test"/>
+
+    <div id="postschema-modal" class="modal">
+      <span class="close">&times;</span>
+      <img class="modal-content" id="postschema-image">
+      <div id="caption"></div>
+    </div>
     </span>
     <hr>
     <p>This change improved performance significantly, reducing load times by about 30%, to between 9-20s. While a step in the right direction, the application was not nearly snappy enough.</p>
@@ -58,18 +64,37 @@
     <p>Here is the definition for one of the materialized views I use in this application.</p>
     <hr>
     <span>
-        <img src="../static/assets/creatematview.png" class="center_thin" alt=""/>
+        <img id="creatematview"src="../static/assets/creatematview.png" style="width:100%;max-width:450px" class="center" alt="test"/>
+
+        <div id="creatematview-modal" class="modal">
+          <span class="close">&times;</span>
+          <img class="creatematview-content" id="creatematview-image">
+          <div id="caption"></div>
+        </div>
     </span>
     <hr>
     <p>What makes materialized views so perfect for this application is the ability to dynamically refresh the view. In this case, I just refresh the materialized views at the end of each crawler run, preprocessing the data that needs to be returned for each API call. Here are a few examples of what these ultimately look like.</p>
     <hr>
     <span>
-        <img src="../static/assets/matview_words.png" class="center" alt=""/>
+        <img id="matview_words" src="../static/assets/matview_words.png" style="width:100%;max-width:450px"  class="center" alt="test"/>
+
+        <div id="matview_words-modal" class="modal">
+          <span class="close">&times;</span>
+          <img class="matview_words-content" id="matview_words-image">
+          <div id="caption"></div>
+        </div>
     </span>
     <hr>
     <span>
-        <img src="../static/assets/matview_totals.png" class="center" alt=""/>
+        <img id="matview_totals" src="../static/assets/matview_totals.png" style="width:100%;max-width:450px"  class="center" alt="test"/>
+
+        <div id="matview_totals-modal" class="modal">
+          <span class="close">&times;</span>
+          <img class="matview_totals-content" id="matview_totals-image">
+          <div id="caption"></div>
+        </div>
     </span>
+
     <hr>
     <p>The creation of these materialized views (and the corresponding API manager refactor) resulted in enormous performance gains. The crawler, in effect, now takes on the work of compiling the expensive summation queries. This happens behind the scenes, instead of at request time. I encourage you to take a look at the <a href='https://github.com/alexanderbcook/alexspace/blob/master/utilities.py'> SQL queries</a> I now use to fetch the data for these pages.</p>
     <p>In conclusion, let's take a look at the current benchmarks for the API calls against the Reddit databases. All in all, I am really pleased with this effort. I learned a ton about database design, materialized views, and indexes.</p>
@@ -103,106 +128,154 @@
         </tr>
       </tbody>
     </table>
-    <script>
-var modal = document.getElementById('preschema-modal');
+<script>
 
-// Get the image and insert it inside the modal - use its "alt" text as a caption
-var img = document.getElementById('preschema-image');
-var modalImg = document.getElementById("preschema");
-var captionText = document.getElementById("caption");
-img.onclick = function(){
-  modal.style.display = "block";
-  modalImg.src = this.src;
-  captionText.innerHTML = this.alt;
-}
+    function renderModal(imageName, imageIndex){
+        var modal = document.getElementById(imageName + '-modal');
 
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
+        // Get the image and insert it inside the modal - use its "alt" text as a caption
+        var img = document.getElementById(imageName);
+        var modalImg = document.getElementById(imageName+ '-image');
+        var captionText = document.getElementById("caption");
+        img.onclick = function(){
+          modal.style.display = "block";
+          modalImg.src = this.src;
+          captionText.innerHTML = this.alt;
+        }
 
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() { 
-  modal.style.display = "none";
-}
-    </script>
-    <style>
-/* Style the Image Used to Trigger the Modal */
-#myImg {
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.3s;
-}
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[imageIndex];
 
-#myImg:hover {opacity: 0.7;}
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() { 
+          modal.style.display = "none";
+        }      
+    }
+    renderModal('preschema', 0);
+    renderModal('postschema', 1);
+    renderModal('creatematview', 2);
+    renderModal('matview_words', 3);
+    renderModal('matview_totals', 4);
 
-/* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
-}
 
-/* Modal Content (Image) */
-.modal-content {
-  margin: auto;
-  display: block;
-  width: 80%;
-  max-width: 700px;
-}
+</script>
+<style>
+    .center {
+      display: block;
+      margin-left: 33%;
+      margin-right: auto;
+      width: 50%;
+    }
+    /* Style the Image Used to Trigger the Modal */
+    #preschema {
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
 
-/* Caption of Modal Image (Image Text) - Same Width as the Image */
-#caption {
-  margin: auto;
-  display: block;
-  width: 80%;
-  max-width: 700px;
-  text-align: center;
-  color: #ccc;
-  padding: 10px 0;
-  height: 150px;
-}
+    #preschema:hover {opacity: 0.7;}
 
-/* Add Animation - Zoom in the Modal */
-.modal-content, #caption { 
-  animation-name: zoom;
-  animation-duration: 0.6s;
-}
+    #postschema {
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.15s;
+    }
 
-@keyframes zoom {
-  from {transform:scale(0)} 
-  to {transform:scale(1)}
-}
+    #postschema:hover {opacity: 0.7;}
 
-/* The Close Button */
-.close {
-  position: absolute;
-  top: 15px;
-  right: 35px;
-  color: #f1f1f1;
-  font-size: 40px;
-  font-weight: bold;
-  transition: 0.3s;
-}
+    #creatematview {
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.15s;
+    }
 
-.close:hover,
-.close:focus {
-  color: #bbb;
-  text-decoration: none;
-  cursor: pointer;
-}
+    #creatematview:hover {opacity: 0.7;}
 
-/* 100% Image Width on Smaller Screens */
-@media only screen and (max-width: 700px){
-  .modal-content {
-    width: 100%;
-  }	
-}
-    </style>
+    #matview_words {
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    #matview_words:hover {opacity: 0.7;}
+
+    #matview_totals {
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    #matview_totals:hover {opacity: 0.7;}
+
+    /* The Modal (background) */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      padding-top: 100px; /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 60%; /* Full width */
+      height: 40%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.65); /* Black w/ opacity */
+    }
+
+    /* Modal Content (Image) */
+    .modal-content {
+      margin: auto;
+      display: block;
+      width: 80%;
+      max-width: 700px;
+    }
+
+    /* Caption of Modal Image (Image Text) - Same Width as the Image */
+    #caption {
+      margin: auto;
+      display: block;
+      width: 80%;
+      max-width: 700px;
+      text-align: center;
+      color: #ccc;
+      padding: 10px 0;
+      height: 150px;
+    }
+
+    /* Add Animation - Zoom in the Modal */
+    .modal-content, #caption { 
+      animation-name: zoom;
+      animation-duration: 0.4s;
+    }
+
+    @keyframes zoom {
+      from {transform:scale(0)} 
+      to {transform:scale(1)}
+    }
+
+    /* The Close Button */
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 35px;
+      color: #f1f1f1;
+      font-size: 40px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #bbb;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* 100% Image Width on Smaller Screens */
+    @media only screen and (max-width: 700px){
+      .modal-content {
+        width: 100%;
+      }	
+    }
+</style>
 {% endblock %}
