@@ -85,11 +85,11 @@
             .attr("transform", 
                   "translate(" + margin.left + "," + margin.top + ")");
 
-	var emptyFlag = true;
+	    var emptyFlag = true;
 
         data.forEach(function(d) {
-	    if(d.count > 0){
-		emptyFlag = false;
+	       if(d.count > 0){
+		        emptyFlag = false;
             }
             if(argument==="count"){
                 d.value = +d.count
@@ -98,16 +98,16 @@
                 if(d.total!=0){
                     d.value = +d.count/d.total    
                 }
-                else{0
+                else{
                     d.value =+ 0
                 }
                 
             }
         });
 
-	if(!emptyFlag){
+	    if(!emptyFlag){
 
-		var today = new Date();
+		    var today = new Date();
         	var dd = today.getDate();
         	var mm = today.getMonth()+1; 
 
@@ -115,12 +115,12 @@
         
         	if(dd<10) 
         	{
-            		dd='0'+dd;
+            	dd='0'+dd;
         	} 
 
         	if(mm<10) 
         	{
-            		mm='0'+mm;
+            	mm='0'+mm;
         	} 
         	today = yyyy+'-'+mm+'-'+dd;
 
@@ -167,23 +167,23 @@
                     			if(argument==="rate"){
                        	 			return d.date+": " +Math.round(10000*d.value)/10000;}
                     		});
-	}
-	else{
-		noData(data, area, chart, argument);		
-	}
+	        }
+    	else{
+    		noData(data, area, chart, argument);		
+    	}
 
 
     };
 
     function noData(data, area, chart, argument){
-	d3.select("#"+chart).remove()
-	var svg = d3.select(area).append("text")
-				.attr("x", "200")
-				.attr("y", "100")
-				.attr("dy", ".75em")
-				.attr("dx", ".75em")
-				.attr("class","no-data")
-				.text(function(){return "This word was not used in this dataset.";})
+    	d3.select("#"+chart).remove()
+    	var svg = d3.select(area).append("text")
+    				.attr("x", "200")
+    				.attr("y", "100")
+    				.attr("dy", ".75em")
+    				.attr("dx", ".75em")
+    				.attr("class","no-data")
+    				.text(function(){return "This word was not used in this dataset.";})
     }
 
     function updateData(argument){
@@ -205,16 +205,15 @@
         .axis {
           font: 10px sans-serif;
         }
-
         .chart rect{
             opacity: .75;
         }
         .chart rect:hover {
             opacity: .9;
         }
-	.no-data {
-	  font-style: italic;
-	}
+	    .no-data {
+	       font-style: italic;
+	    }
         .axis path,
         .axis line {
           fill: none;

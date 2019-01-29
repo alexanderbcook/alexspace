@@ -36,13 +36,7 @@
     <p>The database schema looked this:</p>
     <hr>
     <span>
-        <img id="preschema"src="../static/assets/preschema.png" style="width:100%;max-width:450px" class="center" alt="test"/>
-
-	<div id="preschema-modal" class="modal">
-	  <span class="close">&times;</span>
-	  <img class="modal-content" id="preschema-image">
-	  <div id="caption"></div>
-	</div>
+        <img src="../static/assets/preschema.png" style="width:100%;max-width:450px" class="center"/>
     </span>
     <hr>
     <p> Notice that the last column is a datetime. The data that I really needed, however, was a date. This resulted in a lot of operations casting this column to a date (e.g. date_trunc(day, 'date')). I indexed the 'day' column, but these operations did not take advantage of the index, resulting in very slow queries.</p>
@@ -50,13 +44,7 @@
     <p>The database schema now looks like this:</p>
     <hr>
     <span>
-        <img id="postschema"src="../static/assets/postschema.png" style="width:100%;max-width:450px" class="center" alt="test"/>
-
-    <div id="postschema-modal" class="modal">
-      <span class="close">&times;</span>
-      <img class="modal-content" id="postschema-image">
-      <div id="caption"></div>
-    </div>
+        <img src="../static/assets/postschema.png" style="width:100%;max-width:450px" class="center"/>
     </span>
     <hr>
     <p>This change improved performance significantly, reducing load times by about 30%, to between 9-20s. While a step in the right direction, the application was not nearly snappy enough.</p>
@@ -64,35 +52,17 @@
     <p>Here is the definition for a few of the materialized views I use in this application.</p>
     <hr>
     <span>
-        <img id="creatematview"src="../static/assets/creatematview.png" style="width:100%;max-width:450px" class="center" alt="test"/>
-
-        <div id="creatematview-modal" class="modal">
-          <span class="close">&times;</span>
-          <img class="creatematview-content" id="creatematview-image">
-          <div id="caption"></div>
-        </div>
+        <img src="../static/assets/creatematview.png" style="width:100%;max-width:450px" class="center" />
     </span>
     <hr>
     <p>What makes materialized views so perfect for this application is the ability to dynamically refresh the view. In this case, I just refresh the materialized views at the end of each crawler run, preprocessing the data that needs to be returned for each API call. Here are a few examples of what these ultimately look like.</p>
     <hr>
     <span>
-        <img id="matview_words" src="../static/assets/matview_words.png" style="width:100%;max-width:450px"  class="center" alt="test"/>
-
-        <div id="matview_words-modal" class="modal">
-          <span class="close">&times;</span>
-          <img class="matview_words-content" id="matview_words-image">
-          <div id="caption"></div>
-        </div>
+        <img id="matview_words" src="../static/assets/matview_words.png" style="width:100%;max-width:450px"  class="center"/>
     </span>
     <hr>
     <span>
-        <img id="matview_totals" src="../static/assets/matview_totals.png" style="width:100%;max-width:450px"  class="center" alt="test"/>
-
-        <div id="matview_totals-modal" class="modal">
-          <span class="close">&times;</span>
-          <img class="matview_totals-content" id="matview_totals-image">
-          <div id="caption"></div>
-        </div>
+        <img id="matview_totals" src="../static/assets/matview_totals.png" style="width:100%;max-width:450px"  class="center"/>
     </span>
 
     <hr>
@@ -128,139 +98,14 @@
         </tr>
       </tbody>
     </table>
-<script>
-    /*
-    function renderModal(imageName, imageIndex){
-        var modal = document.getElementById(imageName + '-modal');
 
-        // Get the image and insert it inside the modal - use its "alt" text as a caption
-        var img = document.getElementById(imageName);
-        var modalImg = document.getElementById(imageName+ '-image');
-        var captionText = document.getElementById("caption");
-        img.onclick = function(){
-          modal.style.display = "block";
-          modalImg.src = this.src;
-          captionText.innerHTML = this.alt;
-        }
-
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[imageIndex];
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() { 
-          modal.style.display = "none";
-        }      
-    }
-    renderModal('preschema', 0);
-    renderModal('postschema', 1);
-    renderModal('creatematview', 2);
-    renderModal('matview_words', 3);
-    renderModal('matview_totals', 4);
-    */
-
-</script>
 <style>
     .center {
       display: block;
       margin-left: auto;
       margin-right: auto;
       width: 50%;
-    }
-    /* Style the Image Used to Trigger the Modal */
-    #preschema {
       border-radius: 8px;
-      transition: 0.15s;
-    }
-
-    #postschema {
-      border-radius: 8px;
-      transition: 0.15s;
-    }
-
-    #creatematview {
-      border-radius: 8px;
-      transition: 0.15s;
-    }
-
-    #matview_words {
-      border-radius: 8px;
-      transition: 0.15s;
-    }
-
-    #matview_totals {
-      border-radius: 8px;
-      transition: 0.15s;
-    }
-
-    /* The Modal (background) */
-    .modal {
-      display: none; /* Hidden by default */
-      position: fixed; /* Stay in place */
-      z-index: 1; /* Sit on top */
-      padding-top: 100px; /* Location of the box */
-      left: 25%;
-      top: 25%;
-      width: 60%; /* Full width */
-      height: 40%; /* Full height */
-      overflow: auto; /* Enable scroll if needed */
-      background-color: rgb(0,0,0); /* Fallback color */
-      background-color: rgba(0,0,0,0.65); /* Black w/ opacity */
-    }
-
-    /* Modal Content (Image) */
-    .modal-content {
-      margin: auto;
-      display: block;
-      width: 80%;
-      max-width: 700px;
-    }
-
-    /* Caption of Modal Image (Image Text) - Same Width as the Image */
-    #caption {
-      margin: auto;
-      display: block;
-      width: 80%;
-      max-width: 700px;
-      text-align: center;
-      color: #ccc;
-      padding: 10px 0;
-      height: 150px;
-    }
-
-    /* Add Animation - Zoom in the Modal */
-    .modal-content, #caption { 
-      animation-name: zoom;
-      animation-duration: 0.4s;
-    }
-
-    @keyframes zoom {
-      from {transform:scale(0)} 
-      to {transform:scale(1)}
-    }
-
-    /* The Close Button */
-    .close {
-      position: absolute;
-      top: 15px;
-      right: 35px;
-      color: #f1f1f1;
-      font-size: 40px;
-      font-weight: bold;
-      transition: 0.3s;
-    }
-
-    .close:hover,
-    .close:focus {
-      color: #bbb;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    /* 100% Image Width on Smaller Screens */
-    @media only screen and (max-width: 700px){
-      .modal-content {
-        width: 100%;
-      }	
     }
 </style>
 {% endblock %}
