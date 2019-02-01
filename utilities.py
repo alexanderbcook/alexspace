@@ -16,7 +16,7 @@ def close_connection(cur, conn):
 
 def json_object_reddit(obj, subreddit, interval, now, cur):
     if now != None:
-	   query = cur.execute("SELECT word, sum, subreddit, total, 'day' AS interval  FROM day_" + subreddit + " UNION SELECT word, sum, subreddit, total, 'month' AS interval  FROM month_" + subreddit + " UNION SELECT word, sum, subreddit, total, 'year' AS interval  FROM year_" + subreddit + " ORDER BY interval;") 
+	   query = cur.execute("SELECT word, sum, subreddit, total, interval  FROM " +interval+ "_" + subreddit + ";")
     else:
         query = cur.execute("SELECT word, SUM(count) as sum, 'reddit."+subreddit+", (SELECT total FROM count_"+subreddit+" WHERE day = '"+ interval +"') as total, interval FROM reddit."+subreddit+" WHERE day = '"+interval+"' GROUP BY word ORDER BY sum DESC limit 10;")
     

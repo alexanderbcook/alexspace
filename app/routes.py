@@ -29,6 +29,20 @@ def topwords():
     json_worldnews = []
     json_thedonald = []
 
+    json_day_politics = []
+    json_day_news = []
+    json_day_worldnews = []
+    json_day_thedonald = []
+
+    json_month_politics = []
+    json_month_news = []
+    json_month_worldnews = []
+    json_month_thedonald = []
+
+    json_year_politics = []
+    json_year_news = []
+    json_year_worldnews = []
+    json_year_thedonald = []
 
     if request.method == 'GET':
                                        
@@ -36,10 +50,20 @@ def topwords():
         interval = 'Refactor this.'
         now = 'Refactor this.'
 
-        json_object_reddit(json_politics, "politics", argument, now, cur)
-        json_object_reddit(json_news, "news", argument, now, cur)
-        json_object_reddit(json_worldnews, "worldnews", argument, now, cur)
-        json_object_reddit(json_thedonald, "the_donald", argument, now, cur)
+        json_object_reddit(json_day_politics, "politics", argument, now, cur)
+        json_object_reddit(json_day_news, "news", argument, now, cur)
+        json_object_reddit(json_day_worldnews, "worldnews", argument, now, cur)
+        json_object_reddit(json_day_thedonald, "the_donald", argument, now, cur)
+
+        json_object_reddit(json_month_politics, "politics", argument, now, cur)
+        json_object_reddit(json_month_news, "news", argument, now, cur)
+        json_object_reddit(json_month_worldnews, "worldnews", argument, now, cur)
+        json_object_reddit(json_month_thedonald, "the_donald", argument, now, cur)
+
+        json_object_reddit(json_year_politics, "politics", argument, now, cur)
+        json_object_reddit(json_year_news, "news", argument, now, cur)
+        json_object_reddit(json_year_worldnews, "worldnews", argument, now, cur)
+        json_object_reddit(json_year_thedonald, "the_donald", argument, now, cur)
 
     if request.method == 'POST':
 
