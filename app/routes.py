@@ -30,17 +30,6 @@ def topwords():
     json_thedonald = []
 
     if request.method == 'GET':
-
-        # Calculate time intervals via query string params.
-        
-        now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        if argument == 'month':
-            interval = (datetime.datetime.now() - datetime.timedelta(days=30)).strftime('%Y-%m-%d %H:%M:%S')
-        elif argument == 'year':
-            interval = (datetime.datetime.now() - datetime.timedelta(days=365)).strftime('%Y-%m-%d %H:%M:%S')
-        else:
-            interval = (datetime.datetime.now() - datetime.timedelta(hours=24)).strftime('%Y-%m-%d %H:%M:%S')
-
                                        
         # Populate data arrays with JSON objects
 
