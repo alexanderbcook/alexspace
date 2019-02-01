@@ -31,7 +31,7 @@ def json_object_reddit(obj, subreddit, interval, now, cur):
                 "interval":result[4]
             }
         )
-    print results
+        
     return obj
 
 # Reddit search page
