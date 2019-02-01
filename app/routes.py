@@ -29,10 +29,12 @@ def topwords():
     json_worldnews = []
     json_thedonald = []
 
+
     if request.method == 'GET':
                                        
         # Populate data arrays with JSON objects
-        now = 'wattup'
+        interval = 'Refactor this.'
+        now = 'Refactor this.'
 
         json_object_reddit(json_politics, "politics", argument, now, cur)
         json_object_reddit(json_news, "news", argument, now, cur)
