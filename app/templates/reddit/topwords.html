@@ -254,18 +254,12 @@
         var currentInterval = getCookie("currentInterval")
         var currentMetric = getCookie("currentMetric")
 
-        console.log(currentInterval)
-        console.log(currentMetric)
-
         if(metric=='none'){
             metric = currentMetric
         }
         if(interval=='none'){
             interval = currentInterval
         }
-
-        console.log(interval);
-        console.log(metric);
 
         if(interval=='day'){
             d3.select("#chart1").remove()
@@ -315,42 +309,6 @@
         document.cookie = "currentInterval="+interval
         document.cookie = "currentMetric="+metric
 
-    }
-
-    function changeMetric(argument){
-        
-        var interval = document.cookie.replace("interval=","")
-
-        if(interval=='day'){
-            d3.select("#chart1").remove()
-            draw(day_politics, "#area1", "chart1", argument)
-            d3.select("#chart2").remove()
-            draw(day_news, "#area2", "chart2", argument)
-            d3.select("#chart3").remove()
-            draw(day_the_donald, "#area3", "chart3",  argument)
-            d3.select("#chart4").remove()
-            draw(day_worldnews, "#area4", "chart4",  argument)
-        }
-        if(interval=='month'){
-            d3.select("#chart1").remove()
-            draw(month_politics, "#area1", "chart1", argument)
-            d3.select("#chart2").remove()
-            draw(month_news, "#area2", "chart2", argument)
-            d3.select("#chart3").remove()
-            draw(month_the_donald, "#area3", "chart3",  argument)
-            d3.select("#chart4").remove()
-            draw(month_worldnews, "#area4", "chart4",  argument)
-        }
-        if(interval=='year'){
-            d3.select("#chart1").remove()
-            draw(year_politics, "#area1", "chart1", argument)
-            d3.select("#chart2").remove()
-            draw(year_news, "#area2", "chart2", argument)
-            d3.select("#chart3").remove()
-            draw(year_the_donald, "#area3", "chart3",  argument)
-            d3.select("#chart4").remove()
-            draw(year_worldnews, "#area4", "chart4",  argument)
-        }
     }
 
     window.onload = updateData('day', 'count')
