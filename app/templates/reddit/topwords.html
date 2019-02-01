@@ -58,7 +58,7 @@
         </div>  
         <div class="col">
             <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
-                <label class="btn btn-outline-secondary btn-sm active" onclick="updateDate('none','count')">
+                <label class="btn btn-outline-secondary btn-sm active" onclick="updateData('none','count')">
                     <input type="radio" name="options" id="option1" autocomplete="off" checked> Count
                 </label>
                 <label class="btn btn-outline-secondary btn-sm" onclick="updateData('none','rate')">
@@ -255,6 +255,7 @@
         var currentMetric = getCookie("currentMetric")
 
         if(metric=='none'){
+            console.log('happening')
             metric = currentMetric
         }
         if(interval=='none'){
