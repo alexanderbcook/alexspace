@@ -18,15 +18,16 @@
     <div> Available datasets:</div>
     <div class="dropdown">
         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {% if argument=='month'%}Display data from the last 30 days.
-                {% elif argument=='year' %}Display data from the last 365 days.
-                {% else %}Display data from the last 24 hours.
-                {% endif %}
+                <text id="dropdown-text">                
+                    {% if argument=='custom'%}Display data from the last 30 days.
+                    {% else %}
+                    {% endif %}
+                </text>
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" onclick="updateData('day')">Display data from the last 24 hours.</a>
-            <a class="dropdown-item" onclick="updateData('month')">Display data from the last 30 days.</a>
-            <a class="dropdown-item" onclick="updateData('year')">Display data from the last 365 days.</a>
+            <a class="dropdown-item" onclick="updateData('day', 'none')">Display data from the last 24 hours.</a>
+            <a class="dropdown-item" onclick="updateData('month', 'none')">Display data from the last 30 days.</a>
+            <a class="dropdown-item" onclick="updateData('year', 'none')">Display data from the last 365 days.</a>
         </div>
     </div>
     <br>
@@ -57,10 +58,10 @@
         </div>  
         <div class="col">
             <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
-                <label class="btn btn-outline-secondary btn-sm active" onclick="changeMetric('count')">
+                <label class="btn btn-outline-secondary btn-sm active" onclick="updateDate('none','count')">
                     <input type="radio" name="options" id="option1" autocomplete="off" checked> Count
                 </label>
-                <label class="btn btn-outline-secondary btn-sm" onclick="changeMetric('rate')">
+                <label class="btn btn-outline-secondary btn-sm" onclick="updateData('none','rate')">
                     <input type="radio" name="options" id="option2" autocomplete="off"> Rate
                 </label>
             </div>
@@ -69,18 +70,18 @@
     <p></p>
     <svg class="chart" id="area1" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
-    <b class="news_header">
+    <b id="news_header">
     </b>
     <svg class="chart" id="area2" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
     <p></p>
-    <b class="the_donald_header">
+    <b id="the_donald_header">
     </b>
     <p></p>
     <svg class="chart" id="area3" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
     <p></p>
-    <b class="worldnews_header">
+    <b id="worldnews_header">
     </b>
     <p></p>
     <svg class="chart" id="area4" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
@@ -172,7 +173,7 @@
 
 
     function draw(data, area, chart, argument){
-        console.log(data)
+
         var margin = {top: 20, right: 20, bottom: 30, left: 75},
             width = 800 - margin.left - margin.right,
             height = 200 - margin.top - margin.bottom;
@@ -230,70 +231,129 @@
               .call(d3.axisLeft(y));
     }
 
-    function updateData(interval){
+    function getCookie(cname) {
+      var name = cname + "=";
+      var decodedCookie = decodeURIComponent(document.cookie);
+      var ca = decodedCookie.split(';');
+      for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
+    }
+
+    function updateData(interval, metric){
 
         var timeMessage;
+
+        var currentInterval = getCookie("currentInterval")
+        var currentMetric = getCookie("currentMetric")
+
+        console.log(currentInterval)
+        console.log(currentMetric)
+
+        if(metric=='none'){
+            metric = currentMetric
+        }
+        if(interval=='none'){
+            interval = currentInterval
+        }
+
+        console.log(interval);
+        console.log(metric);
+
         if(interval=='day'){
-	    console.log('happening')
             d3.select("#chart1").remove()
-            draw(day_politics, "#area1", "chart1", "count")
+            draw(day_politics, "#area1", "chart1", metric)
             d3.select("#chart2").remove()
-            draw(day_news, "#area2", "chart2", "count")
+            draw(day_news, "#area2", "chart2", metric)
             d3.select("#chart3").remove()
-            draw(day_the_donald, "#area3", "chart3",  "count")
+            draw(day_the_donald, "#area3", "chart3",  metric)
             d3.select("#chart4").remove()
-            draw(day_worldnews, "#area4", "chart4",  "count")
+            draw(day_worldnews, "#area4", "chart4",  metric)
 
             timeMessage = "over the last 24 hours."
+            document.getElementById('dropdown-text').innerHTML = "Display data over the last 24 hours."; 
         }
         if(interval=='month'){
             d3.select("#chart1").remove()
-            draw(month_politics, "#area1", "chart1", "count")
+            draw(month_politics, "#area1", "chart1", metric)
             d3.select("#chart2").remove()
-            draw(month_news, "#area2", "chart2", "count")
+            draw(month_news, "#area2", "chart2", metric)
             d3.select("#chart3").remove()
-            draw(month_the_donald, "#area3", "chart3",  "count")
+            draw(month_the_donald, "#area3", "chart3",  metric)
             d3.select("#chart4").remove()
-            draw(month_worldnews, "#area4", "chart4",  "count")
+            draw(month_worldnews, "#area4", "chart4",  metric)
 
             timeMessage = "over the last 30 days."
+            document.getElementById('dropdown-text').innerHTML = "Display data over the last 30 days."; 
         }
         if(interval=='year'){
             d3.select("#chart1").remove()
-            draw(year_politics, "#area1", "chart1", "count")
+            draw(year_politics, "#area1", "chart1", metric)
             d3.select("#chart2").remove()
-            draw(year_news, "#area2", "chart2", "count")
+            draw(year_news, "#area2", "chart2", metric)
             d3.select("#chart3").remove()
-            draw(year_the_donald, "#area3", "chart3",  "count")
+            draw(year_the_donald, "#area3", "chart3",  metric)
             d3.select("#chart4").remove()
-            draw(year_worldnews, "#area4", "chart4",  "count")
+            draw(year_worldnews, "#area4", "chart4",  metric)
 
             timeMessage = "over the last 365 days."
+            document.getElementById('dropdown-text').innerHTML = "Display data over the last 365 days."; 
         }
 
-        document.getElementById('politics_header').innerHTML = "Top words on r/poltics " + timeMessage; 
+        document.getElementById('politics_header').innerHTML = "Top words on r/politics " + timeMessage; 
         document.getElementById('news_header').innerHTML = "Top words on r/news " + timeMessage; 
         document.getElementById('the_donald_header').innerHTML = "Top word on r/the_donald " + timeMessage; 
-        document.getElementById('worldnews_').innerHTML = "Top words on r/worldnews " + timeMessage; 
+        document.getElementById('worldnews_header').innerHTML = "Top words on r/worldnews " + timeMessage;
 
-
-
-
+        document.cookie = "currentInterval="+interval
+        document.cookie = "currentMetric="+metric
 
     }
 
     function changeMetric(argument){
-        d3.select("#chart1").remove()
-        draw(data1, "#area1", "chart1", argument)
-        d3.select("#chart2").remove()
-        draw(data2, "#area2", "chart2", argument)
-        d3.select("#chart3").remove()
-        draw(data3, "#area3", "chart3",  argument)
-        d3.select("#chart4").remove()
-        draw(data4, "#area4", "chart4",  argument)
+        
+        var interval = document.cookie.replace("interval=","")
+
+        if(interval=='day'){
+            d3.select("#chart1").remove()
+            draw(day_politics, "#area1", "chart1", argument)
+            d3.select("#chart2").remove()
+            draw(day_news, "#area2", "chart2", argument)
+            d3.select("#chart3").remove()
+            draw(day_the_donald, "#area3", "chart3",  argument)
+            d3.select("#chart4").remove()
+            draw(day_worldnews, "#area4", "chart4",  argument)
+        }
+        if(interval=='month'){
+            d3.select("#chart1").remove()
+            draw(month_politics, "#area1", "chart1", argument)
+            d3.select("#chart2").remove()
+            draw(month_news, "#area2", "chart2", argument)
+            d3.select("#chart3").remove()
+            draw(month_the_donald, "#area3", "chart3",  argument)
+            d3.select("#chart4").remove()
+            draw(month_worldnews, "#area4", "chart4",  argument)
+        }
+        if(interval=='year'){
+            d3.select("#chart1").remove()
+            draw(year_politics, "#area1", "chart1", argument)
+            d3.select("#chart2").remove()
+            draw(year_news, "#area2", "chart2", argument)
+            d3.select("#chart3").remove()
+            draw(year_the_donald, "#area3", "chart3",  argument)
+            d3.select("#chart4").remove()
+            draw(year_worldnews, "#area4", "chart4",  argument)
+        }
     }
 
-    window.onload = updateData('day')
+    window.onload = updateData('day', 'count')
     
     </script> 
 
