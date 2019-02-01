@@ -24,9 +24,9 @@
                 {% endif %}
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="/reddit/topwords?interval=day">Display data from the last 24 hours.</a>
-            <a class="dropdown-item" href="/reddit/topwords?interval=month">Display data from the last 30 days.</a>
-            <a class="dropdown-item" href="/reddit/topwords?interval=year">Display data from the last 365 days.</a>
+            <a class="dropdown-item" onclick="updateData('day')">Display data from the last 24 hours.</a>
+            <a class="dropdown-item" onclick="updateData('month')>Display data from the last 30 days.</a>
+            <a class="dropdown-item" onclick="updateData('year')>Display data from the last 365 days.</a>
         </div>
     </div>
     <br>
@@ -62,10 +62,10 @@
         </div>  
         <div class="col">
             <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
-                <label class="btn btn-outline-secondary btn-sm active" onclick="updateData('count')"">
+                <label class="btn btn-outline-secondary btn-sm active" onclick="changeMetric('count')"">
                     <input type="radio" name="options" id="option1" autocomplete="off" checked> Count
                 </label>
-                <label class="btn btn-outline-secondary btn-sm" onclick="updateData('rate')"">
+                <label class="btn btn-outline-secondary btn-sm" onclick="changeMetric('rate')"">
                     <input type="radio" name="options" id="option2" autocomplete="off"> Rate
                 </label>
             </div>
@@ -108,31 +108,31 @@
     <script>
     
     var JSONdata = {{day_politics|tojson}}    
-    var data1 = JSON.parse(JSONdata)
+    var day_politics = JSON.parse(JSONdata)
     var JSONdata = {{day_news|tojson}}    
-    var data2 = JSON.parse(JSONdata)
+    var day_news = JSON.parse(JSONdata)
     var JSONdata = {{day_the_donald|tojson}}    
-    var data3 = JSON.parse(JSONdata)
+    var day_the_donald = JSON.parse(JSONdata)
     var JSONdata = {{day_worldnews|tojson}}    
-    var data4 = JSON.parse(JSONdata)
+    var day_worldnews = JSON.parse(JSONdata)
 
     var JSONdata = {{month_politics|tojson}}    
-    var data5 = JSON.parse(JSONdata)
+    var month_politics = JSON.parse(JSONdata)
     var JSONdata = {{month_news|tojson}}    
-    var data6 = JSON.parse(JSONdata)
+    var month_news = JSON.parse(JSONdata)
     var JSONdata = {{month_the_donald|tojson}}    
-    var data7 = JSON.parse(JSONdata)
+    var month_the_donald = JSON.parse(JSONdata)
     var JSONdata = {{month_worldnews|tojson}}    
-    var data8 = JSON.parse(JSONdata)
+    var month_worldnews = JSON.parse(JSONdata)
 
     var JSONdata = {{year_politics|tojson}}    
-    var data9 = JSON.parse(JSONdata)
+    var year_politics = JSON.parse(JSONdata)
     var JSONdata = {{year_news|tojson}}    
-    var data10 = JSON.parse(JSONdata)
+    var year_news = JSON.parse(JSONdata)
     var JSONdata = {{year_the_donald|tojson}}    
-    var data11 = JSON.parse(JSONdata)
+    var year_the_donald = JSON.parse(JSONdata)
     var JSONdata = {{year_worldnews|tojson}}    
-    var data12 = JSON.parse(JSONdata)
+    var year_worldnews = JSON.parse(JSONdata)
 
 
     function isValidDate(dateString)
@@ -249,7 +249,18 @@
               .call(d3.axisLeft(y));
     }
 
-    function updateData(argument){
+    function updateData(interval){
+        d3.select("#chart1").remove()
+        draw(interval+"_politics", "#area1", "chart1", "count")
+        d3.select("#chart2").remove()
+        draw(interval+"_news", "#area2", "chart2", "count")
+        d3.select("#chart3").remove()
+        draw(interval+"_the_donald", "#area3", "chart3",  "count")
+        d3.select("#chart4").remove()
+        draw(interval+"_worldnews", "#area4", "chart4",  "count")
+    }
+
+    function changeMetric(argument){
         d3.select("#chart1").remove()
         draw(data1, "#area1", "chart1", argument)
         d3.select("#chart2").remove()
@@ -260,7 +271,7 @@
         draw(data4, "#area4", "chart4",  argument)
     }
 
-    window.onload = updateData('count')
+    window.onload = updateData('day')
     
     </script> 
 
