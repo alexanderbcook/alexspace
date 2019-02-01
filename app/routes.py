@@ -32,6 +32,7 @@ def topwords():
     if request.method == 'GET':
                                        
         # Populate data arrays with JSON objects
+        now = 'wattup'
 
         json_object_reddit(json_politics, "politics", argument, now, cur)
         json_object_reddit(json_news, "news", argument, now, cur)
