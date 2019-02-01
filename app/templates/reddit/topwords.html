@@ -107,14 +107,33 @@
     <hr>
     <script>
     
-    var JSONdata = {{politics|tojson}}    
+    var JSONdata = {{day_politics|tojson}}    
     var data1 = JSON.parse(JSONdata)
-    var JSONdata = {{news|tojson}}    
+    var JSONdata = {{day_news|tojson}}    
     var data2 = JSON.parse(JSONdata)
-    var JSONdata = {{the_donald|tojson}}    
+    var JSONdata = {{day_the_donald|tojson}}    
     var data3 = JSON.parse(JSONdata)
-    var JSONdata = {{worldnews|tojson}}    
+    var JSONdata = {{day_worldnews|tojson}}    
     var data4 = JSON.parse(JSONdata)
+
+    var JSONdata = {{month_politics|tojson}}    
+    var data5 = JSON.parse(JSONdata)
+    var JSONdata = {{month_news|tojson}}    
+    var data6 = JSON.parse(JSONdata)
+    var JSONdata = {{month_the_donald|tojson}}    
+    var data7 = JSON.parse(JSONdata)
+    var JSONdata = {{month_worldnews|tojson}}    
+    var data8 = JSON.parse(JSONdata)
+
+    var JSONdata = {{year_politics|tojson}}    
+    var data9 = JSON.parse(JSONdata)
+    var JSONdata = {{year_news|tojson}}    
+    var data10 = JSON.parse(JSONdata)
+    var JSONdata = {{year_the_donald|tojson}}    
+    var data11 = JSON.parse(JSONdata)
+    var JSONdata = {{year_worldnews|tojson}}    
+    var data12 = JSON.parse(JSONdata)
+
 
     function isValidDate(dateString)
     {

@@ -83,10 +83,19 @@ def topwords():
     return render_template('/reddit/topwords.html',
                     interval=interval,
                     argument=argument, 
-                    politics=json.dumps(json_politics), 
-                    news=json.dumps(json_news), 
-                    the_donald=json.dumps(json_thedonald), 
-                    worldnews = json.dumps(json_worldnews))
+                    day_politics=json.dumps(json_day_politics), 
+                    day_news=json.dumps(json_day_news), 
+                    day_the_donald=json.dumps(json_day_thedonald), 
+                    day_worldnews = json.dumps(json_day_worldnews),
+                    month_politics=json.dumps(json_month_politics), 
+                    month_news=json.dumps(json_month_news), 
+                    month_the_donald=json.dumps(json_month_thedonald), 
+                    month_worldnews = json.dumps(json_month_worldnews),
+                    year_politics=json.dumps(json_year_politics), 
+                    year_news=json.dumps(json_year_news), 
+                    year_the_donald=json.dumps(json_year_thedonald), 
+                    year_worldnews = json.dumps(json_year_worldnews))
+
 
 @app.route('/reddit/search', methods=['GET','POST']) 
 def search():
