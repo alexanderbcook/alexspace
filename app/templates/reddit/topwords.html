@@ -52,12 +52,7 @@
     <hr>
     <div class="row">
         <div class="col">
-            <b>Most common words on r/politics 
-            {% if argument=='month'%} over the last 30 days.
-            {% elif argument=='year' %} over the last 365 days.
-            {% elif argument=='custom' %} on {{interval}}.
-            {% else %} over the last 24 hours.
-            {% endif %}
+            <b id="politics_header">
             </b>
         </div>  
         <div class="col">
@@ -74,33 +69,18 @@
     <p></p>
     <svg class="chart" id="area1" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
-    <b>Most common words on r/news 
-        {% if argument=='month'%} over the last 30 days.
-        {% elif argument=='year' %} over the last 365 days.
-        {% elif argument=='custom' %} on {{interval}}.
-        {% else %} over the last 24 hours.
-        {% endif %}
+    <b class="news_header">
     </b>
     <svg class="chart" id="area2" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
     <p></p>
-    <b>Most common words on r/the_donald 
-        {% if argument=='month'%} over the last 30 days.
-        {% elif argument=='year' %} over the last 365 days.
-        {% elif argument=='custom' %} on {{interval}}.
-        {% else %} over the last 24 hours.
-        {% endif %}
+    <b class="the_donald_header">
     </b>
     <p></p>
     <svg class="chart" id="area3" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
     <p></p>
-    <b>Most common words on r/worldnews 
-        {% if argument=='month'%} over the last 30 days.
-        {% elif argument=='year' %} over the last 365 days.
-        {% elif argument=='custom' %} on {{interval}}.
-        {% else %} over the last 24 hours.
-        {% endif %}
+    <b class="worldnews_header">
     </b>
     <p></p>
     <svg class="chart" id="area4" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
@@ -251,6 +231,8 @@
     }
 
     function updateData(interval){
+
+        var timeMessage;
         if(interval=='day'){
 	    console.log('happening')
             d3.select("#chart1").remove()
@@ -261,6 +243,8 @@
             draw(day_the_donald, "#area3", "chart3",  "count")
             d3.select("#chart4").remove()
             draw(day_worldnews, "#area4", "chart4",  "count")
+
+            timeMessage = "over the last 24 hours."
         }
         if(interval=='month'){
             d3.select("#chart1").remove()
@@ -271,6 +255,8 @@
             draw(month_the_donald, "#area3", "chart3",  "count")
             d3.select("#chart4").remove()
             draw(month_worldnews, "#area4", "chart4",  "count")
+
+            timeMessage = "over the last 30 days."
         }
         if(interval=='year'){
             d3.select("#chart1").remove()
@@ -281,7 +267,18 @@
             draw(year_the_donald, "#area3", "chart3",  "count")
             d3.select("#chart4").remove()
             draw(year_worldnews, "#area4", "chart4",  "count")
+
+            timeMessage = "over the last 365 days."
         }
+
+        document.getElementById('politics_header').innerHTML = "Top words on r/poltics " + timeMessage; 
+        document.getElementById('news_header').innerHTML = "Top words on r/news " + timeMessage; 
+        document.getElementById('the_donald_header').innerHTML = "Top word on r/the_donald " + timeMessage; 
+        document.getElementById('worldnews_').innerHTML = "Top words on r/worldnews " + timeMessage; 
+
+
+
+
 
     }
 
