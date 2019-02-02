@@ -18,7 +18,7 @@ def json_object_reddit(obj, subreddit, interval, now, cur):
     if now != None:
 	   query = cur.execute("SELECT word, sum, subreddit, total, interval  FROM " +interval+ "_" + subreddit + ";")
     else:
-        query = cur.execute("SELECT word, SUM(count) as sum, 'reddit."+subreddit+", (SELECT total FROM count_"+subreddit+" WHERE day = '"+ interval +"') as total, interval FROM reddit."+subreddit+" WHERE day = '"+interval+"' GROUP BY word ORDER BY sum DESC limit 10;")
+        query = cur.execute("SELECT word, SUM(count) as sum, 'reddit."+subreddit+"', (SELECT total FROM count_"+subreddit+" WHERE day = '"+ interval +"') as total FROM reddit."+subreddit+" WHERE day = '"+interval+"' GROUP BY word ORDER BY sum DESC limit 10;")
     
     results = cur.fetchall()
     for result in results:
@@ -26,9 +26,7 @@ def json_object_reddit(obj, subreddit, interval, now, cur):
             {
                 "word":result[0],
                 "count":result[1],
-                "subreddit":result[2],
                 "total":result[3],
-                "interval":result[4]
             }
         )
         
