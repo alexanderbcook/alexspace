@@ -95,8 +95,6 @@ def topwords():
         json_object_reddit(json_year_worldnews, "worldnews", "year", now, cur)
         json_object_reddit(json_year_thedonald, "the_donald", "year", now, cur)
 
-        print interval
-
     close_connection(cur, conn)
 
     return render_template('/reddit/topwords.html',
