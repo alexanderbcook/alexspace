@@ -48,52 +48,49 @@ def topwords():
     if request.method == 'GET':
                                        
         # Populate data arrays with JSON objects
-        interval = 'Refactor this.'
-        now = 'Refactor this.'
 
-        json_object_reddit(json_day_politics, "politics", "day", now, cur)
-        json_object_reddit(json_day_news, "news", "day", now, cur)
-        json_object_reddit(json_day_worldnews, "worldnews", "day", now, cur)
-        json_object_reddit(json_day_thedonald, "the_donald", "day", now, cur)
+        json_object_reddit(json_day_politics, "politics", "day", "default", cur)
+        json_object_reddit(json_day_news, "news", "day", "default", cur)
+        json_object_reddit(json_day_worldnews, "worldnews", "day", "default", cur)
+        json_object_reddit(json_day_thedonald, "the_donald", "day", "default", cur)
 
-        json_object_reddit(json_month_politics, "politics", "month", now, cur)
-        json_object_reddit(json_month_news, "news", "month", now, cur)
-        json_object_reddit(json_month_worldnews, "worldnews", "month", now, cur)
-        json_object_reddit(json_month_thedonald, "the_donald", "month", now, cur)
+        json_object_reddit(json_month_politics, "politics", "month", "default", cur)
+        json_object_reddit(json_month_news, "news", "month", "default", cur)
+        json_object_reddit(json_month_worldnews, "worldnews", "month", "default", cur)
+        json_object_reddit(json_month_thedonald, "the_donald", "month", "default", cur)
 
-        json_object_reddit(json_year_politics, "politics", "year", now, cur)
-        json_object_reddit(json_year_news, "news", "year", now, cur)
-        json_object_reddit(json_year_worldnews, "worldnews", "year", now, cur)
-        json_object_reddit(json_year_thedonald, "the_donald", "year", now, cur)
+        json_object_reddit(json_year_politics, "politics", "year", "default", cur)
+        json_object_reddit(json_year_news, "news", "year", "default", cur)
+        json_object_reddit(json_year_worldnews, "worldnews", "year", "default", cur)
+        json_object_reddit(json_year_thedonald, "the_donald", "year", "default", cur)
 
     if request.method == 'POST':
+        
         # Form custom interval object.
 
         interval = request.form['year'] + '-' + request.form['month'] + '-' + request.form['day']
 
         # Populate data arrays with JSON objects
 
-        json_object_reddit(json_custom_politics, "politics", interval, None, cur)
-        json_object_reddit(json_custom_news, "news", interval, None, cur)
-        json_object_reddit(json_custom_worldnews, "worldnews", interval, None, cur)
-        json_object_reddit(json_custom_thedonald, "the_donald", interval, None, cur)
+        json_object_reddit(json_custom_politics, "politics", interval, "custom", cur)
+        json_object_reddit(json_custom_news, "news", interval, "custom", cur)
+        json_object_reddit(json_custom_worldnews, "worldnews", interval, "custom", cur)
+        json_object_reddit(json_custom_thedonald, "the_donald", interval, "custom", cur)
 
-        now = 'Refactor this.'
+        json_object_reddit(json_day_politics, "politics", "day", "default", cur)
+        json_object_reddit(json_day_news, "news", "day", "default", cur)
+        json_object_reddit(json_day_worldnews, "worldnews", "day", "default", cur)
+        json_object_reddit(json_day_thedonald, "the_donald", "day", "default", cur)
 
-        json_object_reddit(json_day_politics, "politics", "day", now, cur)
-        json_object_reddit(json_day_news, "news", "day", now, cur)
-        json_object_reddit(json_day_worldnews, "worldnews", "day", now, cur)
-        json_object_reddit(json_day_thedonald, "the_donald", "day", now, cur)
+        json_object_reddit(json_month_politics, "politics", "month", "default", cur)
+        json_object_reddit(json_month_news, "news", "month", "default", cur)
+        json_object_reddit(json_month_worldnews, "worldnews", "month", "default", cur)
+        json_object_reddit(json_month_thedonald, "the_donald", "month", "default", cur)
 
-        json_object_reddit(json_month_politics, "politics", "month", now, cur)
-        json_object_reddit(json_month_news, "news", "month", now, cur)
-        json_object_reddit(json_month_worldnews, "worldnews", "month", now, cur)
-        json_object_reddit(json_month_thedonald, "the_donald", "month", now, cur)
-
-        json_object_reddit(json_year_politics, "politics", "year", now, cur)
-        json_object_reddit(json_year_news, "news", "year", now, cur)
-        json_object_reddit(json_year_worldnews, "worldnews", "year", now, cur)
-        json_object_reddit(json_year_thedonald, "the_donald", "year", now, cur)
+        json_object_reddit(json_year_politics, "politics", "year", "default", cur)
+        json_object_reddit(json_year_news, "news", "year", "default", cur)
+        json_object_reddit(json_year_worldnews, "worldnews", "year", "default", cur)
+        json_object_reddit(json_year_thedonald, "the_donald", "year", "default", cur)
 
     close_connection(cur, conn)
 

@@ -14,8 +14,8 @@ def close_connection(cur, conn):
 
 # Reddit top words page
 
-def json_object_reddit(obj, subreddit, interval, now, cur):
-    if now != None:
+def json_object_reddit(obj, subreddit, interval, source, cur):
+    if source="default":
 	   query = cur.execute("SELECT word, sum, subreddit, total, interval  FROM " +interval+ "_" + subreddit + ";")
     else:
         query = cur.execute("SELECT word, SUM(count) as sum, 'reddit."+subreddit+"', (SELECT total FROM count_"+subreddit+" WHERE day = '"+ interval +"') as total FROM reddit."+subreddit+" WHERE day = '"+interval+"' GROUP BY word ORDER BY sum DESC limit 10;")
