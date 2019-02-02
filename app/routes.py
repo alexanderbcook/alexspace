@@ -72,7 +72,7 @@ def topwords():
         interval = request.form['year'] + '-' + request.form['month'] + '-' + request.form['day']
 
         # Populate data arrays with JSON objects
-        
+
         json_object_reddit(json_custom_politics, "politics", interval, None, cur)
         json_object_reddit(json_custom_news, "news", interval, None, cur)
         json_object_reddit(json_custom_worldnews, "worldnews", interval, None, cur)
@@ -94,6 +94,8 @@ def topwords():
         json_object_reddit(json_year_news, "news", "year", now, cur)
         json_object_reddit(json_year_worldnews, "worldnews", "year", now, cur)
         json_object_reddit(json_year_thedonald, "the_donald", "year", now, cur)
+
+        print interval
 
     close_connection(cur, conn)
 

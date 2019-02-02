@@ -28,7 +28,7 @@
                 <a class="nav-link" href="/index">Home</a>
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" onclick="deleteCookies()" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Reddit Vocabulary
                 </a>
                   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
@@ -61,5 +61,9 @@
       </div>
     {% block content %}{% endblock %}
   </body>
-
+  <script>
+    function deleteCookies(){
+        document.cookie = "mode=default path=/reddit/"
+      }
+  </script>
 </html>

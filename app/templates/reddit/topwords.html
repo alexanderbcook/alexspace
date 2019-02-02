@@ -19,7 +19,7 @@
     <div class="dropdown">
         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <text id="dropdown-text">                
-                    {% if argument=='custom'%}Display data from the last 30 days.
+                    {% if argument=='custom'%}Display data from the last 24 hours.
                     {% else %}
                     {% endif %}
                 </text>
@@ -45,7 +45,7 @@
                     <input type="text" class="form-control form-control-sm" name = "day" placeholder="dd">
                 </div>
                 <div class="col">
-                    <button type="submit" o class="btn btn-outline-secondary btn-sm float-right">Submit</button>
+                    <button type="submit"class="btn btn-outline-secondary btn-sm float-right">Submit</button>
                 </div>
             </div>
         </form>
@@ -70,7 +70,7 @@
     <p></p>
     <svg class="chart" id="area1" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
-    <b id="news_header">
+    <b id="news_header">{{interval|safe}}
     </b>
     <svg class="chart" id="area2" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
@@ -88,6 +88,7 @@
     <hr>
     <script>
     
+
     var JSONdata = {{day_politics|tojson}}    
     var day_politics = JSON.parse(JSONdata)
     var JSONdata = {{day_news|tojson}}    
@@ -178,6 +179,7 @@
             return false;
         }
         else{
+            document.cookie = "date="+(month + '/' + day + '/' + year)
             document.cookie = "mode=custom"
             updateData('custom', 'none')
         }
@@ -284,6 +286,7 @@
 
             timeMessage = "over the last 24 hours."
             document.getElementById('dropdown-text').innerHTML = "Display data over the last 24 hours."; 
+
             document.cookie = "mode=default"
         }
         if(interval=='month'){
@@ -298,6 +301,7 @@
 
             timeMessage = "over the last 30 days."
             document.getElementById('dropdown-text').innerHTML = "Display data over the last 30 days."; 
+
             document.cookie = "mode=default"
         }
         if(interval=='year'){
@@ -312,10 +316,11 @@
 
             timeMessage = "over the last 365 days."
             document.getElementById('dropdown-text').innerHTML = "Display data over the last 365 days.";
+
             document.cookie = "mode=default"
         }
         if(interval=='custom'){
-            console.log('here')
+
             d3.select("#chart1").remove()
             draw(custom_politics, "#area1", "chart1", metric)
             d3.select("#chart2").remove()
@@ -325,7 +330,8 @@
             d3.select("#chart4").remove()
             draw(custom_worldnews, "#area4", "chart4",  metric)
 
-            timeMessage = "on CUSTOM."; 
+            timeMessage = "on " + getCookie("date") + "."
+
             document.cookie = "mode=custom"
         }
 
