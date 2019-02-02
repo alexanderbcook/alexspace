@@ -20,14 +20,15 @@ def topwords():
     conn = connect_to_database()
     cur = conn.cursor()
 
-    argument = request.args['interval']
+    if request.args['interval']:
+        argument = request.args['interval']
 
     # Instantiate data arrays.
 
-    json_politics = []
-    json_news = []
-    json_worldnews = []
-    json_thedonald = []
+    json_custom_politics = []
+    json_custom_news = []
+    json_custom_worldnews = []
+    json_custom_thedonald = []
 
     json_day_politics = []
     json_day_news = []
@@ -66,23 +67,43 @@ def topwords():
         json_object_reddit(json_year_thedonald, "the_donald", "year", now, cur)
 
     if request.method == 'POST':
-
         # Form custom interval object.
 
         interval = request.form['year'] + '-' + request.form['month'] + '-' + request.form['day']
 
         # Populate data arrays with JSON objects
+        
+        json_object_reddit(json_custom_politics, "politics", interval, None, cur)
+        json_object_reddit(json_custom_news, "news", interval, None, cur)
+        json_object_reddit(json_custom_worldnews, "worldnews", interval, None, cur)
+        json_object_reddit(json_custom_thedonald, "the_donald", interval, None, cur)
 
-        json_object_reddit(json_politics, "politics", interval, None, cur)
-        json_object_reddit(json_news, "news", interval, None, cur)
-        json_object_reddit(json_worldnews, "worldnews", interval, None, cur)
-        json_object_reddit(json_thedonald, "the_donald", interval, None, cur)
+        now = 'Refactor this.'
+
+        json_object_reddit(json_day_politics, "politics", "day", now, cur)
+        json_object_reddit(json_day_news, "news", "day", now, cur)
+        json_object_reddit(json_day_worldnews, "worldnews", "day", now, cur)
+        json_object_reddit(json_day_thedonald, "the_donald", "day", now, cur)
+
+        json_object_reddit(json_month_politics, "politics", "month", now, cur)
+        json_object_reddit(json_month_news, "news", "month", now, cur)
+        json_object_reddit(json_month_worldnews, "worldnews", "month", now, cur)
+        json_object_reddit(json_month_thedonald, "the_donald", "month", now, cur)
+
+        json_object_reddit(json_year_politics, "politics", "year", now, cur)
+        json_object_reddit(json_year_news, "news", "year", now, cur)
+        json_object_reddit(json_year_worldnews, "worldnews", "year", now, cur)
+        json_object_reddit(json_year_thedonald, "the_donald", "year", now, cur)
 
     close_connection(cur, conn)
 
     return render_template('/reddit/topwords.html',
                     interval=interval,
                     argument=argument, 
+                    custom_politics=json.dumps(json_custom_politics), 
+                    custom_news=json.dumps(json_custom_news), 
+                    custom_the_donald=json.dumps(json_custom_thedonald), 
+                    custom_worldnews = json.dumps(json_custom_worldnews),
                     day_politics=json.dumps(json_day_politics), 
                     day_news=json.dumps(json_day_news), 
                     day_the_donald=json.dumps(json_day_thedonald), 
