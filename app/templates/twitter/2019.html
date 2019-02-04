@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+{% block content %}
+
+<br>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+
+    <p>
+        During the 2019 SuperBowl, I used Tweepy, Redis, and PSQL to collect about 1.3 million tweets containing either #patriots or #rams. I then parsed out the text of the Tweets and created filters on the text subjects.
+    </p>
+    <p>  Here is what I ended up with:
+    </p>
+    <br>
+    <div class="btn-group btn-group-sm" data-toggle="buttons">
+      <label class="btn btn-secondary active" onclick="updateData(aggregate,'aggregate')">
+        <input type="radio" name="options" id="option1" autocomplete="off"> Aggregate
+      </label>
+      <label class="btn btn-secondary" onclick="updateData(fuck,'fuck')">
+        <input type="radio" name="options" id="option2" autocomplete="off"> Fuck
+      </label>
+      <label class="btn btn-secondary" onclick="updateData(shit,'shit')">
+        <input type="radio" name="options" id="option3" autocomplete="off"> Shit
+      </label>
+    <label class="btn btn-secondary" onclick="updateData(aguero,'aguero')">
+        <input type="radio" name="options" id="option4" autocomplete="off"> Aguero
+      </label>
+    </div>
+
+    <hr>
+    <b id="header-text-rams"></b>
+    <svg class="chart" id="area1" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid meet"></svg>
+    <hr>
+    <b id="header-text-patriots"></b>
+    <svg class="chart" id="area2" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid meet"></svg>
+    <svg class="event-chart" id="area3" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid meet"></svg>
+<br>
+<script>
+
+        var JSONdata = {{json_aggregate_patriots|tojson}}  
+        var aggregate_patriots = JSON.parse(JSONdata)
+        var JSONdata = {{json__rams|tojson}}  
+        var aggregate_rams = JSON.parse(JSONdata)
+
+        var JSONdata = {{json_shit_patriots|tojson}}  
+        var shit_patriots = JSON.parse(JSONdata)
+        var JSONdata = {{json_shit_rams|tojson}}  
+        var shit_rams = JSON.parse(JSONdata)
+
+        var JSONdata = {{json_fuck_patriots|tojson}}  
+        var shit_patriots = JSON.parse(JSONdata)
+        var JSONdata = {{json_fuck_rams|tojson}}  
+        var shit_rams = JSON.parse(JSONdata)
+
+        var JSONdata = {{json_maroon_5_patriots|tojson}}  
+        var maroon_5_patriots = JSON.parse(JSONdata)
+        var JSONdata = {{json_maroon_5_rams|tojson}}  
+        var maroon_5_rams = JSON.parse(JSONdata)
+
+        var JSONdata = {{json_edelman_patriots|tojson}}  
+        var edelman_patriots = JSON.parse(JSONdata)
+        var JSONdata = {{json_edelman_rams|tojson}}  
+        var edelman_rams = JSON.parse(JSONdata)
+
+        var JSONdata = {{json_goff_patriots|tojson}}  
+        var goff_patriots = JSON.parse(JSONdata)
+        var JSONdata = {{json_goff_rams|tojson}}  
+        var goff_rams = JSON.parse(JSONdata)
+
+        var JSONdata = {{json_punt_patriots|tojson}}  
+        var punt_patriots = JSON.parse(JSONdata)
+        var JSONdata = {{json_punt_rams|tojson}}  
+        var punt_rams = JSON.parse(JSONdata)
+
+        var JSONdata = {{json_game_of_thrones_patriots|tojson}}  
+        var game_of_thrones_patriots = JSON.parse(JSONdata)
+        var JSONdata = {{json_game_of_thrones_rams|tojson}}  
+        var game_of_thrones_rams = JSON.parse(JSONdata)
+
+        var JSONdata = {{json_zurlein_patriots|tojson}}  
+        var zurlein_patriots = JSON.parse(JSONdata)
+        var JSONdata = {{json_zurlein_rams|tojson}}  
+        var zurlein_rams = JSON.parse(JSONdata)
+
+        var JSONdata = {{json_gostkowski_patriots|tojson}}  
+        var gostkowski_patriots = JSON.parse(JSONdata)
+        var JSONdata = {{json_gostkowski_rams|tojson}}  
+        var gostkowski_rams = JSON.parse(JSONdata)
+
+        var JSONdata = {{json_gronkowski_patriots|tojson}}  
+        var gronkowski_patriots = JSON.parse(JSONdata)
+        var JSONdata = {{json_gronkowski_rams|tojson}}  
+        var gronkowski_rams = JSON.parse(JSONdata)
+
+        var JSONdata = {{json_michel_patriots|tojson}}  
+        var michel_patriots = JSON.parse(JSONdata)
+        var JSONdata = {{json_michel_rams|tojson}}  
+        var michel_rams = JSON.parse(JSONdata)
+
+
+        function drawEvents(data, area, chart, argument){
+
+            var margin = {top:  5, right: 20, bottom: 45, left: 40},
+                width = 1200 - margin.left - margin.right,
+                height = 300 - margin.top - margin.bottom;
+
+            var svg = d3.select(area).append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .attr("id", chart)
+              .append("g")
+                .attr("transform", 
+                      "translate(" + margin.left + "," + margin.top + ")");
+
+
+            data.forEach(function(d) {
+                    d.value = +d.count
+            });
+
+
+            var x = d3.scaleBand().rangeRound([0,width]).padding(.075).domain(data.map(function(d){ return d.date}));
+            var y = d3.scaleLinear().range([height, 0]);
+
+            var xAxis = d3.axisBottom(x).tickValues(x.domain().filter(function(d){ return (d.substring(3,5) == '00' || d.substring(3,5) == '15' || d.substring(3,5) == '30' || d.substring(3,5) == '45' )}));
+            
+            x.domain(data.map(function(d) { return d.date; }));
+            y.domain([0, d3.max(data, function(d) { return d.value; })]);
+
+            var texts = svg.selectAll(".event-text")
+                            .data(data)
+                            .enter()
+                            .append("text")
+                            .attr("dx", "-.4em")
+                            .attr("dy", ".9em")
+
+            svg.append("g")
+            texts.attr("class", "value")
+              .attr("x", 300)
+              .attr("y", function(d) { return .5*x(d.date); })
+              .style("text-anchor", "end")
+              .attr("dx", "-.4em")
+              .attr("dy", ".9em")
+              .attr("transform", "rotate(-33)" )
+              .attr("class", "event-text")
+              .text(function(d) { return d.event; });
+        }
+
+        function drawData(data, area, chart, argument){
+
+            var margin = {top:  20, right: 20, bottom: 40, left: 40},
+                width = 1200 - margin.left - margin.right,
+                height = 300 - margin.top - margin.bottom;
+
+            var svg = d3.select(area).append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .attr("id", chart)
+              .append("g")
+                .attr("transform", 
+                      "translate(" + margin.left + "," + margin.top + ")");
+
+            if (chart=="chart1"){
+                color = "#e7d676"
+            }
+            else{
+                color = "#7687e7"
+            }
+
+            data.forEach(function(d) {
+                d.value = +d.count
+            });
+
+            var x = d3.scaleBand().rangeRound([0,width]).padding(.075).domain(data.map(function(d){ return d.date}));
+            var y = d3.scaleLinear().range([height, 0]);
+
+            var xAxis = d3.axisBottom(x).tickValues(x.domain().filter(function(d){ return (d.substring(3,5) == '00' || d.substring(3,5) == '15' || d.substring(3,5) == '30' || d.substring(3,5) == '45' )}));
+            var yAxis = d3.axisLeft(y).ticks(5);
+            
+            x.domain(data.map(function(d) { return d.date; }));
+            y.domain([0, d3.max(data, function(d) { return d.value; })]);
+
+            svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis)
+            .selectAll("text")
+                .style("text-anchor", "end")
+                .attr("dx", "-.4em")
+                .attr("dy", ".9em")
+                .attr("transform", "rotate(-33)" );
+
+            svg.append("g")
+                .attr("class", "y axis")
+                .call(yAxis)
+                .append("text")
+                    .attr("transform", "rotate(-90)")
+                    .attr("y", 6)
+                    .attr("dy", "1em")
+                    .style("text-anchor", "end")
+
+            svg.selectAll("bar")
+                .data(data)
+                .enter().append("rect")
+                    .style("fill", color)
+                    .attr("x", function(d) { return x(d.date); })
+                    .attr("width", x.bandwidth())
+                    .attr("y", function(d) { return y(d.value); })
+                    .attr("height", function(d) { return height -  y(d.value); })
+                .append("title")
+                    .text(function(d){
+                                return d.date+": " +d.value;
+                            });
+                        
+        }
+
+       function updateData(data, argument){
+            d3.select("#chart1").remove()
+            drawData(data, "#area1", "chart1", argument)
+            d3.select("#chart2").remove()
+            drawData(data, "#area2", "chart2", argument)
+            d3.select("#chart3").remove()
+            drawEvents(data, "#area3", "chart3", argument) 
+            if(argument=="aggregate"){
+                document.getElementById('header-text-rams').innerHTML = "Count of tweets containing #rams."; 
+                document.getElementById('header-text-patriots').innerHTML = "Count of tweets containing #patriots."; 
+            }
+            else if(argument=="maroon 5" || argument == "game of thrones"){
+                document.getElementById('header-text-rams').innerHTML = "Count of tweets containing #rams and the phrase '" + argument + "'."; 
+                document.getElementById('header-text-patriots').innerHTML = "Count of tweets containing #patriots and the phrase '" +argument + "'."; 
+            }
+            else{
+                document.getElementById('header-text-rams').innerHTML = "Count of tweets containing #rams and the word '" + argument + "'."; 
+                document.getElementById('header-text-patriots').innerHTML = "Count of tweets containing #patriots and the word '" +argument + "'."; 
+            }
+        }
+        window.onload = updateData(aggregate,"aggregate")
+        window.onload = updateData(aggregate,"aggregate")
+</script>
+
+<style>
+    .axis {
+      font: 10px sans-serif;
+    }
+    .chart rect{
+        opacity: .75;
+    }
+    .chart rect:hover {
+        opacity: .9;
+    }
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+    .event-text {
+      font: 13px sans-serif;
+      font-style: italic;
+    }
+
+    
+</style>
+{% endblock %}

@@ -4,7 +4,7 @@ import json
 import datetime
 import random
 import utilities
-from utilities import connect_to_database, close_connection, json_object_reddit,json_object_search,json_object_sentiment,json_object_category,json_object_view,json_object_gender,json_object_year
+from utilities import connect_to_database, close_connection, json_object_reddit,json_object_search,json_object_sentiment,json_object_category,json_object_view,json_object_gender,json_object_year,json_object_time_series
 
 @app.route('/')
 @app.route('/index')
@@ -65,7 +65,7 @@ def topwords():
         json_object_reddit(json_year_thedonald, "the_donald", "year", "default", cur)
 
     if request.method == 'POST':
-        
+
         # Form custom interval object.
 
         interval = request.form['year'] + '-' + request.form['month'] + '-' + request.form['day']
@@ -129,7 +129,7 @@ def search():
         
         index = random.randint(0, 9)
 
-        words = ['wall','shutdown','democrats','guns','libtard','cuck','comey','mueller','obama','clinton']
+        words = ['wall','shutdown','democrats','guns','libtard','cuck','comey','mueller']
 
         word = words[index]
 
@@ -152,13 +152,104 @@ def search():
                     worldnews = json.dumps(json_worldnews, default=str))
 
 
-@app.route('/superbowl/scalability')
+@app.route('/twitter/scalability')
 def scalability():
-    return render_template('superbowl/scalability.html')
+    return render_template('twitter/scalability.html')
 
-@app.route('/superbowl/geography')
-def geography():
-    return render_template('/superbowl/geography.html')
+@app.route('/superbowl/2017')
+def superbowl2017():
+    return render_template('twitter/2017.html')
+
+@app.route('/superbowl/2019')
+def superbowl2019():
+    conn = connect_to_database()
+    cur = conn.cursor()
+
+    json_aggregate_patriots     = []
+    json_shit_patriots          = []
+    json_fuck_patriots          = []
+    json_maroon_5_patriots      = []
+    json_edelman_patriots       = []
+    json_goff_patriots          = []
+    json_punt_patriots          = []
+    json_game_of_thrones_patriots= []
+    json_zurlein_patriots       = []
+    json_gostkowski_patriots    = []
+    json_gronkowski_patriots    = []
+    json_michel_patriots        = []
+
+    json_aggregate_rams         = []
+    json_shit_rams              = []
+    json_fuck_rams              = []
+    json_maroon_5_rams          = []
+    json_edelman_rams           = []
+    json_goff_rams              = []    
+    json_punt_rams              = []
+    json_game_of_thrones_rams   = []
+    json_zurlein_rams           = []
+    json_gostkowski_rams        = []
+    json_gronkowski_rams        = []
+    json_michel_rams            = []
+
+
+    json_object_time_series(json_aggregate_patriots, "patriots_aggregate", cur)
+    json_object_time_series(json_shit_patriots, "patriots_shit", cur)
+    json_object_time_series(json_fuck_patriots, "patriots_fuck", cur)
+    json_object_time_series(json_edelman_patriots, "patriots_edelman", cur)
+    json_object_time_series(json_maroon_5_patriots, "patriots_maroon_5", cur)
+    json_object_time_series(json_goff_patriots, "patriots_goff", cur)
+    json_object_time_series(json_punt_patriots, "patriots_punt", cur)
+    json_object_time_series(json_game_of_thrones_patriots, "patriots_game_of_thrones", cur)
+    json_object_time_series(json_zurlein_patriots, "patriots_zurlein", cur)
+    json_object_time_series(json_gostkowski_patriots, "patriots_gostkowski", cur)
+    json_object_time_series(json_gronkowski_patriots, "patriots_gronkowski", cur)
+    json_object_time_series(json_michel_patriots, "patriots_michel", cur)
+
+    json_object_time_series(json_aggregate_rams, "rams_aggregate", cur)
+    json_object_time_series(json_shit_rams, "rams_shit", cur)
+    json_object_time_series(json_fuck_rams, "rams_fuck", cur)
+    json_object_time_series(json_edelman_rams, "rams_edelman", cur)
+    json_object_time_series(json_maroon_5_rams, "ramså_maroon_5", cur)
+    json_object_time_series(json_goff_rams, "rams_goff", cur)
+    json_object_time_series(json_punt_rams, "rams_punt", cur)
+    json_object_time_series(json_game_of_thrones_rams, "rams_game_of_thrones", cur)
+    json_object_time_series(json_zurlein_rams, "rams_zurlein", cur)
+    json_object_time_series(json_gostkowski_rams, "rams_gostkowski", cur)
+    json_object_time_series(json_gronkowski_rams, "rams_gronkowski", cur)
+    json_object_time_series(json_michel_rams, "rams_michel", cur)
+
+    close_connection(cur, conn)
+
+    return render_template('twitter/2019.html',
+                                json_aggregate_patriots=json.dumps(json_aggregate_patriots, default=str),
+                                json_shit_patriots=json.dumps(json_shit_patriots, default=str),
+                                json_fuck_patriots=json.dumps(json_fuck_patriots, default=str),
+                                json_edelman_patriots=json.dumps(json_edelman_patriots, default=str),
+                                json_goff_patriots=json.dumps(json_goff_patriots, default=str),
+                                json_punt_patriots=json.dumps(json_punt_patriots, default=str),
+                                json_game_of_thrones_patriots=json.dumps(json_game_of_thrones_patriots, default=str),
+                                json_zurlein_patriots=json.dumps(json_zurlein_patriots, default=str),
+                                json_gostkowski_patriots=json.dumps(json_gostkowski_patriots, default=str),
+                                json_gronkowski_patriots=json.dumps(json_gronkowski_patriots, default=str),
+                                json_michel_patriots=json.dumps(json_michel_patriots, default=str),
+                                json_aggregate_rams=json.dumps(json_aggregate_rams, default=str),
+                                json_shit_rams=json.dumps(json_shit_rams, default=str),
+                                json_fuck_rams=json.dumps(json_fuck_rams, default=str),
+                                json_edelman_rams=json.dumps(json_edelman_rams, default=str),
+                                json_goff_rams=json.dumps(json_goff_rams, default=str),
+                                json_punt_rams=json.dumps(json_punt_rams, default=str),
+                                json_game_of_thrones_rams=json.dumps(json_game_of_thrones_rams, default=str),
+                                json_zurlein_rams=json.dumps(json_zurlein_rams, default=str),
+                                json_gostkowski_rams=json.dumps(json_gostkowski_rams, default=str),
+                                json_gronkowski_rams=json.dumps(json_gronkowski_rams, default=str),
+                                json_michel_rams=json.dumps(json_michel_rams, default=str))
+
+
+
+
+
+
+
 
 @app.route('/erowid/sentiment')
 def sentiment():
