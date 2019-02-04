@@ -11,17 +11,44 @@
     </p>
     <br>
     <div class="btn-group btn-group-sm" data-toggle="buttons">
-      <label class="btn btn-secondary active" onclick="updateData(aggregate,'aggregate')">
-        <input type="radio" name="options" id="option1" autocomplete="off"> Aggregate
+      <label class="btn btn-secondary active" onclick="updateData(aggregate_patriots,aggregate_rams'aggregate')">
+        <input type="radio" name="options" id="option1" autocomplete="off"> aggregate
       </label>
-      <label class="btn btn-secondary" onclick="updateData(fuck,'fuck')">
-        <input type="radio" name="options" id="option2" autocomplete="off"> Fuck
+     <label class="btn btn-secondary" onclick="updateData(brady_patriots,brady_rams,'brady')">
+        <input type="radio" name="options" id="option2" autocomplete="off"> brady
       </label>
-      <label class="btn btn-secondary" onclick="updateData(shit,'shit')">
-        <input type="radio" name="options" id="option3" autocomplete="off"> Shit
+      <label class="btn btn-secondary" onclick="updateData(fuck_patriots,fuck_rams,'fuck')">
+        <input type="radio" name="options" id="option2" autocomplete="off"> fuck
       </label>
-    <label class="btn btn-secondary" onclick="updateData(aguero,'aguero')">
-        <input type="radio" name="options" id="option4" autocomplete="off"> Aguero
+      <label class="btn btn-secondary" onclick="updateData(maroon_5_patriots,maroon_5_rams,'maroon 5')">
+        <input type="radio" name="options" id="option4" autocomplete="off"> maroon 5
+      </label>
+      <label class="btn btn-secondary" onclick="updateData(edelman_patriots,edelman_rams,'edelman')">
+        <input type="radio" name="options" id="option4" autocomplete="off"> edelman
+      </label>
+     <label class="btn btn-secondary" onclick="updateData(goff_patriots,goff_rams,'goff')">
+        <input type="radio" name="options" id="option4" autocomplete="off"> goff
+      </label>
+     <label class="btn btn-secondary" onclick="updateData(punt_patriots,punt_rams,'punt')">
+        <input type="radio" name="options" id="option4" autocomplete="off"> punt
+      </label>
+      <label class="btn btn-secondary" onclick="updateData(shit_patriots,shit_rams,'shit')">
+        <input type="radio" name="options" id="option3" autocomplete="off"> shit
+      </label>
+      <label class="btn btn-secondary" onclick="updateData(game_of_thrones_patriots,game_of_thrones_rams,'game_of_thrones')">
+        <input type="radio" name="options" id="option4" autocomplete="off"> game of thrones
+      </label>
+      <label class="btn btn-secondary" onclick="updateData(zurlein_patriots,zurlein_rams,'zurlein')">
+        <input type="radio" name="options" id="option4" autocomplete="off"> zurlein
+      </label>
+      <label class="btn btn-secondary" onclick="updateData(gostkowski_patriots,gostkowski_rams, 'gotskowski')">
+        <input type="radio" name="options" id="option4" autocomplete="off"> gostkowski
+      </label>
+      <label class="btn btn-secondary" onclick="updateData(gronkowski_patriots,gronkowski_rams,'gronkowski')">
+        <input type="radio" name="options" id="option4" autocomplete="off"> gronkowski
+      </label>
+      <label class="btn btn-secondary" onclick="updateData(michel_patriots,michel_rams,'michel')">
+        <input type="radio" name="options" id="option4" autocomplete="off"> michel
       </label>
     </div>
 
@@ -40,15 +67,20 @@
         var JSONdata = {{json__rams|tojson}}  
         var aggregate_rams = JSON.parse(JSONdata)
 
+        var JSONdata = {{json_brady_patriots|tojson}}  
+        var brady_patriots = JSON.parse(JSONdata)
+        var JSONdata = {{json_brady_rams|tojson}}  
+        var brady_rams = JSON.parse(JSONdata)
+
         var JSONdata = {{json_shit_patriots|tojson}}  
         var shit_patriots = JSON.parse(JSONdata)
         var JSONdata = {{json_shit_rams|tojson}}  
         var shit_rams = JSON.parse(JSONdata)
 
         var JSONdata = {{json_fuck_patriots|tojson}}  
-        var shit_patriots = JSON.parse(JSONdata)
+        var fuck_patriots = JSON.parse(JSONdata)
         var JSONdata = {{json_fuck_rams|tojson}}  
-        var shit_rams = JSON.parse(JSONdata)
+        var fuck_rams = JSON.parse(JSONdata)
 
         var JSONdata = {{json_maroon_5_patriots|tojson}}  
         var maroon_5_patriots = JSON.parse(JSONdata)
@@ -211,13 +243,13 @@
                         
         }
 
-       function updateData(data, argument){
+       function updateData(dataPatriots, dataRams, argument){
             d3.select("#chart1").remove()
-            drawData(data, "#area1", "chart1", argument)
+            drawData(dataPatriots, "#area1", "chart1", argument)
             d3.select("#chart2").remove()
-            drawData(data, "#area2", "chart2", argument)
+            drawData(dataRams, "#area2", "chart2", argument)
             d3.select("#chart3").remove()
-            drawEvents(data, "#area3", "chart3", argument) 
+            drawEvents(dataPatriots, "#area3", "chart3", argument) 
             if(argument=="aggregate"){
                 document.getElementById('header-text-rams').innerHTML = "Count of tweets containing #rams."; 
                 document.getElementById('header-text-patriots').innerHTML = "Count of tweets containing #patriots."; 
