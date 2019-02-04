@@ -234,6 +234,7 @@ def superbowl2019():
                                 json_game_of_thrones_patriots=json.dumps(json_game_of_thrones_patriots, default=str),
                                 json_zurlein_patriots=json.dumps(json_zurlein_patriots, default=str),
                                 json_brady_patriots=json.dumps(json_brady_patriots, default=str),
+                                json_maroon_5_patriots=json.dumps(json_maroon_5_patriots, default=str),
                                 json_gostkowski_patriots=json.dumps(json_gostkowski_patriots, default=str),
                                 json_gronkowski_patriots=json.dumps(json_gronkowski_patriots, default=str),
                                 json_michel_patriots=json.dumps(json_michel_patriots, default=str),
@@ -246,6 +247,7 @@ def superbowl2019():
                                 json_game_of_thrones_rams=json.dumps(json_game_of_thrones_rams, default=str),
                                 json_zurlein_rams=json.dumps(json_zurlein_rams, default=str),
                                 json_brady_rams=json.dumps(json_brady_rams, default=str),
+                                json_maroon_5_rams=json.dumps(json_maroon_5_rams, default=str),
                                 json_gostkowski_rams=json.dumps(json_gostkowski_rams, default=str),
                                 json_gronkowski_rams=json.dumps(json_gronkowski_rams, default=str),
                                 json_michel_rams=json.dumps(json_michel_rams, default=str))
