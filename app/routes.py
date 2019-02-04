@@ -201,12 +201,7 @@ def superbowl2019():
     json_object_time_series(json_maroon_5_patriots, "patriots_maroon_5", cur)
     json_object_time_series(json_goff_patriots, "patriots_goff", cur)
     json_object_time_series(json_punt_patriots, "patriots_punt", cur)
-    json_object_time_series(json_game_of_thrones_patriots, "patriots_game_of_thrones", cur)
-    json_object_time_series(json_zurlein_patriots, "patriots_zurlein", cur)
     json_object_time_series(json_brady_patriots, "patriots_brady", cur)
-    json_object_time_series(json_gostkowski_patriots, "patriots_gostkowski", cur)
-    json_object_time_series(json_gronkowski_patriots, "patriots_gronkowski", cur)
-    json_object_time_series(json_michel_patriots, "patriots_michel", cur)
 
     json_object_time_series(json_aggregate_rams, "rams_aggregate", cur)
     json_object_time_series(json_shit_rams, "rams_shit", cur)
@@ -215,12 +210,7 @@ def superbowl2019():
     json_object_time_series(json_maroon_5_rams, "rams_maroon_5", cur)
     json_object_time_series(json_goff_rams, "rams_goff", cur)
     json_object_time_series(json_punt_rams, "rams_punt", cur)
-    json_object_time_series(json_game_of_thrones_rams, "rams_game_of_thrones", cur)
-    json_object_time_series(json_zurlein_rams, "rams_zurlein", cur)
     json_object_time_series(json_brady_rams, "rams_brady", cur)
-    json_object_time_series(json_gostkowski_rams, "rams_gostkowski", cur)
-    json_object_time_series(json_gronkowski_rams, "rams_gronkowski", cur)
-    json_object_time_series(json_michel_rams, "rams_michel", cur)
 
     close_connection(cur, conn)
 
@@ -231,26 +221,16 @@ def superbowl2019():
                                 json_edelman_patriots=json.dumps(json_edelman_patriots, default=str),
                                 json_goff_patriots=json.dumps(json_goff_patriots, default=str),
                                 json_punt_patriots=json.dumps(json_punt_patriots, default=str),
-                                json_game_of_thrones_patriots=json.dumps(json_game_of_thrones_patriots, default=str),
-                                json_zurlein_patriots=json.dumps(json_zurlein_patriots, default=str),
                                 json_brady_patriots=json.dumps(json_brady_patriots, default=str),
                                 json_maroon_5_patriots=json.dumps(json_maroon_5_patriots, default=str),
-                                json_gostkowski_patriots=json.dumps(json_gostkowski_patriots, default=str),
-                                json_gronkowski_patriots=json.dumps(json_gronkowski_patriots, default=str),
-                                json_michel_patriots=json.dumps(json_michel_patriots, default=str),
                                 json_aggregate_rams=json.dumps(json_aggregate_rams, default=str),
                                 json_shit_rams=json.dumps(json_shit_rams, default=str),
                                 json_fuck_rams=json.dumps(json_fuck_rams, default=str),
                                 json_edelman_rams=json.dumps(json_edelman_rams, default=str),
                                 json_goff_rams=json.dumps(json_goff_rams, default=str),
                                 json_punt_rams=json.dumps(json_punt_rams, default=str),
-                                json_game_of_thrones_rams=json.dumps(json_game_of_thrones_rams, default=str),
-                                json_zurlein_rams=json.dumps(json_zurlein_rams, default=str),
                                 json_brady_rams=json.dumps(json_brady_rams, default=str),
-                                json_maroon_5_rams=json.dumps(json_maroon_5_rams, default=str),
-                                json_gostkowski_rams=json.dumps(json_gostkowski_rams, default=str),
-                                json_gronkowski_rams=json.dumps(json_gronkowski_rams, default=str),
-                                json_michel_rams=json.dumps(json_michel_rams, default=str))
+                                json_maroon_5_rams=json.dumps(json_maroon_5_rams, default=str))
 
 
 

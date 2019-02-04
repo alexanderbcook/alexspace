@@ -64,7 +64,7 @@
 
         var JSONdata = {{json_aggregate_patriots|tojson}}  
         var aggregate_patriots = JSON.parse(JSONdata)
-        var JSONdata = {{json__rams|tojson}}  
+        var JSONdata = {{json_aggregate_rams|tojson}}  
         var aggregate_rams = JSON.parse(JSONdata)
 
         var JSONdata = {{json_brady_patriots|tojson}}  
@@ -102,30 +102,7 @@
         var JSONdata = {{json_punt_rams|tojson}}  
         var punt_rams = JSON.parse(JSONdata)
 
-        var JSONdata = {{json_game_of_thrones_patriots|tojson}}  
-        var game_of_thrones_patriots = JSON.parse(JSONdata)
-        var JSONdata = {{json_game_of_thrones_rams|tojson}}  
-        var game_of_thrones_rams = JSON.parse(JSONdata)
 
-        var JSONdata = {{json_zurlein_patriots|tojson}}  
-        var zurlein_patriots = JSON.parse(JSONdata)
-        var JSONdata = {{json_zurlein_rams|tojson}}  
-        var zurlein_rams = JSON.parse(JSONdata)
-
-        var JSONdata = {{json_gostkowski_patriots|tojson}}  
-        var gostkowski_patriots = JSON.parse(JSONdata)
-        var JSONdata = {{json_gostkowski_rams|tojson}}  
-        var gostkowski_rams = JSON.parse(JSONdata)
-
-        var JSONdata = {{json_gronkowski_patriots|tojson}}  
-        var gronkowski_patriots = JSON.parse(JSONdata)
-        var JSONdata = {{json_gronkowski_rams|tojson}}  
-        var gronkowski_rams = JSON.parse(JSONdata)
-
-        var JSONdata = {{json_michel_patriots|tojson}}  
-        var michel_patriots = JSON.parse(JSONdata)
-        var JSONdata = {{json_michel_rams|tojson}}  
-        var michel_rams = JSON.parse(JSONdata)
 
 
         function drawEvents(data, area, chart, argument){
@@ -263,8 +240,8 @@
                 document.getElementById('header-text-patriots').innerHTML = "Count of tweets containing #patriots and the word '" +argument + "'."; 
             }
         }
-        window.onload = updateData(aggregate,"aggregate")
-        window.onload = updateData(aggregate,"aggregate")
+        window.onload = updateData(aggregate_rams,"aggregate")
+        window.onload = updateData(aggregate_patriots,"aggregate")
 </script>
 
 <style>
