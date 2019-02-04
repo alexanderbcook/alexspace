@@ -34,23 +34,7 @@
       </label>
       <label class="btn btn-secondary" onclick="updateData(shit_patriots,shit_rams,'shit')">
         <input type="radio" name="options" id="option3" autocomplete="off"> shit
-      </label>
-      <label class="btn btn-secondary" onclick="updateData(game_of_thrones_patriots,game_of_thrones_rams,'game_of_thrones')">
-        <input type="radio" name="options" id="option4" autocomplete="off"> game of thrones
-      </label>
-      <label class="btn btn-secondary" onclick="updateData(zurlein_patriots,zurlein_rams,'zurlein')">
-        <input type="radio" name="options" id="option4" autocomplete="off"> zurlein
-      </label>
-      <label class="btn btn-secondary" onclick="updateData(gostkowski_patriots,gostkowski_rams, 'gotskowski')">
-        <input type="radio" name="options" id="option4" autocomplete="off"> gostkowski
-      </label>
-      <label class="btn btn-secondary" onclick="updateData(gronkowski_patriots,gronkowski_rams,'gronkowski')">
-        <input type="radio" name="options" id="option4" autocomplete="off"> gronkowski
-      </label>
-      <label class="btn btn-secondary" onclick="updateData(michel_patriots,michel_rams,'michel')">
-        <input type="radio" name="options" id="option4" autocomplete="off"> michel
-      </label>
-    </div>
+      </label>    </div>
 
     <hr>
     <b id="header-text-rams"></b>
@@ -59,7 +43,7 @@
     <b id="header-text-patriots"></b>
     <svg class="chart" id="area2" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid meet"></svg>
     <svg class="event-chart" id="area3" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid meet"></svg>
-<br>
+    <br>
 <script>
 
         var JSONdata = {{json_aggregate_patriots|tojson}}  
@@ -167,10 +151,10 @@
                       "translate(" + margin.left + "," + margin.top + ")");
 
             if (chart=="chart1"){
-                color = "#e7d676"
+                color = "#7687e7"
             }
             else{
-                color = "#7687e7"
+                color = "#e7d676"
             }
 
             data.forEach(function(d) {
