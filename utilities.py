@@ -56,7 +56,7 @@ def json_object_search(obj, subreddit, word, cur):
 
 # 2019 Superbowl page
 def json_object_time_series(obj, subject, cur):
-    query = cur.execute("SELECT interval::time, count, event FROM twitter."+subject+" ORDER BY interval ASC;")
+    query = cur.execute("SELECT interval::time, SUM(count) (SELECT interval::time, count FROM twitter."+subject+" UNION SELECT generate_series(timestamp '2019-02-03 15:30:00', timestamp '2019-02-03 19:06:00', '3 minutes'):: time as interval, 0) AS union_series GROUP BY union_series.interval ORDER BY union_series.interval ASC;")
     results = cur.fetchall()
 
     i = 0
