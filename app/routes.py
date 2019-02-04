@@ -172,12 +172,8 @@ def superbowl2019():
     json_edelman_patriots       = []
     json_goff_patriots          = []
     json_punt_patriots          = []
-    json_game_of_thrones_patriots=[]
-    json_zurlein_patriots       = []
+    json_touchdown_patriots     = []
     json_brady_patriots         = []
-    json_gostkowski_patriots    = []
-    json_gronkowski_patriots    = []
-    json_michel_patriots        = []
 
     json_aggregate_rams         = []
     json_shit_rams              = []
@@ -186,12 +182,9 @@ def superbowl2019():
     json_edelman_rams           = []
     json_goff_rams              = []    
     json_punt_rams              = []
-    json_game_of_thrones_rams   = []
-    json_zurlein_rams           = []
+    json_touchdown_rams         = []
     json_brady_rams             = []
-    json_gostkowski_rams        = []
-    json_gronkowski_rams        = []
-    json_michel_rams            = []
+
 
 
     json_object_time_series(json_aggregate_patriots, "patriots_aggregate", cur)
@@ -200,6 +193,7 @@ def superbowl2019():
     json_object_time_series(json_edelman_patriots, "patriots_edelman", cur)
     json_object_time_series(json_maroon_5_patriots, "patriots_maroon_5", cur)
     json_object_time_series(json_goff_patriots, "patriots_goff", cur)
+    json_object_time_series(json_touchdown_patriots, "patriots_touchdown", cur)
     json_object_time_series(json_punt_patriots, "patriots_punt", cur)
     json_object_time_series(json_brady_patriots, "patriots_brady", cur)
 
@@ -209,6 +203,7 @@ def superbowl2019():
     json_object_time_series(json_edelman_rams, "rams_edelman", cur)
     json_object_time_series(json_maroon_5_rams, "rams_maroon_5", cur)
     json_object_time_series(json_goff_rams, "rams_goff", cur)
+    json_object_time_series(json_touchdown_rams, "rams_touchdown", cur)
     json_object_time_series(json_punt_rams, "rams_punt", cur)
     json_object_time_series(json_brady_rams, "rams_brady", cur)
 
@@ -221,6 +216,7 @@ def superbowl2019():
                                 json_edelman_patriots=json.dumps(json_edelman_patriots, default=str),
                                 json_goff_patriots=json.dumps(json_goff_patriots, default=str),
                                 json_punt_patriots=json.dumps(json_punt_patriots, default=str),
+                                json_touchdown_patriots=json.dumps(json_touchdown_patriots, default=str),
                                 json_brady_patriots=json.dumps(json_brady_patriots, default=str),
                                 json_maroon_5_patriots=json.dumps(json_maroon_5_patriots, default=str),
                                 json_aggregate_rams=json.dumps(json_aggregate_rams, default=str),
@@ -229,6 +225,7 @@ def superbowl2019():
                                 json_edelman_rams=json.dumps(json_edelman_rams, default=str),
                                 json_goff_rams=json.dumps(json_goff_rams, default=str),
                                 json_punt_rams=json.dumps(json_punt_rams, default=str),
+                                json_touchdown_rams=json.dumps(json_touchdown_rams, default=str),
                                 json_brady_rams=json.dumps(json_brady_rams, default=str),
                                 json_maroon_5_rams=json.dumps(json_maroon_5_rams, default=str))
 

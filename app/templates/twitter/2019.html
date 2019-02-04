@@ -34,8 +34,11 @@
       </label>
       <label class="btn btn-secondary" onclick="updateData(shit_patriots,shit_rams,'shit')">
         <input type="radio" name="options" id="option3" autocomplete="off"> shit
-      </label>    </div>
-
+      </label>
+      <label class="btn btn-secondary" onclick="updateData(touchdown_patriots,touchdown_rams,'touchdown')">
+        <input type="radio" name="options" id="option3" autocomplete="off"> touchdown
+      </label>
+    </div>
     <hr>
     <b id="header-text-rams"></b>
     <svg class="chart" id="area1" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid meet"></svg>
@@ -85,6 +88,11 @@
         var punt_patriots = JSON.parse(JSONdata)
         var JSONdata = {{json_punt_rams|tojson}}  
         var punt_rams = JSON.parse(JSONdata)
+
+        var JSONdata = {{json_touchdown_patriots|tojson}}  
+        var touchdown_patriots = JSON.parse(JSONdata)
+        var JSONdata = {{json_touchdown_rams|tojson}}  
+        var touchdown_rams = JSON.parse(JSONdata)
 
 
 
@@ -224,8 +232,7 @@
                 document.getElementById('header-text-patriots').innerHTML = "Count of tweets containing #patriots and the word '" +argument + "'."; 
             }
         }
-        window.onload = updateData(aggregate_rams,"aggregate")
-        window.onload = updateData(aggregate_patriots,"aggregate")
+        window.onload = updateData(aggregate_patriots, aggregate_rams,"aggregate")
 </script>
 
 <style>
