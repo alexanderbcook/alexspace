@@ -3,12 +3,18 @@
 
 <br>
     <script src="https://d3js.org/d3.v4.min.js"></script>
-
+    <p> 
+    I recently revisited my Twitter streaming project and I added some really nice features. I further improved the bandwidth and stability of the data stream. I also added functionality to upload the data directly into a database, which made the data a lot less cumbersome to worth with.
+    </p>
     <p>
-        During the 2019 SuperBowl, I used Tweepy, Redis, and PSQL to collect about 1.3 million tweets containing either #patriots or #rams. I then parsed out the text of the Tweets and created filters on the text subjects.
-    </p>
-    <p>  Here is what I ended up with:
-    </p>
+    I was pretty excited to take the thing out for a spin, and decided that the 2019 Superbowl would be a good opportunity. Ultimately, I collected ~900,000 tweets containing either #rams or # patriots. It worked great!
+   </p>
+   <p>
+   As I was looking at the text body of all the tweets, it sort of became apparent that everyone was, more or less, talking about the same thing. The same action. Reading the tweets one after another almost feels like a tide. First a few people mention something, then a few more, and suddenly vritually everyone is talking about the thing that just happened.
+  </p>
+  <p>
+  In an effort to illustrate these 'tides' of speech, I created a 'tide chart'. On the x-axis is time, in PST. The game started around 3:30 and last around 3 1/2 hours until 7:30. On the y-axis is rate in tweet per minute. The values are bucketed into 3 minute intervals. 
+   </p>
     <br>
     <div class="btn-group btn-group-sm" data-toggle="buttons">
       <label class="btn btn-secondary active" onclick="updateData(aggregate_patriots,aggregate_rams,'aggregate')">
@@ -22,9 +28,6 @@
       </label>
       <label class="btn btn-secondary" onclick="updateData(maroon_5_patriots,maroon_5_rams,'maroon 5')">
         <input type="radio" name="options" id="option4" autocomplete="off"> maroon 5
-      </label>
-      <label class="btn btn-secondary" onclick="updateData(edelman_patriots,edelman_rams,'edelman')">
-        <input type="radio" name="options" id="option4" autocomplete="off"> edelman
       </label>
      <label class="btn btn-secondary" onclick="updateData(goff_patriots,goff_rams,'goff')">
         <input type="radio" name="options" id="option4" autocomplete="off"> goff
@@ -40,13 +43,16 @@
       </label>
     </div>
     <hr>
-    <b id="header-text-rams"></b>
+    <b id="header-text-patriots"></b>
     <svg class="chart" id="area1" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid meet"></svg>
     <hr>
-    <b id="header-text-patriots"></b>
+    <b id="header-text-rams"></b>
     <svg class="chart" id="area2" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid meet"></svg>
     <svg class="event-chart" id="area3" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid meet"></svg>
     <br>
+    <p> The results, in my opinion, are really beautiful. I'm fond of the title wave of Patriots fans uttering 'shit' when Brady threw the early interception. I like that Maroon 5 was seemingly not mentioned in the first half, spiked during the half time show, and then lingered in the conversation for the rest of the game. I like the gradual crescendo of 'fuck's as fans got rowdier towards the end of the game. I like the wave of 'shit's as Rams fans realized their impending doom. In a game that was filled with punts, I like that Hekker's record breaking effort stands out. And I really love that both sets of fans were talking about the touchdown to seal the result of the game, knowing that the context that surrounded their conversations were so different.</p>
+   <br>
+   <p>  It's beautiful, isn't it?</p>
 <script>
 
         var JSONdata = {{json_aggregate_patriots|tojson}}  
@@ -74,11 +80,6 @@
         var JSONdata = {{json_maroon_5_rams|tojson}}  
         var maroon_5_rams = JSON.parse(JSONdata)
 
-        var JSONdata = {{json_edelman_patriots|tojson}}  
-        var edelman_patriots = JSON.parse(JSONdata)
-        var JSONdata = {{json_edelman_rams|tojson}}  
-        var edelman_rams = JSON.parse(JSONdata)
-
         var JSONdata = {{json_goff_patriots|tojson}}  
         var goff_patriots = JSON.parse(JSONdata)
         var JSONdata = {{json_goff_rams|tojson}}  
@@ -99,7 +100,7 @@
 
         function drawEvents(data, area, chart, argument){
 
-            var margin = {top:  5, right: 20, bottom: 45, left: 40},
+            var margin = {top:  5, right: 0, bottom: 45, left: 55},
                 width = 1200 - margin.left - margin.right,
                 height = 300 - margin.top - margin.bottom;
 
@@ -134,8 +135,8 @@
 
             svg.append("g")
             texts.attr("class", "value")
-              .attr("x", 300)
-              .attr("y", function(d) { return .5*x(d.date); })
+              .attr("x", function(d) { return .835*x(d.date); })
+              .attr("y", function(d) { return .5425*x(d.date); })
               .style("text-anchor", "end")
               .attr("dx", "-.4em")
               .attr("dy", ".9em")
@@ -237,7 +238,7 @@
 
 <style>
     .axis {
-      font: 10px sans-serif;
+      font: 15px sans-serif;
     }
     .chart rect{
         opacity: .75;
@@ -249,13 +250,13 @@
     .axis line {
       fill: none;
       stroke: #000;
-      shape-rendering: crispEdges;
     }
     .event-text {
-      font: 13px sans-serif;
-      font-style: italic;
+      font: 15px sans-serif;
+    }  
+    svg:not(:root) {
+	overflow: visible;
     }
-
-    
+ 
 </style>
 {% endblock %}

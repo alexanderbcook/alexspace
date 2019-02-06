@@ -45,6 +45,8 @@ def topwords():
     json_year_worldnews = []
     json_year_thedonald = []
 
+    interval = ''
+
     if request.method == 'GET':
                                        
         # Populate data arrays with JSON objects
@@ -127,7 +129,7 @@ def search():
 
     if request.method == 'GET':
         
-        index = random.randint(0, 9)
+        index = random.randint(0, 7)
 
         words = ['wall','shutdown','democrats','guns','libtard','cuck','comey','mueller']
 
@@ -169,7 +171,6 @@ def superbowl2019():
     json_shit_patriots          = []
     json_fuck_patriots          = []
     json_maroon_5_patriots      = []
-    json_edelman_patriots       = []
     json_goff_patriots          = []
     json_punt_patriots          = []
     json_touchdown_patriots     = []
@@ -179,7 +180,6 @@ def superbowl2019():
     json_shit_rams              = []
     json_fuck_rams              = []
     json_maroon_5_rams          = []
-    json_edelman_rams           = []
     json_goff_rams              = []    
     json_punt_rams              = []
     json_touchdown_rams         = []
@@ -190,7 +190,6 @@ def superbowl2019():
     json_object_time_series(json_aggregate_patriots, "patriots_aggregate", cur)
     json_object_time_series(json_shit_patriots, "patriots_shit", cur)
     json_object_time_series(json_fuck_patriots, "patriots_fuck", cur)
-    json_object_time_series(json_edelman_patriots, "patriots_edelman", cur)
     json_object_time_series(json_maroon_5_patriots, "patriots_maroon_5", cur)
     json_object_time_series(json_goff_patriots, "patriots_goff", cur)
     json_object_time_series(json_touchdown_patriots, "patriots_touchdown", cur)
@@ -200,7 +199,6 @@ def superbowl2019():
     json_object_time_series(json_aggregate_rams, "rams_aggregate", cur)
     json_object_time_series(json_shit_rams, "rams_shit", cur)
     json_object_time_series(json_fuck_rams, "rams_fuck", cur)
-    json_object_time_series(json_edelman_rams, "rams_edelman", cur)
     json_object_time_series(json_maroon_5_rams, "rams_maroon_5", cur)
     json_object_time_series(json_goff_rams, "rams_goff", cur)
     json_object_time_series(json_touchdown_rams, "rams_touchdown", cur)
@@ -213,7 +211,6 @@ def superbowl2019():
                                 json_aggregate_patriots=json.dumps(json_aggregate_patriots, default=str),
                                 json_shit_patriots=json.dumps(json_shit_patriots, default=str),
                                 json_fuck_patriots=json.dumps(json_fuck_patriots, default=str),
-                                json_edelman_patriots=json.dumps(json_edelman_patriots, default=str),
                                 json_goff_patriots=json.dumps(json_goff_patriots, default=str),
                                 json_punt_patriots=json.dumps(json_punt_patriots, default=str),
                                 json_touchdown_patriots=json.dumps(json_touchdown_patriots, default=str),
@@ -222,7 +219,6 @@ def superbowl2019():
                                 json_aggregate_rams=json.dumps(json_aggregate_rams, default=str),
                                 json_shit_rams=json.dumps(json_shit_rams, default=str),
                                 json_fuck_rams=json.dumps(json_fuck_rams, default=str),
-                                json_edelman_rams=json.dumps(json_edelman_rams, default=str),
                                 json_goff_rams=json.dumps(json_goff_rams, default=str),
                                 json_punt_rams=json.dumps(json_punt_rams, default=str),
                                 json_touchdown_rams=json.dumps(json_touchdown_rams, default=str),
