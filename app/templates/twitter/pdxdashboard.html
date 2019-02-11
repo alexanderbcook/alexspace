@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+    <br>
+    <h1>Here is what is happening!</h1>
+    <table>
+        <th> ID </th>
+        <th> Create Date </th>
+        <th> Body </th>
+        {% for event in events %}
+        <tr>
+            <td>{{ event.id }}</td>
+            <td>{{ event.createdate }}</td>
+            <td>{{ event.body }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+{% endblock %}
+

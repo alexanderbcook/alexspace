@@ -4,7 +4,7 @@ import json
 import datetime
 import random
 import utilities
-from utilities import connect_to_database, close_connection, json_object_reddit,json_object_search,json_object_sentiment,json_object_category,json_object_view,json_object_gender,json_object_year,json_object_time_series
+from utilities import connect_to_database, close_connection, json_object_reddit,json_object_search,json_object_sentiment,json_object_category,json_object_view,json_object_gender,json_object_year,json_object_time_series,json_object_events
 
 @app.route('/')
 @app.route('/index')
@@ -157,6 +157,23 @@ def search():
 @app.route('/twitter/scalability')
 def scalability():
     return render_template('twitter/scalability.html')
+
+@app.route('/twitter/pdxdashboard')
+def pdxdashboard():
+    conn = connect_to_database()
+    cur = conn.cursor()
+
+    json_events = []
+
+    json_object_events(json_events, cur)
+
+    dump = json.dumps(json_events, default=str)
+    json_events = json.loads(dump)
+
+    close_connection(cur, conn)
+
+    return render_template('twitter/pdxdashboard.html',
+                            events=json_events)
 
 @app.route('/superbowl/2017')
 def superbowl2017():

@@ -54,6 +54,25 @@ def json_object_search(obj, subreddit, word, cur):
 
     return obj
 
+# Portland events page
+def json_object_events(obj, cur):
+    query = cur.execute("SELECT id, createdate, body FROM twitter.default ORDER BY createdate DESC;")
+    results = cur.fetchall()
+
+    i = 0
+    while i < len(results):
+
+        obj.append(
+            {
+                "id":results[i][0],
+                "createdate": results[i][1],
+                "body": results[i][2]
+            }
+        )
+        i += 1
+
+    return obj
+
 # 2019 Superbowl page
 def json_object_time_series(obj, subject, cur):
     query = cur.execute("SELECT interval::time, count,event FROM twitter."+subject+"  ORDER BY interval ASC;")
