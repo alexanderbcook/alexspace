@@ -1,10 +1,13 @@
 from flask import render_template, request, url_for
+from flask_socketio import SocketIO, emit
 from app import app
 import json
 import datetime
 import random
 import utilities
 from utilities import connect_to_database, close_connection, json_object_reddit,json_object_search,json_object_sentiment,json_object_category,json_object_view,json_object_gender,json_object_year,json_object_time_series,json_object_events
+
+socketio = SocketIO(app)
 
 @app.route('/')
 @app.route('/index')
@@ -158,7 +161,7 @@ def search():
 def scalability():
     return render_template('twitter/scalability.html')
 
-@app.route('/twitter/pdxdashboard')
+@app.route('/twitter/pdxdashboard', methods=['GET','POST'])
 def pdxdashboard():
     conn = connect_to_database()
     cur = conn.cursor()
@@ -174,6 +177,22 @@ def pdxdashboard():
 
     return render_template('twitter/pdxdashboard.html',
                             events=json_events)
+
+@socketio.on('my event', namespace='/test')
+def test_message(message):
+    emit('my response', {'data': message['data']})
+
+@socketio.on('my broadcast event', namespace='/test')
+def test_message(message):
+    emit('my response', {'data': message['data']}, broadcast=True)
+
+@socketio.on('connect', namespace='/test')
+def test_connect():
+    emit('my response', {'data': 'Connected'})
+
+@socketio.on('disconnect', namespace='/test')
+def test_disconnect():
+    print('Client disconnected')
 
 @app.route('/superbowl/2017')
 def superbowl2017():

@@ -1,19 +1,49 @@
 {% extends "base.html" %}
 {% block content %}
     <br>
-    <h1>Here is what is happening!</h1>
-    <table>
-        <th> ID </th>
-        <th> Create Date </th>
-        <th> Body </th>
+    <div id="mapid"></div>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col"> Date</th>
+                <th scope="col"> Address</th>
+                <th scope="col"> Incident Type</th>
+            </tr>
+        </thead>
+        <tbody>
         {% for event in events %}
         <tr>
-            <td>{{ event.id }}</td>
-            <td>{{ event.createdate }}</td>
-            <td>{{ event.body }}</td>
+            <th scope="row">{{ event.createdate }}</td>
+            <td>{{ event.address }}</td>
+            <td>{{ event.incident }}</td>
         </tr>
         {% endfor %}
     </table>
     <br>
+     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+   integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+   crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+   integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+   crossorigin=""></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+    <script type="text/javascript" charset="utf-8"></script>
+    <script>
+
+        var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+        
+        
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox.streets',
+            accessToken: 'pk.eyJ1IjoiYWJjb29rIiwiYSI6ImNqcnp5N3N2ZzFkeWs0NG80bnVtNmFxaDEifQ.zPkUuVuuVNGg-3DkQcBflQ'
+        }).addTo(mymap);
+
+    </script>
+    <style>
+        #mapid { height: 180px; }
+    </style>
 {% endblock %}
 
