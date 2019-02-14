@@ -6,8 +6,6 @@ import random
 import utilities
 from utilities import connect_to_database, close_connection, json_object_reddit,json_object_search,json_object_sentiment,json_object_category,json_object_view,json_object_gender,json_object_year,json_object_time_series,json_object_events
 
-socketio = SocketIO(app)
-
 @app.route('/')
 @app.route('/index')
 def index():
@@ -177,25 +175,6 @@ def pdxdashboard():
     return render_template('twitter/pdxdashboard.html',
                             events=json_events)
 
-@socketio.on('my event', namespace='/test')
-def test_message(message):
-    emit('my response', {'data': message['data']})
-
-@socketio.on('my broadcast event', namespace='/test')
-def test_message(message):
-    emit('my response', {'data': message['data']}, broadcast=True)
-
-@socketio.on('connect', namespace='/test')
-def test_connect():
-    emit('my response', {'data': 'Connected'})
-
-@socketio.on('disconnect', namespace='/test')
-def test_disconnect():
-    print('Client disconnected')
-
-@app.route('/superbowl/2017')
-def superbowl2017():
-    return render_template('twitter/2017.html')
 
 @app.route('/superbowl/2019')
 def superbowl2019():
