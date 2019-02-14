@@ -1,5 +1,4 @@
 from flask import render_template, request, url_for
-from flask_socketio import SocketIO, emit
 from app import app
 import json
 import datetime
