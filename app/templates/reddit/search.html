@@ -5,13 +5,13 @@
             <br>
                 <hgroup>
                     <h4>Who Says What, When?</h4>
-                    <h5>Charting Word Usage Over Time Across Reddit's Most Active Political Communities</h5>
+                    <h5>Charting Word Usages Across Reddit's Political Communities</h5>
                 </hgroup>
             <br>
         </header>
         <section>
             <p> After spending some time observing the 'common words' data, I realised that, on its own
-            , it really isn't that useful. The words are often very similar and I felt like that my observations were a little speculative.</p>
+            , it really isn't that useful. The words are often very similar day-to-day and I felt like that my observations were a little speculative.</p>
             <p> I thought adding search functionality to the dataset might be useful, so I decided to build a way to create a timeseries bar chart so that I could compare word usage across the communities at a glance.</p>
             <p> I'm pleased with the way this turned out. This utilizes the same data as the 'common words' visualization, just formatted in a different way.</p>
         </section>
@@ -87,7 +87,7 @@
 
     function draw(data, area, chart, argument){
 
-        var margin = {top: 20, right: 20, bottom: 45, left: 40},
+        var margin = {top: 18, right: 20, bottom: 30, left: 40},
             width = 800 - margin.left - margin.right,
             height = 200 - margin.top - margin.bottom;
 
@@ -217,7 +217,7 @@
 
     <style>
         .axis {
-          font: 10px sans-serif;
+          font: 12px arial;
         }
         .chart rect{
             opacity: .75;

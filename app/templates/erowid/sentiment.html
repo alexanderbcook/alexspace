@@ -4,23 +4,22 @@
         <header>
             <br>
                 <hgroup>
-                    <h4>How Do People Talk About Illicit Substances?</h4>
+                    <h4>How Do People Feel About Drugs?</h4>
                     <h5>Sentiment Analysis of Erowid's Experience Vault</h5>
                 </hgroup>
             <br>
         </header>
         <section>
-            <p>I feel like I should start this section with a disclaimer. I do not condone the usage of illicit drugs.</p>
+            <p>I feel like I should start this section with a disclaimer.</p>
+            <p> I don't do drugs.</p>
             <p> 
                 With that out of the way, let's talk about this project. Erowid is a website that aims to educate the public about illicit drugs.
-                <a href="https://www.erowid.org">Their website</a> contains lots of information about pretty much any drug imaginable. Perhaps the most interesting portion of 
-                the website is the 'experience vault' where users can share their experiences on substances. These stories are incredible - full of joy, sadness, violence, sex, and more. 
-                A social scientist's dream.
+                <a href="https://www.erowid.org">Their website</a> contains lots of information about pretty much any drug imaginable. Perhaps the most interesting portion of the website is the 'experience vault' where users can share their experiences on substances. These stories are incredible - full of joy, sadness, violence, sex, and more. 
+                A social scientist's dream. It's a fun read.
 
             </p>
             <p>
-                I decided to scrape all of these stories using <a href="https://github.com/scrapy/scrapy">Scrapy</a> and then perform sentiment analysis using <a href="https://textblob.readthedocs.io/en/dev/">TextBlob.</a> I performed sentiment analysis on a sentence-by-sentence level, ascribing a value between 1 (very positive) to -1 (very negative), to each sentence in the forum post. I then took the average of all of these sentences to give each story an overall sentiment value.
-                There are 23,000 stories in total. 
+                I decided to scrape all of these stories using <a href="https://github.com/scrapy/scrapy">Scrapy</a> and then perform sentiment analysis using <a href="https://textblob.readthedocs.io/en/dev/">TextBlob.</a> I performed sentiment analysis on a sentence-by-sentence level, ascribing a value between 1 (very positive) and -1 (very negative), to each sentence in the forum post. I then took the average of all of these sentences to give each story an overall sentiment value. There are 23,000 stories in total. 
                 Every story has demographic data, dose size information, a user-perscribed story "category" summarizing the setting of the experience, and more. The result is a very interesting dataset that I think has been underexplored. 
             </p>
             <p></p>
@@ -70,7 +69,7 @@
             </div>
             <svg class="chart" id="area1" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet"></svg>
             <hr>
-            <p> The results were not as drastic as I was anticipating. Few things to point out, though. Notice how closely the 'both genders' data tracks the 'male' options are. Given that I am recording 'average'  values, this implies that the vast majority of stories are written by men. Women share stories that are consistently more negative than the stories men share. This is not true for only two substances, MDMA and mushrooms.
+            <p> The results were not as drastic as I was anticipating. Few things to point out, though. Notice how closely the 'both genders' data tracks the 'male' options are. Given that I am recording 'average' values, this implies that men shared stories than women did. Women generally share more negative stories than those shared by men. Women did tend to enjoy MDMA and mushrooms more then men. Stories about MDMA were by far the most positive. 
             </p>
             <br>
         </section>

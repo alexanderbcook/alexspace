@@ -5,7 +5,7 @@
             <br>
                 <hgroup>
                     <h4>The Language of Politics</h4>
-                    <h5>Scraping the Vocabulary of Reddit's Most Active Political Communities</h5>
+                    <h5>Charting the Vocabulary of Reddit's Political Communities</h5>
                 </hgroup>
             <br>
         </header>
@@ -18,7 +18,7 @@
             In order to ensure that the same data is not processed twice, I store the unique comment ID of processed comments and then exlude these ID from the crawler. I only include first or second level comments with an overall positive score.
             You may notice that words such as 'the, and, then' etc. are not present in this data set. I consulted <a href='https://en.wikipedia.org/wiki/Most_common_words_in_English' >Wikipedia's list of most common words</a>
             and did not include the most common ~150 words. </p>
-            <p>If you are interested, feel free to check out the project <a href='https://github.com/alexanderbcook/reddit_vocabulary'> on GitHub.</a> Two options are available, you may either select one of three pre-rendered datasets or look up the top words from a specific day.
+            <p>If you are interested, feel free to check out the project <a href='https://github.com/alexanderbcook/reddit_vocabulary'> on GitHub.</a> Two options are available, you may either select one of three pre-rendered datasets or look up the top words during a specific day.
             </p>
         </section>
         <section>
@@ -190,7 +190,7 @@
 
     function draw(data, area, chart, argument){
 
-        var margin = {top: 20, right: 20, bottom: 30, left: 75},
+        var margin = {top: 18, right: 15, bottom: 26, left: 75},
             width = 800 - margin.left - margin.right,
             height = 200 - margin.top - margin.bottom;
 
@@ -339,7 +339,7 @@
 
         document.getElementById('politics_header').innerHTML = "Top words on r/politics " + timeMessage; 
         document.getElementById('news_header').innerHTML = "Top words on r/news " + timeMessage; 
-        document.getElementById('the_donald_header').innerHTML = "Top word on r/the_donald " + timeMessage; 
+        document.getElementById('the_donald_header').innerHTML = "Top words on r/the_donald " + timeMessage; 
         document.getElementById('worldnews_header').innerHTML = "Top words on r/worldnews " + timeMessage;
 
         document.cookie = "currentInterval="+interval
