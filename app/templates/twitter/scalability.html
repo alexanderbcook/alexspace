@@ -1,19 +1,32 @@
 {% extends "base.html" %}
 {% block content %}
+	<article>
+        <header>
+            <br>
+            	<hgroup>
+                	<h4>Raising the Bar</h4>
+                	<h5>Implementing Redis To Improve Throughput</h5>
+                </hgroup>
+            <br>
+        </header>
+        <section>
+			<p> In 2018, a year after I wrote my <a href='https://github.com/alexanderbcook/twitter_stream' > twitter stream tool,</a> I revisited the project with two goals in mind - I wanted to improve data fidelity and throughput. Last year, I was not doing 
+			enough data cleansing and I ended up having to do a ton of manual work to the dataset. A lot of this was due to not encoding the tweets in utf-8, so Emojis and letters from foreign alphabets were troublesome
+			Additionally, last year, I intended to graph tweets over time, but due to a crash during the third quarter, I was unable to complete the chart. To improve performance, I split read and write into two different mechanisms- the first is a listener which reads tweet from the Twitter API and shoves them into a Redis queue- the second piece is the writer, which pulls the same information out from Redis and writes to JSON files.</p>
 
-<br>
-<p> In 2018, a year after I wrote my <a href='https://github.com/alexanderbcook/twitter_stream' > twitter stream tool,</a> I revisited the project with two goals in mind - I wanted to improve data fidelity and throughput. Last year, I was not doing 
-enough data cleansing and I ended up having to do a ton of manual work to the dataset. A lot of this was due to not encoding the tweets in utf-8, so Emojis and letters from foreign alphabets were troublesome
-Additionally, last year, I intended to graph tweets over time, but due to a crash during the third quarter, I was unable to complete the chart. To improve performance, I split read and write into two different mechanisms- the first is a listener which reads tweet from the Twitter API and shoves them into a Redis queue- the second piece is the writer, which pulls the same information out from Redis and writes to JSON files.</p>
-
-<p>I was pleased with the result. This is a video of the program streaming about 5k/tweets per minute to the file. 
-The left pane is a Redis monitor, which just prints push/pull operations. The middle and right panes are two instances of the program, streaming tweets mentioning the Eagles or Patriots.
-Both files, over the course of the Superbowl, grew to about 150mb - 4,000,000 tweets in total. All in all, the effort to refactor this code was successful and I am pleased with how it turned out.
-</p>
-<hr>
-<iframe style="display: block; margin: auto;" width="560" height="315" viewbox="0 0 315 560" src="https://www.youtube.com/embed/_SDNNC1YP_w" frameborder="5" allow="encrypted-media" allowfullscreen></iframe>
-<hr>
-<p> I later added a few quality of life features, including the ability to write directly to a database and dynamically create tables based on the query name.</p>
+			<p>I was pleased with the result. This is a video of the program streaming about 5k/tweets per minute to the file. 
+			The left pane is a Redis monitor, which just prints push/pull operations. The middle and right panes are two instances of the program, streaming tweets mentioning the Eagles or Patriots.
+			Both files, over the course of the Superbowl, grew to about 150mb - 4,000,000 tweets in total. All in all, the effort to refactor this code was successful and I am pleased with how it turned out.
+			</p>
+		</section>
+		<section>
+			<hr>
+			<p></p>
+			<iframe style="display: block; margin: auto;" width="560" height="315" viewbox="0 0 315 560" src="https://www.youtube.com/embed/_SDNNC1YP_w" frameborder="5" allow="encrypted-media" allowfullscreen></iframe>
+			<p></p>
+			<hr>
+		</section>
+	</article>
 
 {% endblock %}
 

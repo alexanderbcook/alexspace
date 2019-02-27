@@ -1,19 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
-    <br>
-    <h1> Welcome! </h1>
-    <br>
-    <p>Hi, my name is Alex Cook. I am software engineer in Portland, OR. I graduated March 2016 from the University of Oregon with a degree in Applied Physics. Just before
-    my graduation, I was offered a data engineering position at a startup, <a href="https://www.carevoyance.com/">Carevoyance.</a> I now am employed in a Dev-Ops role at <a href="https://www.wellsource.com/">Wellsource.</a> </p>
-    <p> Most of my experience is back-end, building data warehouses, pipelines, and automating business applications. 
-    I learned a ton building this site- Linux administration, web server deployment, routing, and this has been a great opportunity to write a ton of Javascript and Python. It has also been an enjoyable way to dip my toe into front-end development.</p>
-    <p>This portfolio runs on PSQL, EC2, Nginx, and Flask. I also use Redis and Cron to utilize the data services I have built.</p>
-    <p>The website is stylized using Bootstrap 4. Visualizations were done using D3.js.</p>
-    <p>You can checkout the source code for this project <a href="https://www.github.com/alexanderbcook/alexspace">here.</a></p>
-    <p>Take a look, stay a while.</p>
-    <hr>
-    <p><a href="{{ url_for('static', filename='Resume.pdf') }}">Here's my resume.</a></p>
-    <p><a href="https://www.github.com/alexanderbcook">Here's my GitHub.</a></p>
-    <p><a href="https://www.linkedin.com/in/alex-cook-853b59132/">Here's my LinkedIn.</a></p>
+    <article>
+        <header>
+            <br>
+                <h4> Welcome! </h4>
+            <br>
+        </header>
+        <section>
+            <p>Hi, my name is Alex Cook. I am software engineer in Portland, OR. I graduated March 2016 from the University of Oregon with a degree in Applied Physics. Just before
+            my graduation, I was offered a data engineering position at a startup, <a href="https://www.carevoyance.com/">Carevoyance.</a> I now am employed in a Dev-Ops role at <a href="https://www.wellsource.com/">Wellsource.</a> </p>
+            <p> Most of my experience is back-end, building data warehouses, pipelines, and automating business applications. 
+            I learned a ton building this site- Linux administration, web server deployment, routing, and this has been a great opportunity to write a ton of Javascript and Python. It has also been an enjoyable way to dip my toe into front-end development.</p>
+            <p>This portfolio runs on PSQL, EC2, Nginx, and Flask. I also use Redis and Cron to utilize the data services I have built.</p>
+            <p>The website is stylized using Bootstrap 4. Visualizations were done using D3.js.</p>
+            <p>You can checkout the source code for this project <a href="https://www.github.com/alexanderbcook/alexspace">here.</a></p>
+            <p>Take a look, stay a while.</p>
+            <hr>
+        </section>
+        <section>
+            <nav>
+                <p><a href="{{ url_for('static', filename='Resume.pdf') }}">Here's my resume.</a></p>
+                <p><a href="https://www.github.com/alexanderbcook">Here's my GitHub.</a></p>
+                <p><a href="https://www.linkedin.com/in/alex-cook-853b59132/">Here's my LinkedIn.</a></p>
+            </nav>
+        </section>
+     </article>
 {% endblock %}
 

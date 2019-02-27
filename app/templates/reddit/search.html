@@ -1,56 +1,70 @@
 {% extends "base.html" %}
 {% block content %}
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    <p> After spending some time observing the 'common words' data, I realised that, on its own
-    , it really isn't that useful. The words are often very similar and I felt like that my observations were a little speculative.</p>
-    <p> I thought adding search functionality to the dataset might be useful, so I decided to build a way to create a timeseries bar chart so that I could compare word usage across the communities at a glance.</p>
-    <p> I'm pleased with the way this turned out. This utilizes the same data as the 'common words' visualization, just formatted in a different way.</p>
-    <div> Input a word to search:</div>
-    <div class="form-row">
-        <form name="wordSearch" action="/reddit/search" method="POST" onsubmit="return validateForm()">
+    <article>
+        <header>
+            <br>
+                <hgroup>
+                    <h4>Who Says What, When?</h4>
+                    <h5>Charting Word Usage Over Time Across Reddit's Most Active Political Communities</h5>
+                </hgroup>
+            <br>
+        </header>
+        <section>
+            <p> After spending some time observing the 'common words' data, I realised that, on its own
+            , it really isn't that useful. The words are often very similar and I felt like that my observations were a little speculative.</p>
+            <p> I thought adding search functionality to the dataset might be useful, so I decided to build a way to create a timeseries bar chart so that I could compare word usage across the communities at a glance.</p>
+            <p> I'm pleased with the way this turned out. This utilizes the same data as the 'common words' visualization, just formatted in a different way.</p>
+        </section>
+        <section>
+            <div> Input a word to search:</div>
+            <div class="form-row">
+                <form name="wordSearch" action="/reddit/search" method="POST" onsubmit="return validateForm()">
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" class="form-control form-control-sm" name = "word">
+                        </div>
+                        <div class="col">
+                            <button type="submit" class="btn btn-outline-secondary btn-sm float-right">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
             <div class="row">
                 <div class="col">
-                    <input type="text" class="form-control form-control-sm" name = "word">
+                    <h5>Usage over time of the word '{{word}}' on r/politics.</h5>
                 </div>
                 <div class="col">
-                    <button type="submit" class="btn btn-outline-secondary btn-sm float-right">Submit</button>
+                    <div class="btn-group btn-group-toggle float-right" data-toggle="buttons" >
+                        <label class="btn btn-outline-secondary btn-sm active" onclick="updateData('count')">
+                            <input type="radio" name="options" id="option1" autocomplete="off" checked > Count
+                        </label>
+                        <label class="btn btn-outline-secondary btn-sm" onclick="updateData('rate')">
+                            <input type="radio" name="options" id="option2" autocomplete="off""> Rate
+                        </label>
+                    </div>
                 </div>
             </div>
-        </form>
-    </div>
-    <div class="row">
-        <div class="col">
-            <b>Usage over time of the word '{{word}}' on r/politics.</b>
-        </div>
-        <div class="col">
-            <div class="btn-group btn-group-toggle float-right" data-toggle="buttons" >
-                <label class="btn btn-outline-secondary btn-sm active" onclick="updateData('count')">
-                    <input type="radio" name="options" id="option1" autocomplete="off" checked > Count
-                </label>
-                <label class="btn btn-outline-secondary btn-sm" onclick="updateData('rate')">
-                    <input type="radio" name="options" id="option2" autocomplete="off""> Rate
-                </label>
-            </div>
-        </div>
-    </div>
-    <p></p>
-    <svg class="chart" id="area1" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
-    <hr>
-    <p></p>
-    <b>Usage over time of the word '{{word}}' on r/news.</b>
-    <p></p>
-    <svg class="chart" id="area2" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
-    <hr>
-    <p></p>
-    <b>Usage over time of the word '{{word}}' on r/the_donald.</b>
-    <p></p>
-    <svg class="chart" id="area3" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
-    <hr>
-    <p></p>
-    <b>Usage over time of the word '{{word}}' on r/worldnews.</b>
-    <p></p>
-    <svg class="chart" id="area4" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
-    <hr>
+            <p></p>
+            <svg class="chart" id="area1" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
+            <hr>
+            <p></p>
+            <h5>Usage over time of the word '{{word}}' on r/news.</h5>
+            <p></p>
+            <svg class="chart" id="area2" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
+            <hr>
+            <p></p>
+            <h5>Usage over time of the word '{{word}}' on r/the_donald.</h5>
+            <p></p>
+            <svg class="chart" id="area3" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
+            <hr>
+            <p></p>
+            <h5>Usage over time of the word '{{word}}' on r/worldnews.</h5>
+            <p></p>
+            <svg class="chart" id="area4" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
+            <hr>
+        </section>
+    </article>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
     <script>
 
     var JSONdata = {{politics|tojson}}    

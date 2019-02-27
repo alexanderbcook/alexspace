@@ -1,91 +1,94 @@
 {% extends "base.html" %}
 {% block content %}
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    <br>
-    <p>I've always thought, from a political standpoint, Reddit is really interesting. Regardless of the political ideology, a community (or 'subreddit') exists where like-minded individuals discuss current events through that ideological lens. In these subreddits, I noticed that the same problems are discussed, but using very different language. 
-    </p>
+    <article>
+        <header>
+            <br>
+                <hgroup>
+                    <h4>The Language of Politics</h4>
+                    <h5>Scraping the Vocabulary of Reddit's Most Active Political Communities</h5>
+                </hgroup>
+            <br>
+        </header>
+        <section>
+            <p>I've always thought, from a political standpoint, Reddit is really interesting. Regardless of the political ideology, a community (or 'subreddit') exists where like-minded individuals discuss current events through that ideological lens. In these subreddits, I noticed that the same problems are discussed, but using very different language. 
+            </p>
 
-    <p>In an effort to quantify these differences, I use <a href="https://praw.readthedocs.io/en/latest/">Reddit's open API, PRAW</a>, to scrape the most popular threads from four politically engaged subreddits.
-    I utilize Python to process the comments, Redis to push the words into a PSQL database, and Postgres to form the data objects on this page. This process is automated, running every 15 minutes on an AWS EC2 instance.
-    In order to ensure that the same data is not processed twice, I store the unique comment ID of processed comments and then exlude these ID from the crawler. I only include first or second level comments with an overall positive score.
-    You may notice that words such as 'the, and, then' etc. are not present in this data set. I consulted <a href='https://en.wikipedia.org/wiki/Most_common_words_in_English' >Wikipedia's list of most common words</a>
-    and did not include the most common ~150 words. </p>
-    <p>If you are interested, feel free to check out the project <a href='https://github.com/alexanderbcook/reddit_vocabulary'> on GitHub.</a>
-    </p>
-
-    <p> Two options are available, you may either select one of three pre-rendered datasets or look up the top words from a specific day.</p>
-    <br>
-    <div> Available datasets:</div>
-    <div class="dropdown">
-        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <text id="dropdown-text">                
-                    {% if argument=='custom'%}Display data from the last 24 hours.
-                    {% else %}
-                    {% endif %}
-                </text>
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" onclick="updateData('day', 'none')">Display data from the last 24 hours.</a>
-            <a class="dropdown-item" onclick="updateData('month', 'none')">Display data from the last 30 days.</a>
-            <a class="dropdown-item" onclick="updateData('year', 'none')">Display data from the last 365 days.</a>
-        </div>
-    </div>
-    <br>
-    <div> Select a date:</div>
-    <div class="form-row">
-        <form name="date" action="/reddit/topwords?interval=custom" method="POST" onsubmit="return validateForm()">
+            <p>In an effort to quantify these differences, I use <a href="https://praw.readthedocs.io/en/latest/">Reddit's open API, PRAW</a>, to scrape the most popular threads from four politically engaged subreddits.
+            I utilize Python to process the comments, Redis to push the words into a PSQL database, and Postgres to form the data objects on this page. This process is automated, running every 15 minutes on an AWS EC2 instance.
+            In order to ensure that the same data is not processed twice, I store the unique comment ID of processed comments and then exlude these ID from the crawler. I only include first or second level comments with an overall positive score.
+            You may notice that words such as 'the, and, then' etc. are not present in this data set. I consulted <a href='https://en.wikipedia.org/wiki/Most_common_words_in_English' >Wikipedia's list of most common words</a>
+            and did not include the most common ~150 words. </p>
+            <p>If you are interested, feel free to check out the project <a href='https://github.com/alexanderbcook/reddit_vocabulary'> on GitHub.</a> Two options are available, you may either select one of three pre-rendered datasets or look up the top words from a specific day.
+            </p>
+        </section>
+        <section>
+            <div> Available datasets:</div>
+            <p class="data-option-span"></p>
+            <div class="dropdown">
+                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <text id="dropdown-text">                
+                            {% if argument=='custom'%}Display data from the last 24 hours.
+                            {% else %}
+                            {% endif %}
+                        </text>
+                </button>
+                <nav class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" onclick="updateData('day', 'none')"><text>Display data from the last 24 hours.</text></a>
+                    <a class="dropdown-item" onclick="updateData('month', 'none')"><text>Display data from the last 30 days.</text></a>
+                    <a class="dropdown-item" onclick="updateData('year', 'none')"><text>Display data from the last 365 days.</text></a>
+                </nav>
+            </div>
+            <p class="data-option-span"></p>
+            <div> Select a date:</div>
+            <p class="data-option-span"></p>
+            <div class="form-row">
+                <form name="date" action="/reddit/topwords?interval=custom" method="POST" onsubmit="return validateForm()">
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" class="form-control form-control-sm" name = "year" placeholder="yyyy">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control form-control-sm" name = "month" placeholder="mm">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control form-control-sm" name = "day" placeholder="dd">
+                        </div>
+                        <div class="col">
+                            <button type="submit"class="btn btn-outline-secondary btn-sm float-right">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <hr>
             <div class="row">
                 <div class="col">
-                    <input type="text" class="form-control form-control-sm" name = "year" placeholder="yyyy">
-                </div>
+                    <h5 id="politics_header"></h5>
+                </div>  
                 <div class="col">
-                    <input type="text" class="form-control form-control-sm" name = "month" placeholder="mm">
-                </div>
-                <div class="col">
-                    <input type="text" class="form-control form-control-sm" name = "day" placeholder="dd">
-                </div>
-                <div class="col">
-                    <button type="submit"class="btn btn-outline-secondary btn-sm float-right">Submit</button>
+                    <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
+                        <label class="btn btn-outline-secondary btn-sm active" onclick="updateData('none','count')">
+                            <input type="radio" name="options" id="option1" autocomplete="off" checked> Count
+                        </label>
+                        <label class="btn btn-outline-secondary btn-sm" onclick="updateData('none','rate')">
+                            <input type="radio" name="options" id="option2" autocomplete="off"> Rate
+                        </label>
+                    </div>
                 </div>
             </div>
-        </form>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col">
-            <b id="politics_header">
-            </b>
-        </div>  
-        <div class="col">
-            <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
-                <label class="btn btn-outline-secondary btn-sm active" onclick="updateData('none','count')">
-                    <input type="radio" name="options" id="option1" autocomplete="off" checked> Count
-                </label>
-                <label class="btn btn-outline-secondary btn-sm" onclick="updateData('none','rate')">
-                    <input type="radio" name="options" id="option2" autocomplete="off"> Rate
-                </label>
-            </div>
-        </div>
-    </div>
-    <p></p>
-    <svg class="chart" id="area1" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
-    <hr>
-    <b id="news_header">{{interval|safe}}
-    </b>
-    <svg class="chart" id="area2" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
-    <hr>
-    <p></p>
-    <b id="the_donald_header">
-    </b>
-    <p></p>
-    <svg class="chart" id="area3" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
-    <hr>
-    <p></p>
-    <b id="worldnews_header">
-    </b>
-    <p></p>
-    <svg class="chart" id="area4" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
-    <hr>
+            <svg class="chart" id="area1" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
+            <hr>
+            <h5 id="news_header"></h5>
+            <svg class="chart" id="area2" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
+            <hr>
+            <h5 id="the_donald_header"></h5>
+            <svg class="chart" id="area3" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
+            <hr>
+            <h5 id="worldnews_header"></h5>
+            <svg class="chart" id="area4" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
+            <hr>
+        </section>
+    </article>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
     <script>
     
 
@@ -358,12 +361,11 @@
 
     @media screen and (min-width: 300px) {}
 
-    p {
-      margin-bottom: .5em;
+    text{
+        font: 12px arial;
     }
-
-    .axis text{
-        font: 11px arial;
+    .data-option-span {
+        margin-bottom: .25rem;
     }
     .axis path,
     .axis line {

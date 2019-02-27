@@ -1,73 +1,86 @@
 {% extends "base.html" %}
 {% block content %}
-<br> 
+    <article>
+        <header>
+            <br>
+                <hgroup>
+                    <h4>Who Talks About Illicit Substances?</h4>
+                    <h5>Analysis of Erowid's User Base and Usage Metrics</h5>
+                </hgroup>
+            <br>
+        </header>
+        <section>
+          <p> I thought it would be interesting to use some of the forum's metadata I scraped to profile the sites demographics and popularity. In the previous section, I noted that the 'average' sentiment value tracked the 'male' average very closely. This led me to believe that the site was male dominated. Gender data is readily available in the forums metadata, so I thought I would test this assumption.
+          </p>
+        </section>
+        <section>
+          <hr>
+          <b><p id="pie"></p></b>
+          <div class="dropdown">
+              <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" onclick="updateData('aggregate')">Display aggregate data.</a>
+                  <a class="dropdown-item" onclick="updateData('amphetamines')">Display amphetamines data.</a>
+                  <a class="dropdown-item" onclick="updateData('cannabis')">Display cannabis data.</a>
+                  <a class="dropdown-item" onclick="updateData('cocaine')">Display cocaine data.</a>
+                  <a class="dropdown-item" onclick="updateData('ketamine')">Display ketamine data.</a>
+                  <a class="dropdown-item" onclick="updateData('LSD')">Display LSD data.</a>
+                  <a class="dropdown-item" onclick="updateData('mushrooms')">Display mushrooms data.</a>
+                  <a class="dropdown-item" onclick="updateData('MDMA')">Display MDMA data.</a>
+              </div>
+          </div>
+          <svg viewBox="0 0 600 250"  preserveAspectRatio="xMidYMid meet" id="area1"></svg>
+          <hr>
+        </section>
+        <section>
+          <p>Indeed, the websites population (or at least active user base) is mostly male. The most popular substances for female authors are MDMA and cocaine. I'm a little surprised that cannabis stories are heavily male dominated, given the accessibility of the drug.</p>
+          <p>Poking around the Erowid site, you get the feeling that its population is dwindling. Perhaps it's the UI, but the site just feels like it's from another era. The forum posts list a date, as well as the view count for the forum post. I think that these two metrics, plotted side by side, are an effective metric detailing the sites rise and decline. I'm unsure what took place in 2007 that resulted in such a spike in both forum posts and forum views. Organic growth? Increase in advertisement spending? It's hard to say, but clearly Erowid was not able to retain that usage.
+          </p>
+          <hr>
+        </section>
+        <section>
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <b><p id="posts"></p></b>
+              </div>
+              <div class="col">
+                <b><p id="views"></p></b>
+              </div>
+            </div>
+            <div class="row" id="buttonContainer">
+              <div class="dropdown">
+                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" onclick="updateData2('aggregate')">Display aggregate data.</a>
+                  <a class="dropdown-item" onclick="updateData2('amphetamines')">Display amphetamines data.</a>
+                  <a class="dropdown-item" onclick="updateData2('cannabis')">Display cannabis data.</a>
+                  <a class="dropdown-item" onclick="updateData2('cocaine')">Display cocaine data.</a>
+                  <a class="dropdown-item" onclick="updateData2('ketamine')">Display ketamine data.</a>
+                  <a class="dropdown-item" onclick="updateData2('LSD')">Display LSD data.</a>
+                  <a class="dropdown-item" onclick="updateData2('mushrooms')">Display mushrooms data.</a>
+                  <a class="dropdown-item" onclick="updateData2('MDMA')">Display MDMA data.</a>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <svg class="graphContainer" viewBox="0 0 400 400"  preserveAspectRatio="xMidYMid meet" id="area2"> </svg>
+              </div>
+              <div class="col">
+                <svg class="graphContainer" viewBox="0 0 400 400"  preserveAspectRatio="xMidYMid meet" id="area3"></svg>
+              </div>
+            </div>
+          </div>
+          <hr>
+        </section>
+        <section>
+          <p>I'm quite pleased with the way this project turned out. I have many more ideas I'd like to explore with this dataset. I'm interested in plotting sentiment and dose size side by side. I imagine there is some correlation- specifically, I imagine after a certain dose size, sentiment trends downward rapidly. The barrier to this analysis is that the dose size is self-reported. In other words, how many grams is a 'hit' of cannabis or a 'a lot' of meth? Regardless, lots still to explore with this data.</p>
+          <hr>
+        </section>
+      </article>
 <script src="https://d3js.org/d3.v4.min.js"></script>
-<p> I thought it would be interesting to use some of the forum's metadata I scraped to profile the sites demographics and popularity. In the previous section, I noted that the 'average'
-sentiment value tracked the 'male' average very closely. This led me to believe that the site was male dominated. Gender data is readily available in the forums metadata, so I thought I would
-test this assumption.
-</p>
-<hr>
-<b><p id="pie"></p></b>
-<div class="dropdown">
-    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" onclick="updateData('aggregate')">Display aggregate data.</a>
-        <a class="dropdown-item" onclick="updateData('amphetamines')">Display amphetamines data.</a>
-        <a class="dropdown-item" onclick="updateData('cannabis')">Display cannabis data.</a>
-        <a class="dropdown-item" onclick="updateData('cocaine')">Display cocaine data.</a>
-        <a class="dropdown-item" onclick="updateData('ketamine')">Display ketamine data.</a>
-        <a class="dropdown-item" onclick="updateData('LSD')">Display LSD data.</a>
-        <a class="dropdown-item" onclick="updateData('mushrooms')">Display mushrooms data.</a>
-        <a class="dropdown-item" onclick="updateData('MDMA')">Display MDMA data.</a>
-    </div>
-</div>
-<svg viewBox="0 0 600 250"  preserveAspectRatio="xMidYMid meet" id="area1"></svg>
-<hr>
-<p>Indeed, the websites population (or at least active user base) is mostly male. The most popular substances for female authors are MDMA and cocaine. I'm a little surprised that cannabis stories are heavily male dominated, given the accessibility of the drug.</p>
-<p>Poking around the Erowid site, you get the feeling that its population is dwindling. Perhaps it's the UI, but the site just feels like it's from another era. The forum posts list a date, 
-the view count for the forum post. I think that these two metrics, plotted side by side, are an effective metric detailing the sites decline. I'm unsure what took place in 2007 that resulted in such a spike in both
-forum posts and forum views. Organic growth? Increase in advertisement spending? It's hard to say, but clearly Erowid was not able to retain that usage.
-</p>
-<hr>
-<div class="container">
-  <div class="row">
-    <div class="col">
-      <b><p id="posts"></p></b>
-    </div>
-    <div class="col">
-      <b><p id="views"></p></b>
-    </div>
-  </div>
-  <div class="row" id="buttonContainer">
-    <div class="dropdown">
-      <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" onclick="updateData2('aggregate')">Display aggregate data.</a>
-        <a class="dropdown-item" onclick="updateData2('amphetamines')">Display amphetamines data.</a>
-        <a class="dropdown-item" onclick="updateData2('cannabis')">Display cannabis data.</a>
-        <a class="dropdown-item" onclick="updateData2('cocaine')">Display cocaine data.</a>
-        <a class="dropdown-item" onclick="updateData2('ketamine')">Display ketamine data.</a>
-        <a class="dropdown-item" onclick="updateData2('LSD')">Display LSD data.</a>
-        <a class="dropdown-item" onclick="updateData2('mushrooms')">Display mushrooms data.</a>
-        <a class="dropdown-item" onclick="updateData2('MDMA')">Display MDMA data.</a>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <svg class="graphContainer" viewBox="0 0 400 400"  preserveAspectRatio="xMidYMid meet" id="area2"> </svg>
-    </div>
-    <div class="col">
-      <svg class="graphContainer" viewBox="0 0 400 400"  preserveAspectRatio="xMidYMid meet" id="area3"></svg>
-    </div>
-  </div>
-</div>
-<hr>
-
-
-<p>I'm quite pleased with the way this project turned out. I have many more ideas I'd like to explore with this dataset. I'm interested in plotting sentiment and dose size side by side. I imagine there is some correlation- specifically, I imagine after a certain dose size, sentiment trends downward rapidly. The barrier to this analysis is that the dose size is self-reported. In other words, how many grams is a 'hit' of cannabis or a 'a lot' of meth? Regardless, lots still to explore with this data.</p>
-<hr>
 <script>
 
 var JSONdata = {{genders|tojson}}    
@@ -136,7 +149,7 @@ function updateData(val){
 
 function draw(data,set){
 
-  var margin = {top: 0, right:200, bottom:0, left:0},
+  var margin = {top: 0, right:0, bottom:0, left:0},
           width = 600 - margin.left - margin.right,
           height = 250 - margin.top - margin.bottom,
           radius = Math.min(width, height) / 2;

@@ -2,6 +2,7 @@
 {% block content %}
     <br>
     <div id="mapid"></div>
+    <br>
     <table class="table">
         <thead class="thead-dark">
             <tr>
@@ -30,7 +31,7 @@
     <script type="text/javascript" charset="utf-8"></script>
     <script>
 
-        var mymap = L.map('mapid').setView([45.5122, -122.6587], 11);
+        var mymap = L.map('mapid').setView([45.5123, -122.6587], 13);
         
         
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
