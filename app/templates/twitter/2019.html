@@ -68,6 +68,7 @@
    </article>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
+        document.getElementById('page-title').innerHTML = "Who Says What, When?"    
 
         var JSONdata = {{json_aggregate_patriots|tojson}}  
         var aggregate_patriots = JSON.parse(JSONdata)

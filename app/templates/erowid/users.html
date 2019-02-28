@@ -4,7 +4,7 @@
         <header>
             <br>
                 <hgroup>
-                    <h4>Who Talks About Illicit Drugs?</h4>
+                    <h4>Who Uses Erowid to Talk About Drugs?</h4>
                     <h5>A Look at Erowid's User Base</h5>
                 </hgroup>
             <br>
@@ -46,7 +46,7 @@
                 <h5 id="posts"></h5>
               </div>
               <div class="col">
-                <b><p id="views"></p></b>
+                <h5 id="views"></h5>
               </div>
             </div>
             <div class="row" id="buttonContainer">
@@ -83,6 +83,8 @@
       </article>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
+
+document.getElementById('page-title').innerHTML = "Who Uses Erowid to Talk About Drugs?"    
 
 var JSONdata = {{genders|tojson}}    
 var genders = JSON.parse(JSONdata)
@@ -197,8 +199,6 @@ function draw(data,set){
 
 }
 window.onload = updateData('aggregate')
-
-
 
 var JSONdata = {{years|tojson}}    
 var years = JSON.parse(JSONdata)
