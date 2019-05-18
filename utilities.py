@@ -36,14 +36,14 @@ def json_object_reddit(obj, subreddit, interval, requestType, cur):
 
 def json_object_search(obj, subreddit, word, cur):
     startDate = str(datetime.datetime.now() - datetime.timedelta(days=365))
-    query = cur.execute("SELECT day, SUM(count) FROM (SELECT day, SUM(count) as count FROM reddit."+subreddit+" WHERE word ='"+word+"' GROUP BY day UNION SELECT generate_series(timestamp '"+startDate+"', timestamp '"+datetime.datetime.now().strftime('%Y-%m-%d')+"', '1 day'):: DATE as day, 0) AS union_series GROUP BY union_series.day ORDER BY union_series.day;")
+
+    query = cur.execute("SELECT day, SUM(count) FROM (SELECT day, SUM(count) as count FROM reddit."+subreddit+" WHERE word ='"+word+"' GROUP BY day UNION SELECT generate_series(timestamp '"+startDate+"', timestamp '"+datetime.datetime.now().strftime('%Y-%m-%d')+"', '1 day'):: DATE as day, 0) AS union_series GROUP BY union_series.day ORDER BY union_series.day LIMIT 365;")
     results = cur.fetchall()
-    query = cur.execute("SELECT day, SUM(total) FROM (SELECT day, total FROM count_"+subreddit+" WHERE day >= '2018-03-24' UNION SELECT generate_series(timestamp '"+startDate+"', timestamp '"+datetime.datetime.now().strftime('%Y-%m-%d')+"', '1 day'):: DATE as day, 0) AS union_series GROUP BY union_series.day ORDER BY union_series.day;")
+    query = cur.execute("SELECT day, SUM(total) FROM (SELECT day, total FROM count_"+subreddit+" UNION SELECT generate_series(timestamp '"+startDate+"', timestamp '"+datetime.datetime.now().strftime('%Y-%m-%d')+"', '1 day'):: DATE as day, 0) AS union_series GROUP BY union_series.day ORDER BY union_series.day LIMIT 365;")
     totals = cur.fetchall()
 
     i = 0
     while i < len(results):
-
         obj.append(
             {
                 "date":results[i][0],

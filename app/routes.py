@@ -131,7 +131,7 @@ def search():
         
         index = random.randint(0, 7)
 
-        words = ['wall','shutdown','democrats','guns','libtard','cuck','comey','mueller']
+        words = ['wall','shutdown','abortion','guns','libtard','cuck','barr','mueller']
 
         word = words[index]
 
