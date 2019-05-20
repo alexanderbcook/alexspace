@@ -25,31 +25,21 @@
             <br>
         </section>
         <section>
-            <div class="btn-group btn-group-sm" data-toggle="buttons">
-              <label class="btn btn-secondary active" onclick="updateData(aggregate_patriots,aggregate_rams,'aggregate')">
-                <input type="radio" name="options" id="option1" autocomplete="off"> aggregate
-              </label>
-             <label class="btn btn-secondary" onclick="updateData(brady_patriots,brady_rams,'brady')">
-                <input type="radio" name="options" id="option2" autocomplete="off"> brady
-              </label>
-              <label class="btn btn-secondary" onclick="updateData(fuck_patriots,fuck_rams,'fuck')">
-                <input type="radio" name="options" id="option2" autocomplete="off"> fuck
-              </label>
-              <label class="btn btn-secondary" onclick="updateData(maroon_5_patriots,maroon_5_rams,'maroon 5')">
-                <input type="radio" name="options" id="option4" autocomplete="off"> maroon 5
-              </label>
-             <label class="btn btn-secondary" onclick="updateData(goff_patriots,goff_rams,'goff')">
-                <input type="radio" name="options" id="option4" autocomplete="off"> goff
-              </label>
-             <label class="btn btn-secondary" onclick="updateData(punt_patriots,punt_rams,'punt')">
-                <input type="radio" name="options" id="option4" autocomplete="off"> punt
-              </label>
-              <label class="btn btn-secondary" onclick="updateData(shit_patriots,shit_rams,'shit')">
-                <input type="radio" name="options" id="option3" autocomplete="off"> shit
-              </label>
-              <label class="btn btn-secondary" onclick="updateData(touchdown_patriots,touchdown_rams,'touchdown')">
-                <input type="radio" name="options" id="option3" autocomplete="off"> touchdown
-              </label>
+            <div class="btn-group">
+                <button type="button" class="btn btn-secondary">Available Datasets:  </button>
+                <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" id="dataset-text" aria-expanded="false">
+                <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" onclick="updateData(aggregate_patriots,aggregate_rams,'aggregate')" href="#">aggregate</a>
+                    <a class="dropdown-item" onclick="updateData(brady_patriots,brady_rams,'brady')" href="#">brady</a>
+                    <a class="dropdown-item" onclick="updateData(goff_patriots,goff_rams,'goff')" href="#">goff</a>
+                    <a class="dropdown-item" onclick="updateData(shit_patriots,shit_rams,'shit')" href="#">shit</a>
+                    <a class="dropdown-item" onclick="updateData(fuck_patriots,fuck_rams,'fuck')" href="#">fuck</a>
+                    <a class="dropdown-item" onclick="updateData(touchdown_patriots,touchdown_rams,'touchdown')" href="#">touchdown</a>
+                    <a class="dropdown-item" onclick="updateData(punt_patriots,punt_rams,'punt')" href="#">punt</a>
+                    <a class="dropdown-item" onclick="updateData(maroon_5_patriots,maroon_5_rams,'maroon 5')" href="#">maroon 5</a>
+                </div>
             </div>
             <hr>
             <h5 id="header-text-patriots"></h5>
@@ -248,6 +238,7 @@
                 document.getElementById('header-text-rams').innerHTML = "Count of tweets containing #rams and the word '" + argument + "'."; 
                 document.getElementById('header-text-patriots').innerHTML = "Count of tweets containing #patriots and the word '" +argument + "'."; 
             }
+            document.getElementById('dataset-text').innerHTML = argument + '   '   
         }
         window.onload = updateData(aggregate_patriots, aggregate_rams,"aggregate")
 </script>
