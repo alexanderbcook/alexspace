@@ -30,15 +30,15 @@
                 <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" id="dataset-text" aria-expanded="false">
                 <span class="sr-only">Toggle Dropdown</span>
                 </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" onclick="updateData(aggregate_patriots,aggregate_rams,'aggregate')" href="#">aggregate</a>
-                    <a class="dropdown-item" onclick="updateData(brady_patriots,brady_rams,'brady')" href="#">brady</a>
-                    <a class="dropdown-item" onclick="updateData(goff_patriots,goff_rams,'goff')" href="#">goff</a>
-                    <a class="dropdown-item" onclick="updateData(shit_patriots,shit_rams,'shit')" href="#">shit</a>
-                    <a class="dropdown-item" onclick="updateData(fuck_patriots,fuck_rams,'fuck')" href="#">fuck</a>
-                    <a class="dropdown-item" onclick="updateData(touchdown_patriots,touchdown_rams,'touchdown')" href="#">touchdown</a>
-                    <a class="dropdown-item" onclick="updateData(punt_patriots,punt_rams,'punt')" href="#">punt</a>
-                    <a class="dropdown-item" onclick="updateData(maroon_5_patriots,maroon_5_rams,'maroon 5')" href="#">maroon 5</a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <button class="dropdown-item" onclick="updateData(aggregate_patriots,aggregate_rams,'aggregate')" href="#">aggregate</button>
+                    <button class="dropdown-item" onclick="updateData(brady_patriots,brady_rams,'brady')" href="#">brady</button>
+                    <button class="dropdown-item" onclick="updateData(goff_patriots,goff_rams,'goff')" href="#">goff</button>
+                    <button class="dropdown-item" onclick="updateData(shit_patriots,shit_rams,'shit')" href="#">shit</button>
+                    <button class="dropdown-item" onclick="updateData(fuck_patriots,fuck_rams,'fuck')" href="#">fuck</button>
+                    <button class="dropdown-item" onclick="updateData(touchdown_patriots,touchdown_rams,'touchdown')" href="#">touchdown</button>
+                    <button class="dropdown-item" onclick="updateData(punt_patriots,punt_rams,'punt')" href="#">punt</button>
+                    <button class="dropdown-item" onclick="updateData(maroon_5_patriots,maroon_5_rams,'maroon 5')" href="#">maroon 5</button>
                 </div>
             </div>
             <hr>
@@ -262,7 +262,11 @@
       font: 14px sans-serif;
     }  
     svg:not(:root) {
-	overflow: visible;
+	  overflow: visible;
+    }
+    .dropdown-menu-right {
+      right: 0;
+      left: auto;
     }
  
 </style>
