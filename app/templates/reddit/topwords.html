@@ -13,7 +13,7 @@
             <p>I've always thought, from a political standpoint, Reddit is really interesting. Regardless of the political ideology, a community (or 'subreddit') exists where like-minded individuals discuss current events through that ideological lens. In these subreddits, I noticed that the same problems are discussed, but using very different language. 
             </p>
 
-            <p>In an effort to quantify these differences, I use <a href="https://praw.readthedocs.io/en/latest/">Reddit's open API, PRAW</a>, to scrape the most popular threads from four politically engaged subreddits.
+            <p>In an effort to quantify these differences, I use <a href="https://praw.readthedocs.io/en/latest/">Reddit's open API, PRAW</a>, to scrape the most popular threads from three politically engaged subreddits.
             I utilize Python to process the comments, Redis to push the words into a PSQL database, and Postgres to form the data objects on this page. This process is automated, running every 15 minutes on an AWS EC2 instance.
             In order to ensure that the same data is not processed twice, I store the unique comment ID of processed comments and then exlude these ID from the crawler. I only include first or second level comments with an overall positive score.
             You may notice that words such as 'the, and, then' etc. are not present in this data set. I consulted <a href='https://en.wikipedia.org/wiki/Most_common_words_in_English' >Wikipedia's list of most common words</a>
@@ -80,11 +80,8 @@
             <h5 id="news_header"></h5>
             <svg class="chart" id="area2" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
             <hr>
-            <h5 id="the_donald_header"></h5>
-            <svg class="chart" id="area3" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
-            <hr>
             <h5 id="worldnews_header"></h5>
-            <svg class="chart" id="area4" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
+            <svg class="chart" id="area3" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
             <hr>
         </section>
     </article>
@@ -96,8 +93,6 @@
     var day_politics = JSON.parse(JSONdata)
     var JSONdata = {{day_news|tojson}}    
     var day_news = JSON.parse(JSONdata)
-    var JSONdata = {{day_the_donald|tojson}}    
-    var day_the_donald = JSON.parse(JSONdata)
     var JSONdata = {{day_worldnews|tojson}}    
     var day_worldnews = JSON.parse(JSONdata)
     
@@ -105,8 +100,6 @@
     var month_politics = JSON.parse(JSONdata)
     var JSONdata = {{month_news|tojson}}    
     var month_news = JSON.parse(JSONdata)
-    var JSONdata = {{month_the_donald|tojson}}    
-    var month_the_donald = JSON.parse(JSONdata)
     var JSONdata = {{month_worldnews|tojson}}    
     var month_worldnews = JSON.parse(JSONdata)
     
@@ -114,8 +107,6 @@
     var year_politics = JSON.parse(JSONdata)
     var JSONdata = {{year_news|tojson}}    
     var year_news = JSON.parse(JSONdata)
-    var JSONdata = {{year_the_donald|tojson}}    
-    var year_the_donald = JSON.parse(JSONdata)
     var JSONdata = {{year_worldnews|tojson}}    
     var year_worldnews = JSON.parse(JSONdata)
 
@@ -123,8 +114,6 @@
     var custom_politics = JSON.parse(JSONdata)
     var JSONdata = {{custom_news|tojson}}    
     var custom_news = JSON.parse(JSONdata)
-    var JSONdata = {{custom_the_donald|tojson}}    
-    var custom_the_donald = JSON.parse(JSONdata)
     var JSONdata = {{custom_worldnews|tojson}}    
     var custom_worldnews = JSON.parse(JSONdata)
 
@@ -282,9 +271,7 @@
             d3.select("#chart2").remove()
             draw(day_news, "#area2", "chart2", metric)
             d3.select("#chart3").remove()
-            draw(day_the_donald, "#area3", "chart3",  metric)
-            d3.select("#chart4").remove()
-            draw(day_worldnews, "#area4", "chart4",  metric)
+            draw(day_worldnews, "#area3", "chart3",  metric)
 
             timeMessage = "over the last 24 hours."
             document.getElementById('dropdown-text').innerHTML = "Display data over the last 24 hours."; 
@@ -297,9 +284,7 @@
             d3.select("#chart2").remove()
             draw(month_news, "#area2", "chart2", metric)
             d3.select("#chart3").remove()
-            draw(month_the_donald, "#area3", "chart3",  metric)
-            d3.select("#chart4").remove()
-            draw(month_worldnews, "#area4", "chart4",  metric)
+            draw(month_worldnews, "#area3", "chart3",  metric)
 
             timeMessage = "over the last 30 days."
             document.getElementById('dropdown-text').innerHTML = "Display data over the last 30 days."; 
@@ -312,9 +297,7 @@
             d3.select("#chart2").remove()
             draw(year_news, "#area2", "chart2", metric)
             d3.select("#chart3").remove()
-            draw(year_the_donald, "#area3", "chart3",  metric)
-            d3.select("#chart4").remove()
-            draw(year_worldnews, "#area4", "chart4",  metric)
+            draw(year_worldnews, "#area3", "chart3",  metric)
 
             timeMessage = "over the last 365 days."
             document.getElementById('dropdown-text').innerHTML = "Display data over the last 365 days.";
@@ -328,9 +311,7 @@
             d3.select("#chart2").remove()
             draw(custom_news, "#area2", "chart2", metric)
             d3.select("#chart3").remove()
-            draw(custom_the_donald, "#area3", "chart3",  metric)
-            d3.select("#chart4").remove()
-            draw(custom_worldnews, "#area4", "chart4",  metric)
+            draw(custom_worldnews, "#area3", "chart3",  metric)
 
             timeMessage = "on " + getCookie("date") + "."
 
@@ -339,7 +320,6 @@
 
         document.getElementById('politics_header').innerHTML = "Top words on r/politics " + timeMessage; 
         document.getElementById('news_header').innerHTML = "Top words on r/news " + timeMessage; 
-        document.getElementById('the_donald_header').innerHTML = "Top words on r/the_donald " + timeMessage; 
         document.getElementById('worldnews_header').innerHTML = "Top words on r/worldnews " + timeMessage;
 
         document.cookie = "currentInterval="+interval

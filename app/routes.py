@@ -28,22 +28,18 @@ def topwords():
     json_custom_politics = []
     json_custom_news = []
     json_custom_worldnews = []
-    json_custom_thedonald = []
 
     json_day_politics = []
     json_day_news = []
     json_day_worldnews = []
-    json_day_thedonald = []
 
     json_month_politics = []
     json_month_news = []
     json_month_worldnews = []
-    json_month_thedonald = []
 
     json_year_politics = []
     json_year_news = []
     json_year_worldnews = []
-    json_year_thedonald = []
 
     interval = ''
 
@@ -54,17 +50,14 @@ def topwords():
         json_object_reddit(json_day_politics, "politics", "day", "default", cur)
         json_object_reddit(json_day_news, "news", "day", "default", cur)
         json_object_reddit(json_day_worldnews, "worldnews", "day", "default", cur)
-        json_object_reddit(json_day_thedonald, "the_donald", "day", "default", cur)
 
         json_object_reddit(json_month_politics, "politics", "month", "default", cur)
         json_object_reddit(json_month_news, "news", "month", "default", cur)
         json_object_reddit(json_month_worldnews, "worldnews", "month", "default", cur)
-        json_object_reddit(json_month_thedonald, "the_donald", "month", "default", cur)
 
         json_object_reddit(json_year_politics, "politics", "year", "default", cur)
         json_object_reddit(json_year_news, "news", "year", "default", cur)
         json_object_reddit(json_year_worldnews, "worldnews", "year", "default", cur)
-        json_object_reddit(json_year_thedonald, "the_donald", "year", "default", cur)
 
     if request.method == 'POST':
 
@@ -77,22 +70,18 @@ def topwords():
         json_object_reddit(json_custom_politics, "politics", interval, "custom", cur)
         json_object_reddit(json_custom_news, "news", interval, "custom", cur)
         json_object_reddit(json_custom_worldnews, "worldnews", interval, "custom", cur)
-        json_object_reddit(json_custom_thedonald, "the_donald", interval, "custom", cur)
 
         json_object_reddit(json_day_politics, "politics", "day", "default", cur)
         json_object_reddit(json_day_news, "news", "day", "default", cur)
         json_object_reddit(json_day_worldnews, "worldnews", "day", "default", cur)
-        json_object_reddit(json_day_thedonald, "the_donald", "day", "default", cur)
 
         json_object_reddit(json_month_politics, "politics", "month", "default", cur)
         json_object_reddit(json_month_news, "news", "month", "default", cur)
         json_object_reddit(json_month_worldnews, "worldnews", "month", "default", cur)
-        json_object_reddit(json_month_thedonald, "the_donald", "month", "default", cur)
 
         json_object_reddit(json_year_politics, "politics", "year", "default", cur)
         json_object_reddit(json_year_news, "news", "year", "default", cur)
         json_object_reddit(json_year_worldnews, "worldnews", "year", "default", cur)
-        json_object_reddit(json_year_thedonald, "the_donald", "year", "default", cur)
 
     close_connection(cur, conn)
 
@@ -101,19 +90,15 @@ def topwords():
                     argument=argument, 
                     custom_politics=json.dumps(json_custom_politics), 
                     custom_news=json.dumps(json_custom_news), 
-                    custom_the_donald=json.dumps(json_custom_thedonald), 
                     custom_worldnews = json.dumps(json_custom_worldnews),
                     day_politics=json.dumps(json_day_politics), 
                     day_news=json.dumps(json_day_news), 
-                    day_the_donald=json.dumps(json_day_thedonald), 
                     day_worldnews = json.dumps(json_day_worldnews),
                     month_politics=json.dumps(json_month_politics), 
                     month_news=json.dumps(json_month_news), 
-                    month_the_donald=json.dumps(json_month_thedonald), 
                     month_worldnews = json.dumps(json_month_worldnews),
                     year_politics=json.dumps(json_year_politics), 
                     year_news=json.dumps(json_year_news), 
-                    year_the_donald=json.dumps(json_year_thedonald), 
                     year_worldnews = json.dumps(json_year_worldnews))
 
 
@@ -131,7 +116,7 @@ def search():
         
         index = random.randint(0, 7)
 
-        words = ['wall','shutdown','shooting','hong','impeach','cuck','iran','mueller']
+        words = ['wall','shutdown','shooting','hong','impeach','coronavirus','iran','mueller']
 
         word = words[index]
 
@@ -142,7 +127,6 @@ def search():
     json_object_search(json_politics, "politics", word,  cur)
     json_object_search(json_news, "news", word,  cur)
     json_object_search(json_worldnews, "worldnews", word,  cur)
-    json_object_search(json_thedonald, "the_donald", word,  cur)
 
     close_connection(cur, conn)
 
@@ -150,7 +134,6 @@ def search():
                     word = word,                
                     politics=json.dumps(json_politics, default=str), 
                     news=json.dumps(json_news, default=str), 
-                    the_donald=json.dumps(json_thedonald, default=str), 
                     worldnews = json.dumps(json_worldnews, default=str))
 
 

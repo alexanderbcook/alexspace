@@ -53,14 +53,9 @@
             <svg class="chart" id="area2" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
             <hr>
             <p></p>
-            <h5>Usage over time of the word '{{word}}' on r/the_donald.</h5>
-            <p></p>
-            <svg class="chart" id="area3" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
-            <hr>
-            <p></p>
             <h5>Usage over time of the word '{{word}}' on r/worldnews.</h5>
             <p></p>
-            <svg class="chart" id="area4" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
+            <svg class="chart" id="area3" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet"></svg>
             <hr>
         </section>
     </article>
@@ -72,10 +67,8 @@
     var data1 = JSON.parse(JSONdata)
     var JSONdata = {{news|tojson}}    
     var data2 = JSON.parse(JSONdata)
-    var JSONdata = {{the_donald|tojson}}    
-    var data3 = JSON.parse(JSONdata)
     var JSONdata = {{worldnews|tojson}}    
-    var data4 = JSON.parse(JSONdata) 
+    var data3 = JSON.parse(JSONdata) 
 
 
     function validateForm(){
@@ -207,9 +200,7 @@
         d3.select("#chart2").remove()
         draw(data2, "#area2", "chart2", argument)
         d3.select("#chart3").remove()
-        draw(data3, "#area3", "chart3",  argument)
-        d3.select("#chart4").remove()
-        draw(data4, "#area4", "chart4",  argument)
+        draw(data4, "#area3", "chart3",  argument)
     }
 
     window.onload = updateData('count')
