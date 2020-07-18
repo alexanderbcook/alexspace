@@ -61,7 +61,7 @@
             <p>This change improved performance significantly, reducing load times by about 30%, to between 9-20s. While a step in the right direction, the application was not nearly snappy enough.</p>
         </section>
         <section>
-            <p>All of my queries involved summation of word counts over multiple days and distinct crawler runs (e.g. find the 10 most common words over the last day, month, year or get sum for everyday the word is present in the database). Additionally, since I was interested in word usage rates, I also needed total word counts for each time period. Enter the <a href='https://www.postgresql.org/docs/9.3/rules-materializedviews.html'>materialized view.</a></p>
+            <p>All of my queries involved summation of word counts over multiple days and distinct crawler runs (e.g. find the 10 most common words over the last day, month, year or get sum for everyday the word is present in the database). Additionally, since I was interested in word usage rates, I also needed total word counts for each time period. Enter the <a href='https://www.postgresql.org/docs/9.6/rules-materializedviews.html'>materialized view.</a></p>
             <p>Here is the definition for a few of the materialized views I use in this application.</p>
             <hr>
             <figure>
