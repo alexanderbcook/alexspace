@@ -15,6 +15,10 @@ def index():
 def performance():
     return render_template('/reddit/performance.html')
 
+@app.route('/reddit/outages')
+def outages():
+    return render_template('/reddit/outages.html')
+
 @app.route('/reddit/topwords', methods=['GET','POST']) 
 def topwords():
     conn = connect_to_database()
@@ -114,11 +118,9 @@ def search():
 
     if request.method == 'GET':
         
-        index = random.randint(0, 7)
-
-        words = ['wall','shutdown','shooting','hong','impeach','coronavirus','iran','mueller']
-
-        word = words[index]
+        words = ['coronavirus']
+        index = len(words)
+        word = words[index-1]
 
     if request.method == 'POST':
 
