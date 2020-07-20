@@ -171,8 +171,8 @@
             return false;
         }
         else{
-            document.cookie = "date="+(month + '/' + day + '/' + year)
-            document.cookie = "mode=custom"
+            document.cookie = "date="+(month + '/' + day + '/' + year) +"; SameSite=None; Secure"
+            document.cookie = "mode=custom; SameSite=None; Secure"
         }
     }
 
@@ -276,7 +276,7 @@
             timeMessage = "over the last 24 hours."
             document.getElementById('dropdown-text').innerHTML = "Display data over the last 24 hours."; 
 
-            document.cookie = "mode=default"
+            document.cookie = "mode=default; SameSite=None; Secure"
         }
         if(interval=='month'){
             d3.select("#chart1").remove()
@@ -289,7 +289,7 @@
             timeMessage = "over the last 30 days."
             document.getElementById('dropdown-text').innerHTML = "Display data over the last 30 days."; 
 
-            document.cookie = "mode=default"
+            document.cookie = "mode=default; SameSite=None; Secure"
         }
         if(interval=='year'){
             d3.select("#chart1").remove()
@@ -302,7 +302,7 @@
             timeMessage = "over the last 365 days."
             document.getElementById('dropdown-text').innerHTML = "Display data over the last 365 days.";
 
-            document.cookie = "mode=default"
+            document.cookie = "mode=default; SameSite=None; Secure"
         }
         if(interval=='custom'){
 
@@ -315,15 +315,15 @@
 
             timeMessage = "on " + getCookie("date") + "."
 
-            document.cookie = "mode=custom"
+            document.cookie = "mode=custom; SameSite=None; Secure"
         }
 
         document.getElementById('politics_header').innerHTML = "Top words on r/politics " + timeMessage; 
         document.getElementById('news_header').innerHTML = "Top words on r/news " + timeMessage; 
         document.getElementById('worldnews_header').innerHTML = "Top words on r/worldnews " + timeMessage;
 
-        document.cookie = "currentInterval="+interval
-        document.cookie = "currentMetric="+metric
+        document.cookie = "currentInterval="+ interval + "; SameSite=None; Secure"
+        document.cookie = "currentMetric="+ metric + "; SameSite=None; Secure "
 
     }
 
