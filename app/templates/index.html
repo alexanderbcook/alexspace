@@ -3,17 +3,19 @@
     <article>
         <header>
             <br>
-                <h4> Welcome! </h4>
-                <h5> Take a look, stay a while.</h5>
-            <br>
+            <h4> Welcome! </h4>
+            <h5> Take a look, stay a while.</h5>
         </header>
         <section>
-            <p>Hi, my name is Alex Cook. I am software engineer in Portland, OR. I graduated March 2016 from the University of Oregon with a degree in Applied Physics. Just before
-            my graduation, I was offered a data engineering position at a startup, <a href="https://www.carevoyance.com/">Carevoyance.</a>  I currently am employed in a Dev Ops position at <a href="https://www.wellsource.com/">Wellsource.</a> My time at Wellsource has been successful - I was named Employee of the Quarter Q3 2017 and Employee of the Year in 2018. </p>
-            <p> Most of my experience is back-end, building data warehouses, pipelines, and automating business applications. 
-            I learned a ton building this site- Linux administration, web server deployment, routing, and this has been a great opportunity to write a ton of Javascript and Python. It has also been an enjoyable way to dip my toe into front-end development.</p>
-            <p>This portfolio runs on PSQL, EC2, Nginx, and Flask. I also use Redis and Cron to utilize the data services I have built.</p>
-            <p>The website is stylized using Bootstrap 4. Visualizations were done using D3.js.</p>
+            <hr>
+            <h6> About Me</h6>
+            <p>Hi, my name is Alex Cook. I am a software engineer in Portland, OR. Sometimes I live in Mexico too. I graduated March 2016 from the University of Oregon with a degree in Applied Physics. Just before
+            my graduation, I was offered a data engineering position at a startup, <a href="https://www.carevoyance.com/">Carevoyance.</a>  I currently am employed in a Dev Ops position at <a href="https://www.wellsource.com/">Wellsource.</a> Working at Wellsource has been really fun. I was named Employee of the Quarter in Spring of 2017 and Employee of the Year in 2019. </p>
+            <p>I enjoy being outdoors, cooking, building tiny computers and technology.</p>
+            <hr>
+            <h6>About the Tech</h6>
+            <p>This webapp runs on an t2.micro CentOS 7 Amazon EC2 instance. Data is stored on <a href="https://www.postgresql.org">PostgreSQL 9.6.</a> I use <a href="https://flask.palletsprojects.com/en/1.1.x/">Flask</a>, a Python-based micro web framework and a Python-based server, <a href="https://gunicorn.org/">Gunicorn</a> to host this application. <a href="https://www.nginx.com/">Nginx</a> functions as a reverse proxy. HTTPS certificate provided by <a href="https://letsencrypt.org/">Let's Encrypt.</a></p>
+            <p>I use a little bit of jQuery, but the rest of the functionality is controlled via pure Javascript. I use <a href="https://redis.io">Redis </a> and <a href="https://en.wikipedia.org/wiki/Cron">Cron</a> to support data services and infrastructure tasks. The website is stylized using <a href="https://getbootstrap.com/">Bootstrap 4.</a> Visualizations were done using <a href="https://d3js.org/">D3.js.</a></p>
             <p>You can checkout the source code for this project <a href="https://www.github.com/alexanderbcook/alexspace">here.</a></p>
             <hr>
         </section>
@@ -22,7 +24,9 @@
                 <p><a href="{{ url_for('static', filename='Resume.pdf') }}">Here's my resume.</a></p>
                 <p><a href="https://www.github.com/alexanderbcook">Here's my GitHub.</a></p>
                 <p><a href="https://www.linkedin.com/in/alex-cook-853b59132/">Here's my LinkedIn.</a></p>
+                <br>
             </nav>
+            <hr>
         </section>
      </article>
      <script>
