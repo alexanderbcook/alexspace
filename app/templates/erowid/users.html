@@ -15,9 +15,9 @@
         </section>
         <section>
           <hr>
-          <h5 id="pie-chart-title"></h5>
+          <h5 id="pie-title"></h5>
           <div class="dropdown">
-              <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="pie-chart-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="pie-chart-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a class="dropdown-item" onclick="updateGenderData('aggregate')">Display aggregate data.</a>
@@ -30,7 +30,7 @@
                   <a class="dropdown-item" onclick="updateGenderData('MDMA')">Display MDMA data.</a>
               </div>
           </div>
-          <svg viewBox="0 0 600 250" preserveAspectRatio="xMidYMid meet" id="pie-chart"></svg>
+          <svg viewBox="0 0 600 250"  preserveAspectRatio="xMidYMid meet" id="pie-chart-container"></svg>
           <hr>
         </section>
         <section>
@@ -43,33 +43,33 @@
           <div class="container">
             <div class="row">
               <div class="col">
-                <h5 id="posts"></h5>
+                <h5 id="post-title"></h5>
               </div>
               <div class="col">
-                <h5 id="views"></h5>
+                <h5 id="view-title"></h5>
               </div>
             </div>
             <div class="row" id="buttonContainer">
               <div class="dropdown">
-                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="bar-chart-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" onclick="updateData2('aggregate')">Display aggregate data.</a>
-                  <a class="dropdown-item" onclick="updateData2('amphetamines')">Display amphetamines data.</a>
-                  <a class="dropdown-item" onclick="updateData2('cannabis')">Display cannabis data.</a>
-                  <a class="dropdown-item" onclick="updateData2('cocaine')">Display cocaine data.</a>
-                  <a class="dropdown-item" onclick="updateData2('ketamine')">Display ketamine data.</a>
-                  <a class="dropdown-item" onclick="updateData2('LSD')">Display LSD data.</a>
-                  <a class="dropdown-item" onclick="updateData2('mushrooms')">Display mushrooms data.</a>
-                  <a class="dropdown-item" onclick="updateData2('MDMA')">Display MDMA data.</a>
+                  <a class="dropdown-item" onclick="updateSiteData('aggregate')">Display aggregate data.</a>
+                  <a class="dropdown-item" onclick="updateSiteData('amphetamines')">Display amphetamines data.</a>
+                  <a class="dropdown-item" onclick="updateSiteData('cannabis')">Display cannabis data.</a>
+                  <a class="dropdown-item" onclick="updateSiteData('cocaine')">Display cocaine data.</a>
+                  <a class="dropdown-item" onclick="updateSiteData('ketamine')">Display ketamine data.</a>
+                  <a class="dropdown-item" onclick="updateSiteData('LSD')">Display LSD data.</a>
+                  <a class="dropdown-item" onclick="updateSiteData('mushrooms')">Display mushrooms data.</a>
+                  <a class="dropdown-item" onclick="updateSiteData('MDMA')">Display MDMA data.</a>
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <svg class="graphContainer" viewBox="0 0 400 400"  preserveAspectRatio="xMidYMid meet" id="area2"> </svg>
+                <svg class="graphContainer" viewBox="0 0 400 400"  preserveAspectRatio="xMidYMid meet" id="post-count-container"> </svg>
               </div>
               <div class="col">
-                <svg class="graphContainer" viewBox="0 0 400 400"  preserveAspectRatio="xMidYMid meet" id="area3"></svg>
+                <svg class="graphContainer" viewBox="0 0 400 400"  preserveAspectRatio="xMidYMid meet" id="view-count-container"></svg>
               </div>
             </div>
           </div>
@@ -136,18 +136,18 @@ function updateGenderData(value){
         d3.select("#pie-chart").remove()
         drawPieChart(genders_mdma, value)
     }
-
     if (value == "MDMA" || value == "LSD"){
-      document.getElementById('pie-chart-title').innerHTML = value + " Forum Post Authors by Gender"; 
+      document.getElementById('pie-title').innerHTML = value + " Forum Post Authors by Gender"; 
     }
     else if (value == "aggregate"){
-      document.getElementById('pie-chart-title').innerHTML = "Forum Post Authors by Gender"; 
+      document.getElementById('pie-title').innerHTML = "Forum Post Authors by Gender"    
     }
     else{
-      document.getElementById('pie-chart-title').innerHTML = value.charAt(0).toUpperCase() + value.slice(1) + " Forum Post Authors by Gender ";
+      document.getElementById('pie-title').innerHTML = value.charAt(0).toUpperCase() + value.slice(1) + " Forum Post Authors by Gender "; 
     }
 
-    document.getElementById('pie-chart-button').innerHTML = "Display " + value + " data.";
+    document.getElementById('pie-chart-dropdown').innerHTML = "Display " + value + " data.";
+ 
 }
 
 function drawPieChart(data,set){
@@ -157,7 +157,7 @@ function drawPieChart(data,set){
           height = 250 - margin.top - margin.bottom,
           radius = Math.min(width, height) / 2;
 
-  var svg = d3.select("#pie-chart").append("svg")
+  var svg = d3.select("#pie-chart-container").append("svg")
         .attr("width", width+margin.left+margin.right)
         .attr("height", height+margin.top+margin.bottom)
         .attr("id", "pie-chart")
@@ -234,78 +234,76 @@ var views_ketamine = JSON.parse(JSONdata)
 var JSONdata = {{views_cocaine|tojson}}
 var views_cocaine = JSON.parse(JSONdata)
 
-function updateData2(value){
+function updateSiteData(value){
     if (value == 'aggregate'){
-        d3.select("#second").remove()
-        d3.select("#third").remove()
-        draw2(views,years,value)
+        d3.select("#post-count-chart").remove()
+        d3.select("#view-count-chart").remove()
+        drawBarChart(views, years, value)
     }
     if (value == 'cannabis'){
-        d3.select("#second").remove()
-        d3.select("#third").remove()
-        draw2(views_cannabis,years_cannabis,value)
+        d3.select("#post-count-chart").remove()
+        d3.select("#view-count-chart").remove()
+        drawBarChart(views_cannabis, years_cannabis, value)
     }
     if (value == 'amphetamines'){
-        d3.select("#second").remove()
-        d3.select("#third").remove()
-        draw2(views_amphetamines,years_amphetamines,value)
+        d3.select("#post-count-chart").remove()
+        d3.select("#view-count-chart").remove()
+        drawBarChart(views_amphetamines, years_amphetamines, value)
     }
     if (value == 'LSD'){
-        d3.select("#second").remove()
-        d3.select("#third").remove()
-        draw2(views_lsd,years_lsd,value)
+        d3.select("#post-count-chart").remove()
+        d3.select("#view-count-chart").remove()
+        drawBarChart(views_lsd, years_lsd, value)
     }
     if (value == 'mushrooms'){
-        d3.select("#second").remove()
-        d3.select("#third").remove()
-        draw2(views_mushrooms,years_mushrooms,value)
+        d3.select("#post-count-chart").remove()
+        d3.select("#view-count-chart").remove()
+        drawBarChart(views_mushrooms, years_mushrooms, value)
     }
     if (value == 'ketamine'){
-        d3.select("#second").remove()
-        d3.select("#third").remove()
-        draw2(views_ketamine,years_ketamine,value)
+        d3.select("#post-count-chart").remove()
+        d3.select("#view-count-chart").remove()
+        drawBarChart(views_ketamine, years_ketamine, value)
     }
     if (value == 'cocaine'){
-        d3.select("#second").remove()
-        d3.select("#third").remove()
-        draw2(views_cocaine,years_cocaine,value)
+        d3.select("#post-count-chart").remove()
+        d3.select("#view-count-chart").remove()
+        drawBarChart(views_cocaine, years_cocaine, value)
     }
     if (value == 'MDMA'){
-        d3.select("#second").remove()
-        d3.select("#third").remove()
-        draw2(views_mdma,years_mdma,value)
+        d3.select("#post-count-chart").remove()
+        d3.select("#view-count-chart").remove()
+        drawBarChart(views_mdma, years_mdma, value)
     }
     if (value == "MDMA" || value == "LSD"){
-                document.getElementById('posts').innerHTML = value + " Forum Posts by Year"; 
-                document.getElementById('views').innerHTML = value + " Forum Views by Year"; 
-
-            }
+      ocument.getElementById('post-title').innerHTML = value + " Forum Posts by Year"; 
+      document.getElementById('view-title').innerHTML = value + " Forum Views by Year"; 
+    }
     else if (value == "aggregate"){
-                document.getElementById('posts').innerHTML = "Forum Posts by Year" 
-                document.getElementById('views').innerHTML = "Forum Views by Year"    
-   
+      document.getElementById('post-title').innerHTML = "Forum Posts by Year" 
+      document.getElementById('view-title').innerHTML = "Forum Views by Year"    
     }
     else{
-                document.getElementById('posts').innerHTML = value.charAt(0).toUpperCase() + value.slice(1) +  " Forum Posts by Year" 
-                document.getElementById('views').innerHTML = value.charAt(0).toUpperCase() + value.slice(1) +  " Forum Views by Year" 
-            }
+      document.getElementById('post-title').innerHTML = value.charAt(0).toUpperCase() + value.slice(1) +  " Forum Posts by Year" 
+      document.getElementById('view-title').innerHTML = value.charAt(0).toUpperCase() + value.slice(1) +  " Forum Views by Year" 
+    }
 
-    document.getElementById('dropdownMenuButton2').innerHTML = "Display " + value + " data.";
+    document.getElementById('bar-chart-dropdown').innerHTML = "Display " + value + " data.";
  
 }
-window.onload = updateData2('aggregate')
+window.onload = updateSiteData('aggregate')
 
 
-function draw2(viewData, yearData, set){
+function drawBarChart(viewData, yearData, set){
 
   var margin = {top: 20, right:0, bottom:30, left:60},
           width = 400 - margin.left - margin.right,
           height = 400 - margin.top - margin.bottom
 
-  var svg = d3.select("#area2").append("svg")
+  var svg = d3.select("#post-count-container").append("svg")
         .attr("width", width+margin.left+margin.right)
         .attr("height", height+margin.top+margin.bottom)
-        .attr("id", "second")
+        .attr("id", "post-count-chart")
 
   var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
       y = d3.scaleLinear().rangeRound([height, 0]);
@@ -353,10 +351,10 @@ function draw2(viewData, yearData, set){
         .text(function(d) { return d.year+ ": " + d.count + " forum posts" });;
 
 
-  var svg = d3.select("#area3").append("svg")
+  var svg = d3.select("#view-count-container").append("svg")
         .attr("width", width+margin.left+margin.right)
         .attr("height", height+margin.top+margin.bottom)
-        .attr("id", "third")
+        .attr("id", "view-count-chart")
 
 
   var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
