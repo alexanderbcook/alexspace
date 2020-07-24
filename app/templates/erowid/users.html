@@ -236,47 +236,47 @@ var views_cocaine = JSON.parse(JSONdata)
 
 function updateSiteData(value){
     if (value == 'aggregate'){
-        d3.select("#post-count-chart").remove()
-        d3.select("#view-count-chart").remove()
-        drawBarChart(views, years, value)
+      d3.select("#post-count-chart").remove()
+      d3.select("#view-count-chart").remove()
+      drawBarChart(views, years, value)
     }
     if (value == 'cannabis'){
-        d3.select("#post-count-chart").remove()
-        d3.select("#view-count-chart").remove()
-        drawBarChart(views_cannabis, years_cannabis, value)
+      d3.select("#post-count-chart").remove()
+      d3.select("#view-count-chart").remove()
+      drawBarChart(views_cannabis, years_cannabis, value)
     }
     if (value == 'amphetamines'){
-        d3.select("#post-count-chart").remove()
-        d3.select("#view-count-chart").remove()
-        drawBarChart(views_amphetamines, years_amphetamines, value)
+      d3.select("#post-count-chart").remove()
+      d3.select("#view-count-chart").remove()
+      drawBarChart(views_amphetamines, years_amphetamines, value)
     }
     if (value == 'LSD'){
-        d3.select("#post-count-chart").remove()
-        d3.select("#view-count-chart").remove()
-        drawBarChart(views_lsd, years_lsd, value)
+      d3.select("#post-count-chart").remove()
+      d3.select("#view-count-chart").remove()
+      drawBarChart(views_lsd, years_lsd, value)
     }
     if (value == 'mushrooms'){
-        d3.select("#post-count-chart").remove()
-        d3.select("#view-count-chart").remove()
-        drawBarChart(views_mushrooms, years_mushrooms, value)
+      d3.select("#post-count-chart").remove()
+      d3.select("#view-count-chart").remove()
+      drawBarChart(views_mushrooms, years_mushrooms, value)
     }
     if (value == 'ketamine'){
-        d3.select("#post-count-chart").remove()
-        d3.select("#view-count-chart").remove()
-        drawBarChart(views_ketamine, years_ketamine, value)
+      d3.select("#post-count-chart").remove()
+      d3.select("#view-count-chart").remove()
+      drawBarChart(views_ketamine, years_ketamine, value)
     }
     if (value == 'cocaine'){
-        d3.select("#post-count-chart").remove()
-        d3.select("#view-count-chart").remove()
-        drawBarChart(views_cocaine, years_cocaine, value)
+      d3.select("#post-count-chart").remove()
+      d3.select("#view-count-chart").remove()
+      drawBarChart(views_cocaine, years_cocaine, value)
     }
     if (value == 'MDMA'){
-        d3.select("#post-count-chart").remove()
-        d3.select("#view-count-chart").remove()
-        drawBarChart(views_mdma, years_mdma, value)
+      d3.select("#post-count-chart").remove()
+      d3.select("#view-count-chart").remove()
+      drawBarChart(views_mdma, years_mdma, value)
     }
     if (value == "MDMA" || value == "LSD"){
-      ocument.getElementById('post-title').innerHTML = value + " Forum Posts by Year"; 
+      document.getElementById('post-title').innerHTML = value + " Forum Posts by Year"; 
       document.getElementById('view-title').innerHTML = value + " Forum Views by Year"; 
     }
     else if (value == "aggregate"){
@@ -287,9 +287,7 @@ function updateSiteData(value){
       document.getElementById('post-title').innerHTML = value.charAt(0).toUpperCase() + value.slice(1) +  " Forum Posts by Year" 
       document.getElementById('view-title').innerHTML = value.charAt(0).toUpperCase() + value.slice(1) +  " Forum Views by Year" 
     }
-
     document.getElementById('bar-chart-dropdown').innerHTML = "Display " + value + " data.";
- 
 }
 window.onload = updateSiteData('aggregate')
 
@@ -341,7 +339,7 @@ function drawBarChart(viewData, yearData, set){
   g.selectAll(".bar")
     .data(yearData)
     .enter().append("rect")
-      .attr("id","bar1")
+      .attr("id","year-bar-chart")
       .attr("class", "bar")
       .attr("x", function(d) { return x(d.year); })
       .attr("y", function(d) { return y(d.count); })
@@ -388,7 +386,7 @@ function drawBarChart(viewData, yearData, set){
   g.selectAll(".bar")
     .data(viewData)
     .enter().append("rect")
-      .attr("id","bar2")
+      .attr("id","view-bar-chart")
       .attr("class", "bar")
       .attr("x", function(d) { return x(d.year); })
       .attr("y", function(d) { return y(d.views); })
@@ -418,21 +416,21 @@ p {
   float: left;
 }
 
-#bar1 {
+#year-bar-chart {
   fill: #9B59B6;
   opacity:.75;
 }
 
-#bar1:hover {
+#year-bar-chart:hover {
   opacity:.9;
 }
 
-#bar2 {
+#view-bar-chart {
   fill: #E74C3C;
   opacity:.75;
 }
 
-#bar2:hover {
+#view-bar-chart:hover {
   opacity:.9;
 }
 
