@@ -15,22 +15,22 @@
         </section>
         <section>
           <hr>
-          <h5 id="pie"></h5>
+          <h5 id="pie-chart-title"></h5>
           <div class="dropdown">
-              <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="pie-chart-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" onclick="updateData('aggregate')">Display aggregate data.</a>
-                  <a class="dropdown-item" onclick="updateData('amphetamines')">Display amphetamines data.</a>
-                  <a class="dropdown-item" onclick="updateData('cannabis')">Display cannabis data.</a>
-                  <a class="dropdown-item" onclick="updateData('cocaine')">Display cocaine data.</a>
-                  <a class="dropdown-item" onclick="updateData('ketamine')">Display ketamine data.</a>
-                  <a class="dropdown-item" onclick="updateData('LSD')">Display LSD data.</a>
-                  <a class="dropdown-item" onclick="updateData('mushrooms')">Display mushrooms data.</a>
-                  <a class="dropdown-item" onclick="updateData('MDMA')">Display MDMA data.</a>
+                  <a class="dropdown-item" onclick="updateGenderData('aggregate')">Display aggregate data.</a>
+                  <a class="dropdown-item" onclick="updateGenderData('amphetamines')">Display amphetamines data.</a>
+                  <a class="dropdown-item" onclick="updateGenderData('cannabis')">Display cannabis data.</a>
+                  <a class="dropdown-item" onclick="updateGenderData('cocaine')">Display cocaine data.</a>
+                  <a class="dropdown-item" onclick="updateGenderData('ketamine')">Display ketamine data.</a>
+                  <a class="dropdown-item" onclick="updateGenderData('LSD')">Display LSD data.</a>
+                  <a class="dropdown-item" onclick="updateGenderData('mushrooms')">Display mushrooms data.</a>
+                  <a class="dropdown-item" onclick="updateGenderData('MDMA')">Display MDMA data.</a>
               </div>
           </div>
-          <svg viewBox="0 0 600 250"  preserveAspectRatio="xMidYMid meet" id="area1"></svg>
+          <svg viewBox="0 0 600 250" preserveAspectRatio="xMidYMid meet" id="pie-chart"></svg>
           <hr>
         </section>
         <section>
@@ -103,64 +103,64 @@ var genders_ketamine = JSON.parse(JSONdata)
 var JSONdata = {{genders_cocaine|tojson}}
 var genders_cocaine = JSON.parse(JSONdata)
 
-function updateData(val){
-    if (val == 'aggregate'){
-        d3.select("#first").remove()
-        draw(genders,val)
+function updateGenderData(value){
+    if (value == 'aggregate'){
+        d3.select("#pie-chart").remove()
+        drawPieChart(genders, value)
     }
-    if (val == 'cannabis'){
-        d3.select("#first").remove()
-        draw(genders_cannabis,val)
+    if (value == 'cannabis'){
+        d3.select("#pie-chart").remove()
+        drawPieChart(genders_cannabis, value)
     }
-    if (val == 'amphetamines'){
-        d3.select("#first").remove()
-        draw(genders_amphetamines,val)
+    if (value == 'amphetamines'){
+        d3.select("#pie-chart").remove()
+        drawPieChart(genders_amphetamines, value)
     }
-    if (val == 'LSD'){
-        d3.select("#first").remove()
-        draw(genders_lsd,val)
+    if (value == 'LSD'){
+        d3.select("#pie-chart").remove()
+        drawPieChart(genders_lsd, value)
     }
-    if (val == 'mushrooms'){
-        d3.select("#first").remove()
-        draw(genders_mushrooms,val)
+    if (value == 'mushrooms'){
+        d3.select("#pie-chart").remove()
+        drawPieChart(genders_mushrooms, value)
     }
-    if (val == 'ketamine'){
-        d3.select("#first").remove()
-        draw(genders_ketamine, val)
+    if (value == 'ketamine'){
+        d3.select("#pie-chart").remove()
+        drawPieChart(genders_ketamine, value)
     }
-    if (val == 'cocaine'){
-        d3.select("#first").remove()
-        draw(genders_cocaine, val)
+    if (value == 'cocaine'){
+        d3.select("#pie-chart").remove()
+        drawPieChart(genders_cocaine, value)
     }
-    if (val == 'MDMA'){
-        d3.select("#first").remove()
-        draw(genders_mdma, val)
+    if (value == 'MDMA'){
+        d3.select("#pie-chart").remove()
+        drawPieChart(genders_mdma, value)
     }
-    if (val == "MDMA" || val == "LSD"){
-                document.getElementById('pie').innerHTML = val + " Forum Post Authors by Gender"; 
-            }
-    else if (val == "aggregate"){
-                document.getElementById('pie').innerHTML = "Forum Post Authors by Gender"    
+
+    if (value == "MDMA" || value == "LSD"){
+      document.getElementById('pie-chart-title').innerHTML = value + " Forum Post Authors by Gender"; 
+    }
+    else if (value == "aggregate"){
+      document.getElementById('pie-chart-title').innerHTML = "Forum Post Authors by Gender"; 
     }
     else{
-                document.getElementById('pie').innerHTML = val.charAt(0).toUpperCase() + val.slice(1) + " Forum Post Authors by Gender "; 
-            }
+      document.getElementById('pie-chart-title').innerHTML = value.charAt(0).toUpperCase() + value.slice(1) + " Forum Post Authors by Gender ";
+    }
 
-    document.getElementById('dropdownMenuButton1').innerHTML = "Display " + val + " data.";
- 
+    document.getElementById('pie-chart-button').innerHTML = "Display " + value + " data.";
 }
 
-function draw(data,set){
+function drawPieChart(data,set){
 
   var margin = {top: 0, right:0, bottom:0, left:0},
           width = 600 - margin.left - margin.right,
           height = 250 - margin.top - margin.bottom,
           radius = Math.min(width, height) / 2;
 
-  var svg = d3.select("#area1").append("svg")
+  var svg = d3.select("#pie-chart").append("svg")
         .attr("width", width+margin.left+margin.right)
         .attr("height", height+margin.top+margin.bottom)
-        .attr("id", "first")
+        .attr("id", "pie-chart")
         .attr("radius", radius)
 
   var g = svg.append("g")
@@ -196,9 +196,9 @@ function draw(data,set){
         .attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
         .attr("dy", "0.35em")
         .text(function(d) { return d.data.gender; })
-
 }
-window.onload = updateData('aggregate')
+
+window.onload = updateGenderData('aggregate')
 
 var JSONdata = {{years|tojson}}    
 var years = JSON.parse(JSONdata)
@@ -234,63 +234,63 @@ var views_ketamine = JSON.parse(JSONdata)
 var JSONdata = {{views_cocaine|tojson}}
 var views_cocaine = JSON.parse(JSONdata)
 
-function updateData2(val){
-    if (val == 'aggregate'){
+function updateData2(value){
+    if (value == 'aggregate'){
         d3.select("#second").remove()
         d3.select("#third").remove()
-        draw2(views,years,val)
+        draw2(views,years,value)
     }
-    if (val == 'cannabis'){
+    if (value == 'cannabis'){
         d3.select("#second").remove()
         d3.select("#third").remove()
-        draw2(views_cannabis,years_cannabis,val)
+        draw2(views_cannabis,years_cannabis,value)
     }
-    if (val == 'amphetamines'){
+    if (value == 'amphetamines'){
         d3.select("#second").remove()
         d3.select("#third").remove()
-        draw2(views_amphetamines,years_amphetamines,val)
+        draw2(views_amphetamines,years_amphetamines,value)
     }
-    if (val == 'LSD'){
+    if (value == 'LSD'){
         d3.select("#second").remove()
         d3.select("#third").remove()
-        draw2(views_lsd,years_lsd,val)
+        draw2(views_lsd,years_lsd,value)
     }
-    if (val == 'mushrooms'){
+    if (value == 'mushrooms'){
         d3.select("#second").remove()
         d3.select("#third").remove()
-        draw2(views_mushrooms,years_mushrooms,val)
+        draw2(views_mushrooms,years_mushrooms,value)
     }
-    if (val == 'ketamine'){
+    if (value == 'ketamine'){
         d3.select("#second").remove()
         d3.select("#third").remove()
-        draw2(views_ketamine,years_ketamine,val)
+        draw2(views_ketamine,years_ketamine,value)
     }
-    if (val == 'cocaine'){
+    if (value == 'cocaine'){
         d3.select("#second").remove()
         d3.select("#third").remove()
-        draw2(views_cocaine,years_cocaine,val)
+        draw2(views_cocaine,years_cocaine,value)
     }
-    if (val == 'MDMA'){
+    if (value == 'MDMA'){
         d3.select("#second").remove()
         d3.select("#third").remove()
-        draw2(views_mdma,years_mdma,val)
+        draw2(views_mdma,years_mdma,value)
     }
-    if (val == "MDMA" || val == "LSD"){
-                document.getElementById('posts').innerHTML = val + " Forum Posts by Year"; 
-                document.getElementById('views').innerHTML = val + " Forum Views by Year"; 
+    if (value == "MDMA" || value == "LSD"){
+                document.getElementById('posts').innerHTML = value + " Forum Posts by Year"; 
+                document.getElementById('views').innerHTML = value + " Forum Views by Year"; 
 
             }
-    else if (val == "aggregate"){
+    else if (value == "aggregate"){
                 document.getElementById('posts').innerHTML = "Forum Posts by Year" 
                 document.getElementById('views').innerHTML = "Forum Views by Year"    
    
     }
     else{
-                document.getElementById('posts').innerHTML = val.charAt(0).toUpperCase() + val.slice(1) +  " Forum Posts by Year" 
-                document.getElementById('views').innerHTML = val.charAt(0).toUpperCase() + val.slice(1) +  " Forum Views by Year" 
+                document.getElementById('posts').innerHTML = value.charAt(0).toUpperCase() + value.slice(1) +  " Forum Posts by Year" 
+                document.getElementById('views').innerHTML = value.charAt(0).toUpperCase() + value.slice(1) +  " Forum Views by Year" 
             }
 
-    document.getElementById('dropdownMenuButton2').innerHTML = "Display " + val + " data.";
+    document.getElementById('dropdownMenuButton2').innerHTML = "Display " + value + " data.";
  
 }
 window.onload = updateData2('aggregate')

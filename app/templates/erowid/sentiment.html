@@ -25,12 +25,12 @@
         <section>
             <p>The first thing I'll do is share some sentences that my analysis concluded to be very positive and a few that were interpeted as negative sentences.</p>
             <br>
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <ul class="nav nav-tabs" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" id="positive-tab" data-toggle="tab" href="#positive" role="tab" aria-controls="positive" aria-selected="true">Positive Sentences</a>
+                <a class="nav-link active" id="positive-tab" data-toggle="tab" href="#positive" aria-controls="positive" aria-selected="true">Positive Sentences</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="negative-tab" data-toggle="tab" href="#negative" role="negative" aria-controls="negative" aria-selected="false">Negative Sentences</a>
+                <a class="nav-link" id="negative-tab" data-toggle="tab" href="#negative" aria-controls="negative" aria-selected="false">Negative Sentences</a>
               </li>
             </ul>
             <div class="tab-content">
@@ -61,11 +61,11 @@
             <hr>
             <h5>Average Sentiment by Substance, Gender</h5>
             <div class="btn-group" role="group" aria-label="Gender options">
-              <button type="button" class="btn btn-secondary btn-sm" onclick="updateData('female')">Female</button>
-              <button type="button" class="btn btn-secondary btn-sm" onclick="updateData('both')">Both Genders</button>
-              <button type="button" class="btn btn-secondary btn-sm" onclick="updateData('male')">Male</button>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="updateSentimentData('female')">Female</button>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="updateSentimentData('aggregate')">Both Genders</button>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="updateSentimentData('male')">Male</button>
             </div>
-            <svg class="chart" id="area1" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet"></svg>
+            <svg class="chart" id="sentiment-chart" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet"></svg>
             <hr>
             <p> The results were not as drastic as I was anticipating. Few things to point out, though. Notice how closely the 'both genders' data tracks the 'male' options are. Given that I am recording 'average' values, this implies that men shared stories than women did. Women generally share more negative stories than those shared by men. Women did tend to enjoy MDMA and mushrooms more then men. Stories about MDMA were by far the most positive. 
             </p>
@@ -79,16 +79,16 @@
                 <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" onclick="updateData2('amphetamines')">Display amphetamines data.</a>
-                    <a class="dropdown-item" onclick="updateData2('cannabis')">Display cannabis data.</a>
-                    <a class="dropdown-item" onclick="updateData2('cocaine')">Display cocaine data.</a>
-                    <a class="dropdown-item" onclick="updateData2('ketamine')">Display ketamine data.</a>
-                    <a class="dropdown-item" onclick="updateData2('LSD')">Display LSD data.</a>
-                    <a class="dropdown-item" onclick="updateData2('MDMA')">Display MDMA data.</a>
-                    <a class="dropdown-item" onclick="updateData2('mushrooms')">Display mushrooms data.</a>
+                    <a class="dropdown-item" onclick="updateCategoryData('amphetamines')">Display amphetamines data.</a>
+                    <a class="dropdown-item" onclick="updateCategoryData('cannabis')">Display cannabis data.</a>
+                    <a class="dropdown-item" onclick="updateCategoryData('cocaine')">Display cocaine data.</a>
+                    <a class="dropdown-item" onclick="updateCategoryData('ketamine')">Display ketamine data.</a>
+                    <a class="dropdown-item" onclick="updateCategoryData('LSD')">Display LSD data.</a>
+                    <a class="dropdown-item" onclick="updateCategoryData('MDMA')">Display MDMA data.</a>
+                    <a class="dropdown-item" onclick="updateCategoryData('mushrooms')">Display mushrooms data.</a>
                 </div>
             </div>
-            <svg class="chart" id="area2" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet"></svg>
+            <svg class="chart" id="category-chart" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet"></svg>
             <hr>
             <p> One interesting thing to note is that the 'Relationships' category of ketamine is the most positive of any substance while the 'Health Problems' category for ketamine is the most negative of any substance. Clearly, a polar set of stories relating to the substance. This visualization also quite clearly demonstrates the generally positive nature of stories pertaining to MDMA and Mushrooms. </p>
             <p>I'm quite fond of the way this visualization turned out and I think that data is pretty interesting.</p>
@@ -101,31 +101,31 @@
     document.getElementById('page-title').innerHTML = "How Do People Feel About Drugs?"    
 
     var JSONdata = {{both|tojson}}
-    var data1 = JSON.parse(JSONdata)
+    var aggregateData = JSON.parse(JSONdata)
     var JSONdata = {{female|tojson}}
-    var data2 = JSON.parse(JSONdata)
+    var femaleData = JSON.parse(JSONdata)
     var JSONdata = {{male|tojson}}
-    var data3 = JSON.parse(JSONdata)
+    var maleData = JSON.parse(JSONdata)
 
     var substance = function(data){return data.substance}
     var sentiment = function(data){return data.sentiment}
     
-    function updateData(set){
-        if (set == 'both'){
-            d3.select("#first").remove()
-            draw(data1, set)
+    function updateSentimentData(set){
+        if (set == 'aggregate'){
+            d3.select("#sentimentChart").remove()
+            drawSentimentChart(aggregateData, set)
         }
         if (set == 'female'){
-            d3.select("#first").remove()
-            draw(data2, set)
+            d3.select("#sentimentChart").remove()
+            drawSentimentChart(femaleData, set)
         }
         if (set == 'male'){
-            d3.select("#first").remove()
-            draw(data3, set)
+            d3.select("#sentimentChart").remove()
+            drawSentimentChart(maleData, set)
         }        
     }
     
-    function draw(data, set){
+    function drawSentimentChart(data, set){
 
         var margin = {top: 25, right:0, bottom:55, left:40},
                 width = 800 - margin.left - margin.right,
@@ -150,10 +150,10 @@
         x.domain(data.map(function(d){return d.substance;}))
         y.domain([0, .15])
 
-        var svg = d3.select("#area1").append("svg")
+        var svg = d3.select("#sentiment-chart").append("svg")
             .attr("width", width+margin.left+margin.right)
             .attr("height", height+margin.top+margin.bottom)
-            .attr("id", "first")
+            .attr("id", "sentimentChart")
             .append("g")
             .attr("transform", "translate(" + margin.left+ "," + margin.top + ")");
 
@@ -194,51 +194,51 @@
 
     }
 
-    window.onload = draw(data1, 'both')
+    window.onload = drawSentimentChart(aggregateData, 'aggregate')
 
     var JSONdata = {{cannabis|tojson}}
-    var can = JSON.parse(JSONdata)
+    var cannabis = JSON.parse(JSONdata)
     var JSONdata = {{amphetamines|tojson}}
-    var amp = JSON.parse(JSONdata)
+    var amphetamines = JSON.parse(JSONdata)
     var JSONdata = {{lsd|tojson}}
     var lsd = JSON.parse(JSONdata)
     var JSONdata = {{mushrooms|tojson}}
-    var mus = JSON.parse(JSONdata)
+    var mushrooms = JSON.parse(JSONdata)
     var JSONdata = {{mdma|tojson}}
-    var mdm = JSON.parse(JSONdata)
+    var mdma = JSON.parse(JSONdata)
     var JSONdata = {{ketamine|tojson}}
-    var ket = JSON.parse(JSONdata)
+    var ketamine = JSON.parse(JSONdata)
     var JSONdata = {{cocaine|tojson}}
-    var coc = JSON.parse(JSONdata)
+    var cocaine = JSON.parse(JSONdata)
     
-    function updateData2(val){
+    function updateCategoryData(val){
         if (val == 'cannabis'){
-            d3.select("#second").remove()
-            draw2(can,val)
+            d3.select("#categoryChart").remove()
+            drawCategoryChart(cannabis)
         }
         if (val == 'amphetamines'){
-            d3.select("#second").remove()
-            draw2(amp,val)
+            d3.select("#categoryChart").remove()
+            drawCategoryChart(amphetamines)
         }
         if (val == 'LSD'){
-            d3.select("#second").remove()
-            draw2(lsd,val)
+            d3.select("#categoryChart").remove()
+            drawCategoryChart(lsd)
         }
         if (val == 'mushrooms'){
-            d3.select("#second").remove()
-            draw2(mus,val)
+            d3.select("#categoryChart").remove()
+            drawCategoryChart(mushrooms)
         }
         if (val == 'ketamine'){
-            d3.select("#second").remove()
-            draw2(ket, val)
+            d3.select("#categoryChart").remove()
+            drawCategoryChart(ketamine)
         }
         if (val == 'cocaine'){
-            d3.select("#second").remove()
-            draw2(coc, val)
+            d3.select("#categoryChart").remove()
+            drawCategoryChart(cocaine)
         }
         if (val == 'MDMA'){
-            d3.select("#second").remove()
-            draw2(mdm, val)
+            d3.select("#categoryChart").remove()
+            drawCategoryChart(mdma)
         }
 
         if (val == "MDMA" || val == "LSD"){
@@ -251,7 +251,7 @@
      
     }
     
-    function draw2(data){
+    function drawCategoryChart(data){
 
         var margin = {top: 25, right:-10, bottom:20, left:36},
                 width = 800 - margin.left - margin.right,
@@ -269,13 +269,12 @@
         x.domain(d3.extent(data, function(d) { return d.sentiment; })).nice();
         y.domain(data.map(function(d) { return d.category; }));
 
-        var svg = d3.select("#area2").append("svg")
+        var svg = d3.select("#category-chart").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
-            .attr("id","second")
+            .attr("id","categoryChart")
           .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
 
         svg.selectAll(".bar")
           .data(data)
@@ -300,17 +299,15 @@
 
 
     };
-    window.onload = updateData2('amphetamines')
+    window.onload = updateCategoryData('amphetamines')
     </script>
     
     <style>
-
     p {
         margin-bottom: .33em;
     }
-
     .bar--positive {
-        fill:steelblue;;
+        fill:steelblue;
     }
     .bar--negative{
         fill:darkorange;
@@ -322,7 +319,6 @@
     #option input:focus{
         fill:lightgrey;
         shape-rendering: crispEdges;
-
     }
     .axis {
       font: 10.5px sans-serif;
@@ -340,11 +336,11 @@
     .chart rect:hover {
         opacity: .9;
     }
-    #area1 svg{
+    #sentiment-chart svg{
         display:block;
         margin:auto;
     }
-    #area2 svg{
+    #category-chat svg{
         display:block;
         margin:auto;
     }
