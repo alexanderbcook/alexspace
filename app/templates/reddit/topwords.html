@@ -117,24 +117,15 @@
     var JSONdata = {{custom_worldnews|tojson}}    
     var custom_worldnews = JSON.parse(JSONdata)
 
-    function isValidDate(dateString)
+    function isValidDate(inputDateString, currentDate, currentDay, currentMonth, currentYear, previousYear)
     {
-        if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString))
+        if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(inputDateString))
             return false;
 
-        var parts = dateString.split("/");
+        var parts = inputDateString.split("/");
         var day = parseInt(parts[1], 10);
         var month = parseInt(parts[0], 10);
         var year = parseInt(parts[2], 10);
-
-        var currentDate = new Date();
-        var currentDay = currentDate.getDate();
-        var currentMonth = currentDate.getMonth()+1;
-
-        var currentYear = currentDate.getFullYear();
-
-        var previousYear = new Date();
-        var previousYear =currentYear.setFullYear(currentDate.getFullYear() -1);
 
         if(currentDay<10){
             currentDay='0'+currentDay;
@@ -144,8 +135,8 @@
             currentMonth='0'+currentMonth;
         } 
 
-        var currentDate = new Date(currentMonth+'/'+currentDay+'/'+currentYear);
-        var inputDate = new Date(dateString);
+        var oneYearAgo = new Date(currentMonth+'/'+currentDay+'/'+previousYear);
+        var inputDate = new Date(inputDateString);
 
         if(year < 1000 || year > 3000 || month == 0 || month > 12)
             return false;
@@ -155,7 +146,7 @@
         if(year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
             monthLength[1] = 29;
 
-        if (inputDate < previousYear || inputDate > currentDate){
+        if (inputDate < oneYearAgo || inputDate > currentDate){
             return false;
         }
 
@@ -164,19 +155,23 @@
 
 
     function validateForm(){
-        var year = document.forms["date"]["year"].value;
-        var month = document.forms["date"]["month"].value;
-        var day = document.forms["date"]["day"].value;
+        var inputYear = document.forms["date"]["year"].value;
+        var inputMonth = document.forms["date"]["month"].value;
+        var inputDay = document.forms["date"]["day"].value;
+
         var currentDate = new Date();
         var currentYear = currentDate.getFullYear();
-        var previousYear =currentYear.setFullYear(currentDate.getFullYear() -1);
+        var currentDay = currentDate.getDate();
+        var currentMonth = currentDate.getMonth() + 1;
 
-        if (!isValidDate(month + '/' + day + '/' + year)){
-            alert("Date must be prior to today, after " + previousYear + ", and in yyyy/mm/dd format.")
+        var previousYear = currentDate.getFullYear() - 1;
+
+        if (!isValidDate(inputMonth + '/' + inputDay + '/' + inputYear, currentDate, currentDay, currentMonth, currentYear, previousYear)){
+            alert("Date must be prior to today, after " + currentMonth + "/" + currentDay + "/" + previousYear + ", and in yyyy/mm/dd format.")
             return false;
         }
         else{
-            document.cookie = "date="+(month + '/' + day + '/' + year) +"; SameSite=None; Secure"
+            document.cookie = "date="+(inputMonth + '/' + inputDay + '/' + inputYear) +"; SameSite=None; Secure"
             document.cookie = "mode=custom; SameSite=None; Secure"
         }
     }
