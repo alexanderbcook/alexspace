@@ -45,13 +45,13 @@
                 <form name="date" action="/reddit/topwords?interval=custom" method="POST" onsubmit="return validateForm()">
                     <div class="row">
                         <div class="col">
-                            <input type="text" class="form-control form-control-sm" name = "year" placeholder="yyyy">
-                        </div>
-                        <div class="col">
                             <input type="text" class="form-control form-control-sm" name = "month" placeholder="mm">
                         </div>
                         <div class="col">
                             <input type="text" class="form-control form-control-sm" name = "day" placeholder="dd">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control form-control-sm" name = "year" placeholder="yyyy">
                         </div>
                         <div class="col">
                             <button type="submit"class="btn btn-outline-secondary btn-sm float-right">Submit</button>
@@ -167,7 +167,7 @@
         var previousYear = currentDate.getFullYear() - 1;
 
         if (!isValidDate(inputMonth + '/' + inputDay + '/' + inputYear, currentDate, currentDay, currentMonth, currentYear, previousYear)){
-            alert("Date must be prior to today, after " + currentMonth + "/" + currentDay + "/" + previousYear + ", and in yyyy/mm/dd format.")
+            alert("Date must be prior to today, after " + currentMonth + "/" + currentDay + "/" + previousYear + ", and in mm/dd/yyyy format.")
             return false;
         }
         else{
