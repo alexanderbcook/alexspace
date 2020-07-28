@@ -11,6 +11,10 @@ from utilities import connect_to_database, close_connection, json_object_reddit,
 def index():
     return render_template('index.html')
 
+@app.route('/sffpc')
+def sffpc():
+    return render_template('sffpc.html')
+    
 @app.route('/reddit/performance')
 def performance():
     return render_template('/reddit/performance.html')
