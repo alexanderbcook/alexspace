@@ -105,8 +105,8 @@
 
 
         function drawEvents(data, area, chart, argument){
-            var margin = {top:  5, right: -75, bottom: 0, left: 180},
-                width = 1127.5 - margin.left - margin.right,
+            var margin = {top:  5, right: -45, bottom: 0, left: 150},
+                width = 1175 - margin.left - margin.right,
                 height = 300 - margin.top - margin.bottom;
 
             var svg = d3.select(area).append("svg")
@@ -150,8 +150,8 @@
 
         function drawData(data, area, chart, argument){
 
-            var margin = {top:  20, right: -67.5, bottom: 45, left: 180},
-                width = 1127.5 - margin.left - margin.right,
+            var margin = {top:  20, right: -45, bottom: 45, left: 150},
+                width = 1175 - margin.left - margin.right,
                 height = 300 - margin.top - margin.bottom;
 
             var svg = d3.select(area).append("svg")
