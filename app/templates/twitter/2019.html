@@ -43,13 +43,12 @@
             </div>
             <hr>
             <h6 id="header-text-patriots"></h5>
-            <svg class="chart" id="area1" viewBox="0 0 1215 300" preserveAspectRatio="xMidYMid meet"></svg>
+            <svg class="chart" id="area1" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid meet"></svg>
             <hr>
             <h6 id="header-text-rams"></h5>
-            <svg class="chart" id="area2" viewBox="0 0 1215 300" preserveAspectRatio="xMidYMid meet"></svg>
-            <svg class="event-chart" id="area3" viewBox="0 0 1215 190" preserveAspectRatio="xMidYMid meet"></svg>
+            <svg class="chart" id="area2" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid meet"></svg>
+            <svg class="event-chart" id="area3" viewBox="0 0 1200 192.5" preserveAspectRatio="xMidYMid meet"></svg>
             <hr>
-            <br>
         </section>
         <section>
             <p> The results, in my opinion, are really beautiful. I'm fond of the title wave of Patriots fans uttering 'shit' when Brady threw the early interception. I like that Maroon 5 was seemingly not mentioned in the first half, spiked during the half time show, and then lingered in the conversation for the rest of the game. I like the gradual crescendo of 'fuck's as fans got rowdier towards the end of the game. I like the wave of 'shit's as Rams fans realized their impending doom. In a game that was filled with punts, I like that Hekker's record breaking effort stands out. And I really love that both sets of fans were talking about the touchdown to seal the result of the game, knowing that the context that surrounded their conversations were so different.</p>
@@ -106,8 +105,8 @@
 
 
         function drawEvents(data, area, chart, argument){
-            var margin = {top:  5, right: 0, bottom: 0, left: 180},
-                width = 1135 - margin.left - margin.right,
+            var margin = {top:  5, right: -75, bottom: 0, left: 180},
+                width = 1127.5 - margin.left - margin.right,
                 height = 300 - margin.top - margin.bottom;
 
             var svg = d3.select(area).append("svg")
@@ -151,8 +150,8 @@
 
         function drawData(data, area, chart, argument){
 
-            var margin = {top:  20, right: 0, bottom: 40, left: 180},
-                width = 1135 - margin.left - margin.right,
+            var margin = {top:  20, right: -67.5, bottom: 45, left: 180},
+                width = 1127.5 - margin.left - margin.right,
                 height = 300 - margin.top - margin.bottom;
 
             var svg = d3.select(area).append("svg")
@@ -257,7 +256,7 @@
       stroke: #000;
     }
     .event-text {
-      font: 14px sans-serif;
+      font: 15px sans-serif;
     }  
     svg:not(:root) {
 	  overflow: visible;
