@@ -1,5 +1,4 @@
-#!/Users/alexandercook/Repositories/alexspace/venv/bin/python2.7
-
+#!/Users/alexandercook/Repositories/alexspace/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
