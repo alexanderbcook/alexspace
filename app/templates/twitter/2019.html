@@ -33,7 +33,7 @@
                 <div class="dropdown-menu dropdown-menu-right">
                     <button class="dropdown-item" onclick="updateData(aggregate_patriots,aggregate_rams,'aggregate')" href="#">aggregate</button>
                     <button class="dropdown-item" onclick="updateData(brady_patriots,brady_rams,'brady')" href="#">brady</button>
-                    <button class="dropdown-item" onclick="updateData(goff_patriots,goff_rams,'goff')" href="#">goff</button>
+                    <button class="dropdown-item" onclick="updateData(goff_patriots,goff_rams,'goff')" href="">goff</button>
                     <button class="dropdown-item" onclick="updateData(shit_patriots,shit_rams,'shit')" href="#">shit</button>
                     <button class="dropdown-item" onclick="updateData(fuck_patriots,fuck_rams,'fuck')" href="#">fuck</button>
                     <button class="dropdown-item" onclick="updateData(touchdown_patriots,touchdown_rams,'touchdown')" href="#">touchdown</button>
@@ -42,12 +42,13 @@
                 </div>
             </div>
             <hr>
-            <h5 id="header-text-patriots"></h5>
-            <svg class="chart" id="area1" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid meet"></svg>
+            <h6 id="header-text-patriots"></h5>
+            <svg class="chart" id="area1" viewBox="0 0 1215 300" preserveAspectRatio="xMidYMid meet"></svg>
             <hr>
-            <h5 id="header-text-rams"></h5>
-            <svg class="chart" id="area2" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid meet"></svg>
-            <svg class="event-chart" id="area3" viewBox="0 0 1200 225" preserveAspectRatio="xMidYMid meet"></svg>
+            <h6 id="header-text-rams"></h5>
+            <svg class="chart" id="area2" viewBox="0 0 1215 300" preserveAspectRatio="xMidYMid meet"></svg>
+            <svg class="event-chart" id="area3" viewBox="0 0 1215 190" preserveAspectRatio="xMidYMid meet"></svg>
+            <hr>
             <br>
         </section>
         <section>
@@ -242,7 +243,7 @@
 
 <style>
     .axis {
-      font: 14px sans-serif;
+      font: 15px sans-serif;
     }
     .chart rect{
         opacity: .75;
