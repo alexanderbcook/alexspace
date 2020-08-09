@@ -242,7 +242,7 @@ def sentiment():
 
     #Instantiate data arrays.
 
-    both = []
+    aggregate = []
     female = []
     male = []
 
@@ -257,50 +257,49 @@ def sentiment():
 
     # Populate data arrays with JSON objects
 
-    # Both gendered sentiment query.
+    # Agendered sentiment query.
 
-    json_object_sentiment("cannabis",both,None,cur)
-    json_object_sentiment("amphetamines",both,None,cur)
-    json_object_sentiment("lsd",both,None,cur)
-    json_object_sentiment("mushrooms",both,None,cur)
-    json_object_sentiment("mdma",both,None,cur)
-    json_object_sentiment("ketamine",both,None,cur)
-    json_object_sentiment("cocaine",both,None,cur)
+    json_object_sentiment("cannabis",aggregate,None,cur)
+    json_object_sentiment("amphetamines",aggregate,None,cur)
+    json_object_sentiment("lsd",aggregate,None,cur)
+    json_object_sentiment("mushrooms",aggregate,None,cur)
+    json_object_sentiment("mdma",aggregate,None,cur)
+    json_object_sentiment("ketamine",aggregate,None,cur)
+    json_object_sentiment("cocaine",aggregate,None,cur)
 
     # Female gendered sentiment query.
 
-    json_object_sentiment("cannabis",female,'\'Female\'',cur)
-    json_object_sentiment("amphetamines",female,'\'Female\'',cur)
-    json_object_sentiment("lsd",female,'\'Female\'',cur)
-    json_object_sentiment("mushrooms",female,'\'Female\'',cur)
-    json_object_sentiment("mdma",female,'\'Female\'',cur)
-    json_object_sentiment("ketamine",female,'\'Female\'',cur)
-    json_object_sentiment("cocaine",female,'\'Female\'',cur)
+    json_object_sentiment("cannabis",female,'\'female\'',cur)
+    json_object_sentiment("amphetamines",female,'\'female\'',cur)
+    json_object_sentiment("lsd",female,'\'female\'',cur)
+    json_object_sentiment("mushrooms",female,'\'female\'',cur)
+    json_object_sentiment("mdma",female,'\'female\'',cur)
+    json_object_sentiment("ketamine",female,'\'female\'',cur)
+    json_object_sentiment("cocaine",female,'\'femal\'',cur)
 
     # Male gendered sentiment query. 
 
-    json_object_sentiment("cannabis",male,'\'Male\'',cur)
-    json_object_sentiment("amphetamines",male,'\'Male\'',cur)
-    json_object_sentiment("lsd",male,'\'Male\'',cur)
-    json_object_sentiment("mushrooms",male,'\'Male\'',cur)
-    json_object_sentiment("mdma",male,'\'Male\'',cur)
-    json_object_sentiment("ketamine",male,'\'Male\'',cur)
-    json_object_sentiment("cocaine",male,'\'Male\'',cur)  
+    json_object_sentiment("cannabis",male,'\'male\'',cur)
+    json_object_sentiment("amphetamines",male,'\'male\'',cur)
+    json_object_sentiment("lsd",male,'\',ale\'',cur)
+    json_object_sentiment("mushrooms",male,'\'male\'',cur)
+    json_object_sentiment("mdma",male,'\'male\'',cur)
+    json_object_sentiment("ketamine",male,'\'male\'',cur)
+    json_object_sentiment("cocaine",male,'\'male\'',cur)  
 
     # Category query.
 
-    json_object_category("cannabis",cannabis,cur)
-    json_object_category("amphetamines",amphetamines,cur)
-    json_object_category("lsd",lsd,cur)
-    json_object_category("mushrooms",mushrooms,cur)
-    json_object_category("mdma",mdma,cur)
-    json_object_category("ketamine",ketamine,cur)
-    json_object_category("cocaine",cocaine,cur)
-
+    #json_object_category("cannabis",cannabis,cur)
+    #json_object_category("amphetamines",amphetamines,cur)
+    #json_object_category("lsd",lsd,cur)
+    #json_object_category("mushrooms",mushrooms,cur)
+    #json_object_category("mdma",mdma,cur)
+    #json_object_category("ketamine",ketamine,cur)
+    #json_object_category("cocaine",cocaine,cur)
     close_connection(cur, conn)
 
     return render_template('erowid/sentiment.html', 
-                        both = json.dumps(both), 
+                        aggregate = json.dumps(aggregate), 
                         female= json.dumps(female),
                         male = json.dumps(male),
                         cannabis=json.dumps(cannabis),
@@ -357,23 +356,23 @@ def users():
     json_object_gender(genders_ketamine,"ketamine",cur)
     json_object_gender(genders_cocaine,"cocaine",cur)
 
-    json_object_year(years, None, cur)
-    json_object_year(years_cannabis, "cannabis", cur)
-    json_object_year(years_amphetamines, "amphetamines", cur)
-    json_object_year(years_lsd, "lsd", cur)
-    json_object_year(years_mushrooms, "mushrooms", cur)
-    json_object_year(years_mdma, "mdma", cur)
-    json_object_year(years_ketamine, "ketamine", cur)
-    json_object_year(years_cocaine, "cocaine", cur)
+    #json_object_year(years, None, cur)
+    #json_object_year(years_cannabis, "cannabis", cur)
+    #json_object_year(years_amphetamines, "amphetamines", cur)
+    #json_object_year(years_lsd, "lsd", cur)
+    #json_object_year(years_mushrooms, "mushrooms", cur)
+    #json_object_year(years_mdma, "mdma", cur)
+    #json_object_year(years_ketamine, "ketamine", cur)
+    #json_object_year(years_cocaine, "cocaine", cur)
 
-    json_object_view(views, None, cur)
-    json_object_view(views_cannabis, "cannabis", cur)
-    json_object_view(views_amphetamines, "amphetamines", cur)
-    json_object_view(views_lsd, "lsd", cur)
-    json_object_view(views_mushrooms, "mushrooms", cur)
-    json_object_view(views_mdma, "mdma", cur)
-    json_object_view(views_ketamine, "ketamine", cur)
-    json_object_view(views_cocaine, "cocaine", cur)
+    #json_object_view(views, None, cur)
+    #json_object_view(views_cannabis, "cannabis", cur)
+    #json_object_view(views_amphetamines, "amphetamines", cur)
+    #json_object_view(views_lsd, "lsd", cur)
+    #json_object_view(views_mushrooms, "mushrooms", cur)
+    #json_object_view(views_mdma, "mdma", cur)
+    #json_object_view(views_ketamine, "ketamine", cur)
+    #json_object_view(views_cocaine, "cocaine", cur)
 
     close_connection(cur, conn)
 

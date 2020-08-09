@@ -112,10 +112,9 @@ def json_object_time_series(obj, subject, cur):
 
 def json_object_sentiment(substance, obj, gender, cur):
     if gender != None:
-        query = cur.execute(
-            "SELECT avg(sentiment) FROM erowid."+substance+" WHERE gender="+gender)
+        query = cur.execute("SELECT avg(sentiment_polarity) FROM erowid.experiences WHERE gender="+gender+" AND principal_substance='"+substance+"';")
     else:
-        query = cur.execute("SELECT avg(sentiment) FROM erowid."+substance)
+        query = cur.execute("SELECT avg(sentiment_polarity) FROM erowid.experiences WHERE principal_substance='"+substance+"';")
 
     result = cur.fetchone()
     obj.append({
@@ -146,19 +145,19 @@ def json_object_category(substance, obj, cur):
 def json_object_gender(obj, substance, cur):
     if substance == None:
         query = cur.execute(
-            "SELECT DISTINCT gender, count(gender) FROM erowid.main GROUP BY gender")
+            "SELECT DISTINCT gender, count(gender) FROM erowid.experiences GROUP BY gender;")
 
     else:
         query = cur.execute(
-            "SELECT DISTINCT gender, count(gender) FROM erowid."+substance+" GROUP BY gender;")
+            "SELECT DISTINCT gender, count(gender) FROM erowid.experiences WHERE principal_substance='"+substance+"' GROUP BY gender;")
 
     results = cur.fetchall()
 
     if substance == None:
-        query = cur.execute("SELECT count(id) FROM erowid.main;")
+        query = cur.execute("SELECT count(id) FROM erowid.experiences;")
 
     else:
-        query = cur.execute("SELECT count(id) FROM erowid."+substance+";")
+        query = cur.execute("SELECT count(id) FROM erowid.experiences WHERE principal_substance='"+substance+"';")
 
     total = cur.fetchone()
 

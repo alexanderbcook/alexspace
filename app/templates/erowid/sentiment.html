@@ -62,12 +62,12 @@
             <h5>Average Sentiment by Substance, Gender</h5>
             <div class="btn-group" role="group" aria-label="Gender options">
               <button type="button" class="btn btn-secondary btn-sm" onclick="updateSentimentData('female')">Female</button>
-              <button type="button" class="btn btn-secondary btn-sm" onclick="updateSentimentData('aggregate')">Both Genders</button>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="updateSentimentData('aggregate')">Aggregate</button>
               <button type="button" class="btn btn-secondary btn-sm" onclick="updateSentimentData('male')">Male</button>
             </div>
             <svg class="chart" id="sentiment-chart" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet"></svg>
             <hr>
-            <p> The results were not as drastic as I was anticipating. Few things to point out, though. Notice how closely the 'both genders' data tracks the 'male' options are. Given that I am recording 'average' values, this implies that men shared stories than women did. Women generally share more negative stories than those shared by men. Women did tend to enjoy MDMA and mushrooms more then men. Stories about MDMA were by far the most positive. 
+            <p> The results were not as drastic as I was anticipating. Few things to point out, though. Notice how closely the 'aggregate' data tracks the 'male' options are. Given that I am recording 'average' values, this implies that men shared stories than women did. Women generally share more negative stories than those shared by men. Women did tend to enjoy MDMA and mushrooms more then men. Stories about MDMA were by far the most positive. 
             </p>
             <br>
         </section>
@@ -100,7 +100,7 @@
     <script>
     document.getElementById('page-title').innerHTML = "How Do People Feel About Drugs?"    
 
-    var JSONdata = {{both|tojson}}
+    var JSONdata = {{aggregate|tojson}}
     var aggregateData = JSON.parse(JSONdata)
     var JSONdata = {{female|tojson}}
     var femaleData = JSON.parse(JSONdata)
