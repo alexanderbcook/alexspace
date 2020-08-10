@@ -196,29 +196,44 @@
 
     window.onload = drawSentimentChart(aggregateData, 'aggregate')
 
-    var JSONdata = {{cannabis|tojson}}
-    var cannabis = JSON.parse(JSONdata)
+
     var JSONdata = {{amphetamines|tojson}}
     var amphetamines = JSON.parse(JSONdata)
-    var JSONdata = {{lsd|tojson}}
-    var lsd = JSON.parse(JSONdata)
-    var JSONdata = {{mushrooms|tojson}}
-    var mushrooms = JSON.parse(JSONdata)
-    var JSONdata = {{mdma|tojson}}
-    var mdma = JSON.parse(JSONdata)
-    var JSONdata = {{ketamine|tojson}}
-    var ketamine = JSON.parse(JSONdata)
+    var JSONdata = {{cannabis|tojson}}
+    var cannabis = JSON.parse(JSONdata)
     var JSONdata = {{cocaine|tojson}}
     var cocaine = JSON.parse(JSONdata)
+    var JSONdata = {{ketamine|tojson}}
+    var ketamine = JSON.parse(JSONdata)
+    var JSONdata = {{lsd|tojson}}
+    var lsd = JSON.parse(JSONdata)
+    var JSONdata = {{mdma|tojson}}
+    var mdma = JSON.parse(JSONdata)
+    var JSONdata = {{mushrooms|tojson}}
+    var mushrooms = JSON.parse(JSONdata)
+
+
     
     function updateCategoryData(val){
+        if (val == 'amphetamines'){
+            d3.select("#categoryChart").remove()
+            drawCategoryChart(amphetamines)
+        }
         if (val == 'cannabis'){
             d3.select("#categoryChart").remove()
             drawCategoryChart(cannabis)
         }
-        if (val == 'amphetamines'){
+        if (val == 'cocaine'){
             d3.select("#categoryChart").remove()
-            drawCategoryChart(amphetamines)
+            drawCategoryChart(cocaine)
+        }
+        if (val == 'ketamine'){
+            d3.select("#categoryChart").remove()
+            drawCategoryChart(ketamine)
+        }
+        if (val == 'MDMA'){
+            d3.select("#categoryChart").remove()
+            drawCategoryChart(mdma)
         }
         if (val == 'LSD'){
             d3.select("#categoryChart").remove()
@@ -227,18 +242,6 @@
         if (val == 'mushrooms'){
             d3.select("#categoryChart").remove()
             drawCategoryChart(mushrooms)
-        }
-        if (val == 'ketamine'){
-            d3.select("#categoryChart").remove()
-            drawCategoryChart(ketamine)
-        }
-        if (val == 'cocaine'){
-            d3.select("#categoryChart").remove()
-            drawCategoryChart(cocaine)
-        }
-        if (val == 'MDMA'){
-            d3.select("#categoryChart").remove()
-            drawCategoryChart(mdma)
         }
 
         if (val == "MDMA" || val == "LSD"){

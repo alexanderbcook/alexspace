@@ -126,15 +126,14 @@ def json_object_sentiment(substance, obj, gender, cur):
 
 
 def json_object_category(substance, obj, cur):
-    query = cur.execute("SELECT avg(sentiment), category FROM erowid."+substance +
-                        " WHERE category NOT IN ('Not Applicable','Various', 'General', 'Music Discussion', 'Personal Preparation', 'Poetry', 'Preparation / Recipes', 'Cultivation / Synthasis', 'Guides / Sitters','HPPD / Lasting Visuals','Unknown Context') GROUP BY category ORDER by avg(sentiment) desc;")
+    query = cur.execute("SELECT c.name, avg(e.sentiment_polarity) FROM erowid.experiences e INNER JOIN erowid.categories c ON e.primary_category_id = c.id WHERE e.principal_substance = '"+substance+"' GROUP BY c.name ORDER BY avg(e.sentiment_polarity) DESC;")
 
     categories = cur.fetchall()
 
     for category in categories:
         obj.append({
-            "category": category[1],
-            "sentiment": category[0]
+            "category": category[0],
+            "sentiment": category[1]
         })
 
     return obj
@@ -170,13 +169,11 @@ def json_object_gender(obj, substance, cur):
     return obj
 
 
-def json_object_year(obj, substance, cur):
+def json_object_year_published(obj, substance, cur):
     if substance == None:
-        query = cur.execute("SELECT EXTRACT(YEAR from date::DATE) AS extracted_year, count(EXTRACT(YEAR from date::DATE)) FROM erowid.main WHERE EXTRACT(YEAR from date::DATE) NOT IN ('1969', '2017') GROUP BY extracted_year ORDER BY extracted_year;")
+        query = cur.execute("SELECT EXTRACT(YEAR from published_date) AS year, count(id) FROM erowid.experiences WHERE EXTRACT(YEAR from published_date) NOT IN ('1995') GROUP BY EXTRACT(YEAR from published_date) ORDER BY EXTRACT(YEAR from published_date);")
     else:
-        query = cur.execute("SELECT EXTRACT(YEAR from date::DATE) AS extracted_year, count(EXTRACT(YEAR from date::DATE)) FROM erowid." +
-                            substance+" WHERE EXTRACT(YEAR from date::DATE) NOT IN ('1969', '2017') GROUP BY extracted_year ORDER BY extracted_year;")
-
+        query = cur.execute("SELECT EXTRACT(YEAR from published_date) AS year, count(id) FROM erowid.experiences WHERE EXTRACT(YEAR from published_date) NOT IN ('1995') AND principal_substance = '"+substance+"' GROUP BY EXTRACT(YEAR from published_date) ORDER BY EXTRACT(YEAR from published_date);")
     results = cur.fetchall()
 
     for result in results:
@@ -187,18 +184,16 @@ def json_object_year(obj, substance, cur):
     return obj
 
 
-def json_object_view(obj, substance, cur):
+def json_object_year_experienced(obj, substance, cur):
     if substance == None:
-        query = cur.execute("SELECT EXTRACT(YEAR from date::DATE) AS extracted_year, sum(REPLACE(views,',','')::INT) FROM erowid.main WHERE EXTRACT(YEAR from date::DATE) NOT IN ('1969', '2017') GROUP BY extracted_year ORDER BY extracted_year;")
+        query = cur.execute("SELECT experience_year, count(id) FROM erowid.experiences WHERE experience_year NOT IN ('1995') GROUP BY experience_year ORDER BY experience_year;")
     else:
-        query = cur.execute("SELECT EXTRACT(YEAR from date::DATE) AS extracted_year, sum(REPLACE(views,',','')::INT) FROM erowid." +
-                            substance+" WHERE EXTRACT(YEAR from date::DATE) NOT IN ('1969', '2017') GROUP BY extracted_year ORDER BY extracted_year;")
-
+        query = cur.execute("SELECT experience_year, count(id) FROM erowid.experiences WHERE experience_year NOT IN ('1995') AND principal_substance = '"+substance+"' GROUP BY experience_year ORDER BY experience_year;")
     results = cur.fetchall()
 
     for result in results:
         obj.append({
-                   "year": int(result[0]),
-                   "views": result[1]
-                   })
+            "year": int(result[0]),
+            "count": result[1]
+        })
     return obj
