@@ -141,15 +141,23 @@ def json_object_category(substance, obj, cur):
 
 def json_object_ratio(substance, obj, set, cur):
     if set == 'negative':
-        query = cur.execute("SELECT count(id), primary_substance FROM erowid.experiences WHERE primary_substance = '"+substance+"' AND primary_category_id IN (SELECT id FROM erowid.categories WHERE name = 'Bad Trips' OR name = 'Trainwrecks / Trip Disasters') GROUP BY primary_substance;")
+        query = cur.execute("SELECT count(id), primary_substance FROM erowid.experiences WHERE primary_substance = '"+substance+"' AND primary_category_id IN (6,7) GROUP BY primary_substance;")
         numerator = cur.fetchone()
         query = cur.execute("SELECT count(id), primary_substance FROM erowid.experiences WHERE primary_substance = '"+substance+"' GROUP BY primary_substance;")
         denominator = cur.fetchone()
+
     if set == 'positive':
-        query = cur.execute("SELECT count(id), primary_substance FROM erowid.experiences WHERE primary_substance = '"+substance+"' AND primary_category_id IN (SELECT id FROM erowid.categories WHERE name = 'Mystical Experiences' OR name = 'Glowing Experiences') GROUP BY primary_substance;")
+        query = cur.execute("SELECT count(id), primary_substance FROM erowid.experiences WHERE primary_substance = '"+substance+"' AND primary_category_id IN (4,9) GROUP BY primary_substance;")
         numerator = cur.fetchone()
         query = cur.execute("SELECT count(id), primary_substance FROM erowid.experiences WHERE primary_substance = '"+substance+"' GROUP BY primary_substance;")
         denominator = cur.fetchone()
+
+    if set == 'bodily harm':
+        query = cur.execute("SELECT count(id), primary_substance FROM erowid.experiences WHERE primary_substance = '"+substance+"' AND primary_category_id IN (27,10) GROUP BY primary_substance;")
+        numerator = cur.fetchone()
+        query = cur.execute("SELECT count(id), primary_substance FROM erowid.experiences WHERE primary_substance = '"+substance+"' GROUP BY primary_substance;")
+        denominator = cur.fetchone()
+
     obj.append(
         {
             "ratio": numerator[0]/denominator[0],

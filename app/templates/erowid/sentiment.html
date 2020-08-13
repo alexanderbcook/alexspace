@@ -97,10 +97,11 @@
         <section>
             <p>I think we can agree that some of these categories definitions are strongly emotional. A 'Glowing' or 'Mystical' experience generally conotes a very positive experience while terms like 'Trainwreck' or 'Bad Trip' conjure negative images, particularly in the context of drug use. thought it would be interesting to explore the commonality of these sorts of an experiences. To do so I defined the categories 'Glowing Experiences', 'Mystical Experiences' to be positive categories, 'Bad Trips', 'Trainwrecks / Trip Disasters' as negative categories and then calculated the ratio of the total body of experiences. I also included a third ratio- bodily harm. The bodily harm category group includes 'Health Problems' and 'Addiction / Habituation'. These two categories make up what I take to be the physical risk of the substance.</p>
             <hr>
-            <h5>Ratio of Strongly Emotional Categories by Sentiment</h5>
+            <h5>Ratio of Strongly Emotional Categories</h5>
             <div class="btn-group" role="group" aria-label="Ratio options">
               <button type="button" class="btn btn-secondary btn-sm" onclick="updateRatioData('positive')">Positive</button>
               <button type="button" class="btn btn-secondary btn-sm" onclick="updateRatioData('negative')">Negative</button>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="updateRatioData('bodily harm')">Bodily Harm</button>
             </div>
             <svg class="chart" id="ratio-chart" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet"></svg>
             <hr>
@@ -318,6 +319,8 @@
     var positive = JSON.parse(JSONdata)
     var JSONdata = {{negative|tojson}}
     var negative = JSON.parse(JSONdata)
+    var JSONdata = {{bodily_harm|tojson}}
+    var bodilyHarm = JSON.parse(JSONdata)
 
     var substance = function(data){return data.substance}
     var ratio = function(data){return data.ratio}
@@ -332,7 +335,12 @@
             console.log('yes')
             d3.select("#ratioChart").remove()
             drawRatioChart(positive, set)
-        }      
+        }
+        if (set == 'bodily harm'){
+            console.log('yes')
+            d3.select("#ratioChart").remove()
+            drawRatioChart(bodilyHarm, set)
+        }            
     }
     
     function drawRatioChart(data, set){
@@ -359,7 +367,7 @@
         });
 
         x.domain(data.map(function(d){return d.substance;}))
-        y.domain([0, .15])
+        y.domain([0, .3])
 
         var svg = d3.select("#ratio-chart").append("svg")
             .attr("width", width+margin.left+margin.right)

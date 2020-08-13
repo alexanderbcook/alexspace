@@ -258,6 +258,7 @@ def sentiment():
     
     positive = []
     negative = []
+    bodily_harm = []
 
     # Populate data arrays with JSON objects
 
@@ -318,6 +319,14 @@ def sentiment():
     json_object_ratio("ketamine",negative,'negative',cur)
     json_object_ratio("cocaine",negative,'negative',cur)
 
+    json_object_ratio("cannabis",bodily_harm,'bodily harm',cur)
+    json_object_ratio("amphetamines",bodily_harm,'bodily harm',cur)
+    json_object_ratio("lsd",bodily_harm,'bodily harm',cur)
+    json_object_ratio("mushrooms",bodily_harm,'bodily harm',cur)
+    json_object_ratio("mdma",bodily_harm,'bodily harm',cur)
+    json_object_ratio("ketamine",bodily_harm,'bodily harm',cur)
+    json_object_ratio("cocaine",bodily_harm,'bodily harm',cur)
+
     close_connection(cur, conn)
 
     return render_template('erowid/sentiment.html', 
@@ -332,7 +341,8 @@ def sentiment():
                         ketamine=json.dumps(ketamine), 
                         cocaine=json.dumps(cocaine),
                         positive=json.dumps(positive),
-                        negative=json.dumps(negative)
+                        negative=json.dumps(negative),
+                        bodily_harm=json.dumps(bodily_harm)
                         )
 
 @app.route('/erowid/users')
