@@ -112,9 +112,9 @@ def json_object_time_series(obj, subject, cur):
 
 def json_object_sentiment(substance, obj, gender, cur):
     if gender != None:
-        query = cur.execute("SELECT avg(sentiment_polarity) FROM erowid.experiences WHERE gender="+gender+" AND principal_substance='"+substance+"';")
+        query = cur.execute("SELECT avg(sentiment_polarity) FROM erowid.experiences WHERE gender="+gender+" AND primary_substance='"+substance+"';")
     else:
-        query = cur.execute("SELECT avg(sentiment_polarity) FROM erowid.experiences WHERE principal_substance='"+substance+"';")
+        query = cur.execute("SELECT avg(sentiment_polarity) FROM erowid.experiences WHERE primary_substance='"+substance+"';")
 
     result = cur.fetchone()
     obj.append({
@@ -126,7 +126,7 @@ def json_object_sentiment(substance, obj, gender, cur):
 
 
 def json_object_category(substance, obj, cur):
-    query = cur.execute("SELECT c.name, avg(e.sentiment_polarity) FROM erowid.experiences e INNER JOIN erowid.categories c ON e.primary_category_id = c.id WHERE e.principal_substance = '"+substance+"' GROUP BY c.name ORDER BY avg(e.sentiment_polarity) DESC;")
+    query = cur.execute("SELECT c.name, avg(e.sentiment_polarity) FROM erowid.experiences e INNER JOIN erowid.categories c ON e.primary_category_id = c.id WHERE e.primary_substance = '"+substance+"' GROUP BY c.name ORDER BY avg(e.sentiment_polarity) DESC;")
 
     categories = cur.fetchall()
 
@@ -135,6 +135,27 @@ def json_object_category(substance, obj, cur):
             "category": category[0],
             "sentiment": category[1]
         })
+
+    return obj
+
+
+def json_object_ratio(substance, obj, set, cur):
+    if set == 'negative':
+        query = cur.execute("SELECT count(id), primary_substance FROM erowid.experiences WHERE primary_substance = '"+substance+"' AND primary_category_id IN (SELECT id FROM erowid.categories WHERE name = 'Bad Trips' OR name = 'Trainwrecks / Trip Disasters') GROUP BY primary_substance;")
+        numerator = cur.fetchone()
+        query = cur.execute("SELECT count(id), primary_substance FROM erowid.experiences WHERE primary_substance = '"+substance+"' GROUP BY primary_substance;")
+        denominator = cur.fetchone()
+    if set == 'positive':
+        query = cur.execute("SELECT count(id), primary_substance FROM erowid.experiences WHERE primary_substance = '"+substance+"' AND primary_category_id IN (SELECT id FROM erowid.categories WHERE name = 'Mystical Experiences' OR name = 'Glowing Experiences') GROUP BY primary_substance;")
+        numerator = cur.fetchone()
+        query = cur.execute("SELECT count(id), primary_substance FROM erowid.experiences WHERE primary_substance = '"+substance+"' GROUP BY primary_substance;")
+        denominator = cur.fetchone()
+    obj.append(
+        {
+            "ratio": numerator[0]/denominator[0],
+            "substance": substance
+        }
+    )
 
     return obj
 
@@ -148,7 +169,7 @@ def json_object_gender(obj, substance, cur):
 
     else:
         query = cur.execute(
-            "SELECT DISTINCT gender, count(gender) FROM erowid.experiences WHERE principal_substance='"+substance+"' GROUP BY gender;")
+            "SELECT DISTINCT gender, count(gender) FROM erowid.experiences WHERE primary_substance='"+substance+"' GROUP BY gender;")
 
     results = cur.fetchall()
 
@@ -156,7 +177,7 @@ def json_object_gender(obj, substance, cur):
         query = cur.execute("SELECT count(id) FROM erowid.experiences;")
 
     else:
-        query = cur.execute("SELECT count(id) FROM erowid.experiences WHERE principal_substance='"+substance+"';")
+        query = cur.execute("SELECT count(id) FROM erowid.experiences WHERE primary_substance='"+substance+"';")
 
     total = cur.fetchone()
 
@@ -173,7 +194,7 @@ def json_object_year_published(obj, substance, cur):
     if substance == None:
         query = cur.execute("SELECT EXTRACT(YEAR from published_date) AS year, count(id) FROM erowid.experiences WHERE EXTRACT(YEAR from published_date) NOT IN ('1995') GROUP BY EXTRACT(YEAR from published_date) ORDER BY EXTRACT(YEAR from published_date);")
     else:
-        query = cur.execute("SELECT EXTRACT(YEAR from published_date) AS year, count(id) FROM erowid.experiences WHERE EXTRACT(YEAR from published_date) NOT IN ('1995') AND principal_substance = '"+substance+"' GROUP BY EXTRACT(YEAR from published_date) ORDER BY EXTRACT(YEAR from published_date);")
+        query = cur.execute("SELECT EXTRACT(YEAR from published_date) AS year, count(id) FROM erowid.experiences WHERE EXTRACT(YEAR from published_date) NOT IN ('1995') AND primary_substance = '"+substance+"' GROUP BY EXTRACT(YEAR from published_date) ORDER BY EXTRACT(YEAR from published_date);")
     results = cur.fetchall()
 
     for result in results:
@@ -188,7 +209,7 @@ def json_object_year_experienced(obj, substance, cur):
     if substance == None:
         query = cur.execute("SELECT experience_year, count(id) FROM erowid.experiences WHERE experience_year NOT IN ('1995') GROUP BY experience_year ORDER BY experience_year;")
     else:
-        query = cur.execute("SELECT experience_year, count(id) FROM erowid.experiences WHERE experience_year NOT IN ('1995') AND principal_substance = '"+substance+"' GROUP BY experience_year ORDER BY experience_year;")
+        query = cur.execute("SELECT experience_year, count(id) FROM erowid.experiences WHERE experience_year NOT IN ('1995') AND primary_substance = '"+substance+"' GROUP BY experience_year ORDER BY experience_year;")
     results = cur.fetchall()
 
     for result in results:

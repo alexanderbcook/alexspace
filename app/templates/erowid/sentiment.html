@@ -94,6 +94,16 @@
             <p>I'm quite fond of the way this visualization turned out and I think that data is pretty interesting.</p>
             <hr>
         </section>
+        <section>
+            <p>I think we can agree that some of these categories definitions are strongly emotional. A 'Glowing' or 'Mystical' experience generally conotes a very positive experience while terms like 'Trainwreck' or 'Bad Trip' conjure negative images, particularly in the context of drug use. thought it would be interesting to explore the commonality of these sorts of an experiences. To do so I defined the categories 'Glowing Experiences', 'Mystical Experiences' to be positive categories, 'Bad Trips', 'Trainwrecks / Trip Disasters' as negative categories and then calculated the ratio of the total body of experiences. I also included a third ratio- bodily harm. The bodily harm category group includes 'Health Problems' and 'Addiction / Habituation'. These two categories make up what I take to be the physical risk of the substance.</p>
+            <hr>
+            <h5>Ratio of Strongly Emotional Categories by Sentiment</h5>
+            <div class="btn-group" role="group" aria-label="Ratio options">
+              <button type="button" class="btn btn-secondary btn-sm" onclick="updateRatioData('positive')">Positive</button>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="updateRatioData('negative')">Negative</button>
+            </div>
+            <svg class="chart" id="ratio-chart" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet"></svg>
+            <hr>
     </article>
     <script src="https://d3js.org/d3.v4.min.js"></script>
 
@@ -256,7 +266,7 @@
     
     function drawCategoryChart(data){
 
-        var margin = {top: 25, right:-10, bottom:20, left:36},
+        var margin = {top: 25, right:-10, bottom:20, left:45},
                 width = 800 - margin.left - margin.right,
                 height = 400 - margin.top - margin.bottom;
 
@@ -303,6 +313,100 @@
 
     };
     window.onload = updateCategoryData('amphetamines')
+
+    var JSONdata = {{positive|tojson}}
+    var positive = JSON.parse(JSONdata)
+    var JSONdata = {{negative|tojson}}
+    var negative = JSON.parse(JSONdata)
+
+    var substance = function(data){return data.substance}
+    var ratio = function(data){return data.ratio}
+    
+    function updateRatioData(set){
+        if (set == 'positive'){
+            console.log('yes')
+            d3.select("#ratioChart").remove()
+            drawRatioChart(negative, set)
+        }
+        if (set == 'negative'){
+            console.log('yes')
+            d3.select("#ratioChart").remove()
+            drawRatioChart(positive, set)
+        }      
+    }
+    
+    function drawRatioChart(data, set){
+
+        var margin = {top: 25, right:0, bottom:55, left:40},
+                width = 800 - margin.left - margin.right,
+                height = 400 - margin.top - margin.bottom;
+
+        var x = d3.scaleBand().rangeRound([0,width]).padding(.05);
+        var y = d3.scaleLinear().range([height, 0]);
+
+        var xAxis = d3.axisBottom(x)
+        var yAxis = d3.axisLeft(y)
+
+        if(set=="positive"){
+            color = "darkgreen"
+        }
+        else if(set=="negative"){
+            color = "darkred"
+        }
+
+      data.forEach(function(d) {
+            console.log(d.ratio)
+        });
+
+        x.domain(data.map(function(d){return d.substance;}))
+        y.domain([0, .15])
+
+        var svg = d3.select("#ratio-chart").append("svg")
+            .attr("width", width+margin.left+margin.right)
+            .attr("height", height+margin.top+margin.bottom)
+            .attr("id", "ratioChart")
+            .append("g")
+            .attr("transform", "translate(" + margin.left+ "," + margin.top + ")");
+
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+            .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", ".71em")
+
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0,"+height+")")
+            .call(xAxis)
+            .selectAll("text")
+            .style("text-anchor","end")
+            .attr("dx", "-.4em")
+            .attr("dy", ".9em")
+            .attr("transform","rotate(-33)");
+
+        var bars = svg.selectAll("bar")
+            .data(data)
+            .enter().append("rect")
+            .style("fill",color)
+            .attr("x", function(d){ return x(d.substance);})
+            .attr("width", x.bandwidth())
+            .attr("y", function(d){return y(d.ratio);})
+            .attr("height", function(d){return height-y(d.ratio); })
+            .append("title")
+                    .text(function(d) {  
+                            if (['mdma','lsd'].includes(d.ratio)) {
+                                return d.substance.toUpperCase() + ": " + Math.round(10000*d.ratio)/10000
+                            }
+                            else{
+                                return d.substance.charAt(0).toUpperCase() + d.substance.slice(1) + ": " + Math.round(10000*d.ratio)/10000}
+                            });
+
+    }
+
+    window.onload = drawRatioChart(positive, 'positive')
+
     </script>
     
     <style>
@@ -343,11 +447,14 @@
         display:block;
         margin:auto;
     }
-    #category-chat svg{
+    #category-chart svg{
         display:block;
         margin:auto;
     }
-
+    #ratio-chart svg{
+        display:block;
+        margin:auto;
+    }
     </style>
     
 {% endblock %}

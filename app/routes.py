@@ -4,7 +4,7 @@ import json
 import datetime
 import random
 import utilities
-from utilities import connect_to_database, close_connection, json_object_reddit,json_object_search,json_object_sentiment,json_object_category,json_object_year_published,json_object_gender,json_object_year_experienced,json_object_time_series,json_object_events
+from utilities import connect_to_database, close_connection, json_object_reddit,json_object_search,json_object_sentiment,json_object_category,json_object_year_published,json_object_gender,json_object_year_experienced,json_object_time_series,json_object_events,json_object_ratio
 
 @app.route('/')
 @app.route('/index')
@@ -235,6 +235,8 @@ def superbowl2017():
     return render_template('twitter/2017.html')
 
 
+
+
 @app.route('/erowid/sentiment')
 def sentiment():
     conn = connect_to_database()
@@ -254,6 +256,8 @@ def sentiment():
     ketamine = []
     cocaine = []
     
+    positive = []
+    negative = []
 
     # Populate data arrays with JSON objects
 
@@ -295,6 +299,25 @@ def sentiment():
     json_object_category("mdma",mdma,cur)
     json_object_category("ketamine",ketamine,cur)
     json_object_category("cocaine",cocaine,cur)
+
+    # Ratio query.
+
+    json_object_ratio("cannabis",positive,'positive',cur)
+    json_object_ratio("amphetamines",positive,'positive',cur)
+    json_object_ratio("lsd",positive,'positive',cur)
+    json_object_ratio("mushrooms",positive,'positive',cur)
+    json_object_ratio("mdma",positive,'positive',cur)
+    json_object_ratio("ketamine",positive,'positive',cur)
+    json_object_ratio("cocaine",positive,'positive',cur)
+
+    json_object_ratio("cannabis",negative,'negative',cur)
+    json_object_ratio("amphetamines",negative,'negative',cur)
+    json_object_ratio("lsd",negative,'negative',cur)
+    json_object_ratio("mushrooms",negative,'negative',cur)
+    json_object_ratio("mdma",negative,'negative',cur)
+    json_object_ratio("ketamine",negative,'negative',cur)
+    json_object_ratio("cocaine",negative,'negative',cur)
+
     close_connection(cur, conn)
 
     return render_template('erowid/sentiment.html', 
@@ -307,7 +330,9 @@ def sentiment():
                         mushrooms=json.dumps(mushrooms),
                         mdma=json.dumps(mdma), 
                         ketamine=json.dumps(ketamine), 
-                        cocaine=json.dumps(cocaine)
+                        cocaine=json.dumps(cocaine),
+                        positive=json.dumps(positive),
+                        negative=json.dumps(negative)
                         )
 
 @app.route('/erowid/users')
