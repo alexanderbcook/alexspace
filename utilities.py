@@ -139,31 +139,37 @@ def json_object_category(substance, obj, cur):
     return obj
 
 
-def json_object_ratio(substance, obj, set, cur):
-    if set == 'negative':
-        query = cur.execute("SELECT count(id), primary_substance FROM erowid.experiences WHERE primary_substance = '"+substance+"' AND primary_category_id IN (6,7) GROUP BY primary_substance;")
-        numerator = cur.fetchone()
-        query = cur.execute("SELECT count(id), primary_substance FROM erowid.experiences WHERE primary_substance = '"+substance+"' GROUP BY primary_substance;")
-        denominator = cur.fetchone()
+def json_object_ratio(substance, obj, cur):
+    query = cur.execute("SELECT count(id) FROM erowid.experiences WHERE primary_substance = '"+substance+"' AND primary_category_id IN (6,7) GROUP BY primary_substance;")
+    numerator = cur.fetchone()
 
-    if set == 'positive':
-        query = cur.execute("SELECT count(id), primary_substance FROM erowid.experiences WHERE primary_substance = '"+substance+"' AND primary_category_id IN (4,9) GROUP BY primary_substance;")
-        numerator = cur.fetchone()
-        query = cur.execute("SELECT count(id), primary_substance FROM erowid.experiences WHERE primary_substance = '"+substance+"' GROUP BY primary_substance;")
-        denominator = cur.fetchone()
+    query = cur.execute("SELECT count(id) FROM erowid.experiences WHERE primary_substance = '"+substance+"' GROUP BY primary_substance;")
+    denominator = cur.fetchone()
 
-    if set == 'bodily harm':
-        query = cur.execute("SELECT count(id), primary_substance FROM erowid.experiences WHERE primary_substance = '"+substance+"' AND primary_category_id IN (27,10) GROUP BY primary_substance;")
-        numerator = cur.fetchone()
-        query = cur.execute("SELECT count(id), primary_substance FROM erowid.experiences WHERE primary_substance = '"+substance+"' GROUP BY primary_substance;")
-        denominator = cur.fetchone()
+    negative_ratio = numerator[0]/denominator[0]
 
-    obj.append(
-        {
-            "ratio": numerator[0]/denominator[0],
-            "substance": substance
-        }
-    )
+    query = cur.execute("SELECT count(id) FROM erowid.experiences WHERE primary_substance = '"+substance+"' AND primary_category_id IN (4,9) GROUP BY primary_substance;")
+    numerator = cur.fetchone()
+
+    query = cur.execute("SELECT count(id) FROM erowid.experiences WHERE primary_substance = '"+substance+"' GROUP BY primary_substance;")
+    denominator = cur.fetchone()
+
+    positive_ratio = numerator[0]/denominator[0]
+
+    query = cur.execute("SELECT count(id) FROM erowid.experiences WHERE primary_substance = '"+substance+"' AND primary_category_id IN (27,10) GROUP BY primary_substance;")
+    numerator = cur.fetchone()
+
+    query = cur.execute("SELECT count(id) FROM erowid.experiences WHERE primary_substance = '"+substance+"' GROUP BY primary_substance;")
+    denominator = cur.fetchone()
+
+    bodily_harm_ratio = numerator[0]/denominator[0]
+
+    obj.append({
+        "substance": substance,
+        "negative_ratio": negative_ratio,
+        "positive_ratio": positive_ratio,
+        "bodily_harm_ratio": bodily_harm_ratio
+    })
 
     return obj
 

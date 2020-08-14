@@ -256,9 +256,7 @@ def sentiment():
     ketamine = []
     cocaine = []
     
-    positive = []
-    negative = []
-    bodily_harm = []
+    ratios = []
 
     # Populate data arrays with JSON objects
 
@@ -303,30 +301,15 @@ def sentiment():
 
     # Ratio query.
 
-    json_object_ratio("cannabis",positive,'positive',cur)
-    json_object_ratio("amphetamines",positive,'positive',cur)
-    json_object_ratio("lsd",positive,'positive',cur)
-    json_object_ratio("mushrooms",positive,'positive',cur)
-    json_object_ratio("mdma",positive,'positive',cur)
-    json_object_ratio("ketamine",positive,'positive',cur)
-    json_object_ratio("cocaine",positive,'positive',cur)
+    json_object_ratio("cannabis",ratios,cur)
+    json_object_ratio("amphetamines",ratios,cur)
+    json_object_ratio("lsd",ratios,cur)
+    json_object_ratio("mushrooms",ratios,cur)
+    json_object_ratio("mdma",ratios,cur)
+    json_object_ratio("ketamine",ratios,cur)
+    json_object_ratio("cocaine",ratios,cur)
 
-    json_object_ratio("cannabis",negative,'negative',cur)
-    json_object_ratio("amphetamines",negative,'negative',cur)
-    json_object_ratio("lsd",negative,'negative',cur)
-    json_object_ratio("mushrooms",negative,'negative',cur)
-    json_object_ratio("mdma",negative,'negative',cur)
-    json_object_ratio("ketamine",negative,'negative',cur)
-    json_object_ratio("cocaine",negative,'negative',cur)
-
-    json_object_ratio("cannabis",bodily_harm,'bodily harm',cur)
-    json_object_ratio("amphetamines",bodily_harm,'bodily harm',cur)
-    json_object_ratio("lsd",bodily_harm,'bodily harm',cur)
-    json_object_ratio("mushrooms",bodily_harm,'bodily harm',cur)
-    json_object_ratio("mdma",bodily_harm,'bodily harm',cur)
-    json_object_ratio("ketamine",bodily_harm,'bodily harm',cur)
-    json_object_ratio("cocaine",bodily_harm,'bodily harm',cur)
-
+    print(ratios)
     close_connection(cur, conn)
 
     return render_template('erowid/sentiment.html', 
@@ -340,9 +323,7 @@ def sentiment():
                         mdma=json.dumps(mdma), 
                         ketamine=json.dumps(ketamine), 
                         cocaine=json.dumps(cocaine),
-                        positive=json.dumps(positive),
-                        negative=json.dumps(negative),
-                        bodily_harm=json.dumps(bodily_harm)
+                        ratios=json.dumps(ratios)
                         )
 
 @app.route('/erowid/users')
