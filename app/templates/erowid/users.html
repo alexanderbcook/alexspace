@@ -4,8 +4,8 @@
         <header>
             <br>
                 <hgroup>
-                    <h4>Who Uses Erowid to Talk About Drugs?</h4>
-                    <h5>A Look at Erowid's User Base</h5>
+                    <h4>Who Uses Erowid?</h4>
+                    <h5>An Analysis of Erowid's User Base</h5>
                 </hgroup>
             <br>
         </header>
@@ -40,39 +40,21 @@
           <hr>
         </section>
         <section>
-          <div class="container">
-            <div class="row">
-              <div class="col">
-                <h5 id="post-title"></h5>
-              </div>
-              <div class="col">
-                <h5 id="view-title"></h5>
-              </div>
-            </div>
-            <div class="row" id="buttonContainer">
-              <div class="dropdown">
-                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="bar-chart-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+            <h5 id="post-title"></h5>
+            <div class="dropdown">
+                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="rate-chart-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" onclick="updateSiteData('aggregate')">Display aggregate data.</a>
-                  <a class="dropdown-item" onclick="updateSiteData('amphetamines')">Display amphetamines data.</a>
-                  <a class="dropdown-item" onclick="updateSiteData('cannabis')">Display cannabis data.</a>
-                  <a class="dropdown-item" onclick="updateSiteData('cocaine')">Display cocaine data.</a>
-                  <a class="dropdown-item" onclick="updateSiteData('ketamine')">Display ketamine data.</a>
-                  <a class="dropdown-item" onclick="updateSiteData('LSD')">Display LSD data.</a>
-                  <a class="dropdown-item" onclick="updateSiteData('mushrooms')">Display mushrooms data.</a>
-                  <a class="dropdown-item" onclick="updateSiteData('MDMA')">Display MDMA data.</a>
+                    <a class="dropdown-item" onclick="updateRateData('amphetamines')">Display amphetamines data.</a>
+                    <a class="dropdown-item" onclick="updateRateData('cannabis')">Display cannabis data.</a>
+                    <a class="dropdown-item" onclick="updateRateData('cocaine')">Display cocaine data.</a>
+                    <a class="dropdown-item" onclick="updateRateData('ketamine')">Display ketamine data.</a>
+                    <a class="dropdown-item" onclick="updateRateData('LSD')">Display LSD data.</a>
+                    <a class="dropdown-item" onclick="updateRateData('MDMA')">Display MDMA data.</a>
+                    <a class="dropdown-item" onclick="updateRateData('mushrooms')">Display mushrooms data.</a>
                 </div>
-              </div>
             </div>
-            <div class="row">
-              <div class="col">
-                <svg class="graphContainer" viewBox="0 0 400 400"  preserveAspectRatio="xMidYMid meet" id="post-count-container"> </svg>
-              </div>
-              <div class="col">
-                <svg class="graphContainer" viewBox="0 0 400 400"  preserveAspectRatio="xMidYMid meet" id="view-count-container"></svg>
-              </div>
-            </div>
-          </div>
+            <svg id="rate-chart-container" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet"></svg>
           <hr>
         </section>
         <section>
@@ -84,7 +66,7 @@
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
 
-document.getElementById('page-title').innerHTML = "Who Uses Erowid to Talk About Drugs?"    
+document.getElementById('page-title').innerHTML = "Who Uses Erowid?"    
 
 var JSONdata = {{genders|tojson}}    
 var genders = JSON.parse(JSONdata)
@@ -147,11 +129,9 @@ function updateGenderData(value){
     }
 
     document.getElementById('pie-chart-dropdown').innerHTML = "Display " + value + " data.";
- 
 }
 
 function drawPieChart(data,set){
-
   var margin = {top: 0, right:0, bottom:0, left:0},
           width = 600 - margin.left - margin.right,
           height = 250 - margin.top - margin.bottom,
@@ -184,24 +164,20 @@ function drawPieChart(data,set){
   .data(pie(data))
   .enter().append("g")
     .attr("class", "arc");
+  arc.append("path")
+    .attr("d", path)
+    .attr("fill", function(d) { return color(d.data.gender); })
+    .append("title")
+        .text(function(d) { return d.data.gender+ ": " + Math.round(100*(d.data.count/(d.data.total)))+"%"; });
 
-      arc.append("path")
-        .attr("d", path)
-        .attr("fill", function(d) { return color(d.data.gender); })
-        .append("title")
-            .text(function(d) { return d.data.gender+ ": " + Math.round(100*(d.data.count/(d.data.total)))+"%"; });
-
-
-      arc.append("text")
-        .attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
-        .attr("dy", "0.35em")
-        .text(function(d) { return d.data.gender; })
+  arc.append("text")
+    .attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
+    .attr("dy", "0.35em")
+    .text(function(d) { return d.data.gender; })
 }
 
 window.onload = updateGenderData('aggregate')
 
-var JSONdata = {{years|tojson}}    
-var years = JSON.parse(JSONdata)
 var JSONdata = {{years_cannabis|tojson}}
 var years_cannabis = JSON.parse(JSONdata)
 var JSONdata = {{years_amphetamines|tojson}}
@@ -217,192 +193,94 @@ var years_ketamine = JSON.parse(JSONdata)
 var JSONdata = {{years_cocaine|tojson}}
 var years_cocaine = JSON.parse(JSONdata)
 
-var JSONdata = {{views|tojson}}    
-var views = JSON.parse(JSONdata)
-var JSONdata = {{views_cannabis|tojson}}
-var views_cannabis = JSON.parse(JSONdata)
-var JSONdata = {{views_amphetamines|tojson}}
-var views_amphetamines = JSON.parse(JSONdata)
-var JSONdata = {{views_lsd|tojson}}
-var views_lsd = JSON.parse(JSONdata)
-var JSONdata = {{views_mushrooms|tojson}}
-var views_mushrooms = JSON.parse(JSONdata)
-var JSONdata = {{views_mdma|tojson}}
-var views_mdma = JSON.parse(JSONdata)
-var JSONdata = {{views_ketamine|tojson}}
-var views_ketamine = JSON.parse(JSONdata)
-var JSONdata = {{views_cocaine|tojson}}
-var views_cocaine = JSON.parse(JSONdata)
-
-function updateSiteData(value){
-    if (value == 'aggregate'){
-      d3.select("#post-count-chart").remove()
-      d3.select("#view-count-chart").remove()
-      drawBarChart(views, years, value)
-    }
+function updateRateData(value){
     if (value == 'cannabis'){
-      d3.select("#post-count-chart").remove()
-      d3.select("#view-count-chart").remove()
-      drawBarChart(views_cannabis, years_cannabis, value)
+      d3.select("#rate-chart").remove()
+      drawBarChart(years_cannabis, value)
     }
     if (value == 'amphetamines'){
-      d3.select("#post-count-chart").remove()
-      d3.select("#view-count-chart").remove()
-      drawBarChart(views_amphetamines, years_amphetamines, value)
+      console.log(d3.select("#rate-chart"))
+      d3.select("#rate-chart").remove()
+      drawBarChart(years_amphetamines, value)
     }
     if (value == 'LSD'){
-      d3.select("#post-count-chart").remove()
-      d3.select("#view-count-chart").remove()
-      drawBarChart(views_lsd, years_lsd, value)
+      d3.select("#rate-chart").remove()
+      drawBarChart(years_lsd, value)
     }
     if (value == 'mushrooms'){
-      d3.select("#post-count-chart").remove()
-      d3.select("#view-count-chart").remove()
-      drawBarChart(views_mushrooms, years_mushrooms, value)
+      d3.select("#rate-chart").remove()
+      drawBarChart(years_mushrooms, value)
     }
     if (value == 'ketamine'){
-      d3.select("#post-count-chart").remove()
-      d3.select("#view-count-chart").remove()
-      drawBarChart(views_ketamine, years_ketamine, value)
+      d3.select("#rate-chart").remove()
+      drawBarChart(years_ketamine, value)
     }
     if (value == 'cocaine'){
-      d3.select("#post-count-chart").remove()
-      d3.select("#view-count-chart").remove()
-      drawBarChart(views_cocaine, years_cocaine, value)
+      d3.select("#rate-chart").remove()
+      drawBarChart(years_cocaine, value)
     }
     if (value == 'MDMA'){
-      d3.select("#post-count-chart").remove()
-      d3.select("#view-count-chart").remove()
-      drawBarChart(views_mdma, years_mdma, value)
+      d3.select("#rate-chart").remove()
+      drawBarChart(years_mdma, value)
     }
     if (value == "MDMA" || value == "LSD"){
-      document.getElementById('post-title').innerHTML = value + " Forum Posts by Year"; 
-      document.getElementById('view-title').innerHTML = value + " Forum Views by Year"; 
-    }
-    else if (value == "aggregate"){
-      document.getElementById('post-title').innerHTML = "Forum Posts by Year" 
-      document.getElementById('view-title').innerHTML = "Forum Views by Year"    
+      document.getElementById('post-title').innerHTML = "Percentage of Stories Concerning " + value + " by Year"; 
     }
     else{
-      document.getElementById('post-title').innerHTML = value.charAt(0).toUpperCase() + value.slice(1) +  " Forum Posts by Year" 
-      document.getElementById('view-title').innerHTML = value.charAt(0).toUpperCase() + value.slice(1) +  " Forum Views by Year" 
+      document.getElementById('post-title').innerHTML = "Percentage of Stories Concerning " + value.charAt(0).toUpperCase() + value.slice(1) +  "  by Year "
+    } 
+    document.getElementById('rate-chart-dropdown').innerHTML = "Display " + value + " data.";
+}
+window.onload = updateRateData('amphetamines')
+
+function drawBarChart(data, set){
+
+  var margin = {top: 25, right:0, bottom:70, left:40},
+          width = 800 - margin.left - margin.right,
+          height = 400 - margin.top - margin.bottom;
+
+  var x = d3.scaleBand().rangeRound([0,width]).padding(.05);
+  var y = d3.scaleLinear().range([height, 0]);
+
+  var xAxis = d3.axisBottom(x)
+  var yAxis = d3.axisLeft(y)
+
+  x.domain(data.map(function(d){return d.year;}))
+  y.domain([0, .30])
+
+  var svg = d3.select("#rate-chart-container").append("svg")
+      .attr("width", width+margin.left+margin.right)
+      .attr("height", height+margin.top+margin.bottom)
+      .attr("id", "rate-chart")
+      .append("g")
+      .attr("transform", "translate(" + margin.left+ "," + margin.top + ")");
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+            .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", ".71em")
+
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0,"+height+")")
+            .call(xAxis)
+            .selectAll("text")
+            .style("text-anchor","end")
+            .attr("dx", "-.4em")
+            .attr("dy", ".9em")
+            .attr("transform","rotate(-33)");
+
+        var bars = svg.selectAll("bar")
+            .data(data)
+            .enter().append("rect")
+            .style("fill","#C1403D")
+            .attr("x", function(d){ return x(d.year);})
+            .attr("width", x.bandwidth())
+            .attr("y", function(d){return y(d.rate);})
+            .attr("height", function(d){return height-y(d.rate); })
     }
-    document.getElementById('bar-chart-dropdown').innerHTML = "Display " + value + " data.";
-}
-window.onload = updateSiteData('aggregate')
-
-
-function drawBarChart(viewData, yearData, set){
-
-  var margin = {top: 20, right:0, bottom:30, left:60},
-          width = 400 - margin.left - margin.right,
-          height = 400 - margin.top - margin.bottom
-
-  var svg = d3.select("#post-count-container").append("svg")
-        .attr("width", width+margin.left+margin.right)
-        .attr("height", height+margin.top+margin.bottom)
-        .attr("id", "post-count-chart")
-
-  var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
-      y = d3.scaleLinear().rangeRound([height, 0]);
-
-  var g = svg.append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    
-  yearData.forEach(function (d) {
-        d.year = d.year;
-        d.count = +d.count;
-      });
-
-  x.domain(yearData.map(function(d) { return d.year; }));
-  y.domain([0, d3.max(yearData, function(d) { return d.count; })]);
-
-  g.append("g")
-      .attr("class", "axis axis--x")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x))
-      .selectAll("text")
-          .style("text-anchor","end")
-          .attr("dx", "-.5em")
-          .attr("dy", ".6em")
-          .attr("transform","rotate(-33)")
-
-
-  g.append("g")
-      .attr("class", "axis axis--y")
-      .call(d3.axisLeft(y).ticks(10))
-    .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", "0.71em")
-
-  g.selectAll(".bar")
-    .data(yearData)
-    .enter().append("rect")
-      .attr("id","year-bar-chart")
-      .attr("class", "bar")
-      .attr("x", function(d) { return x(d.year); })
-      .attr("y", function(d) { return y(d.count); })
-      .attr("width", x.bandwidth())
-      .attr("height", function(d) { return height - y(d.count); })
-      .append("title")
-        .text(function(d) { return d.year+ ": " + d.count + " forum posts" });;
-
-
-  var svg = d3.select("#view-count-container").append("svg")
-        .attr("width", width+margin.left+margin.right)
-        .attr("height", height+margin.top+margin.bottom)
-        .attr("id", "view-count-chart")
-
-
-  var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
-      y = d3.scaleLinear().rangeRound([height, 0]);
-
-  var g = svg.append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    
-  viewData.forEach(function (d) {
-        d.year = d.year;
-        d.views = +d.views;
-      });
-
-  x.domain(viewData.map(function(d) { return d.year; }));
-  y.domain([0, d3.max(viewData, function(d) { return d.views; })]);
-
-  g.append("g")
-      .attr("class", "axis axis--x")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x))
-      .selectAll("text")
-          .style("text-anchor","end")
-          .attr("dx", "-.5em")
-          .attr("dy", ".6em")
-          .attr("transform","rotate(-33)")
-
-  g.append("g")
-      .attr("class", "axis axis--y")
-      .call(d3.axisLeft(y).ticks(10))
-
-  g.selectAll(".bar")
-    .data(viewData)
-    .enter().append("rect")
-      .attr("id","view-bar-chart")
-      .attr("class", "bar")
-      .attr("x", function(d) { return x(d.year); })
-      .attr("y", function(d) { return y(d.views); })
-      .attr("width", x.bandwidth())
-      .attr("height", function(d) { return height - y(d.views); })
-      .append("title")
-        .text(function(d) { 
-            if (d.views > 1.0e+6){
-                return d.year+ ": " + Math.round(10*d.views / 1.0e+6)/10 +"M forum views"
-            }
-            else{
-                return d.year+": " + Math.round(10*d.views / 1.0e3)/10+"K forum views"
-            }})
-
-}
-
 
 </script>
 
@@ -415,48 +293,34 @@ p {
 .graphContainer {
   float: left;
 }
-
-#year-bar-chart {
-  fill: #9B59B6;
-  opacity:.75;
+.chart rect{
+    opacity: .75;
 }
-
-#year-bar-chart:hover {
-  opacity:.9;
+.chart rect:hover {
+    opacity: .9;
 }
-
-#view-bar-chart {
-  fill: #E74C3C;
-  opacity:.75;
-}
-
-#view-bar-chart:hover {
-  opacity:.9;
-}
-
 .axis--x path {
   display: none;
 }
-
 .arc path{
     opacity:.75;
 }
-
 .arc path:hover {
     opacity:1;
 }
-
 .arc text {
   font: 8px sans-serif;
   text-anchor: middle;
 }
-
 .arc path {
   stroke: #fff;
 }
-
 #buttonContainer{
   padding-left:1em
+}
+#rate-chart svg{
+  display:block;
+  margin:auto;
 }
 </style>
 

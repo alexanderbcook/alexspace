@@ -201,34 +201,24 @@ def json_object_gender(obj, substance, cur):
             "count": result[1],
             "total": total
         })
+
     return obj
 
 
 def json_object_year_published(obj, substance, cur):
-    if substance == None:
-        query = cur.execute("SELECT EXTRACT(YEAR from published_date) AS year, count(id) FROM erowid.experiences WHERE EXTRACT(YEAR from published_date) NOT IN ('1995') GROUP BY EXTRACT(YEAR from published_date) ORDER BY EXTRACT(YEAR from published_date);")
-    else:
-        query = cur.execute("SELECT EXTRACT(YEAR from published_date) AS year, count(id) FROM erowid.experiences WHERE EXTRACT(YEAR from published_date) NOT IN ('1995') AND primary_substance = '"+substance+"' GROUP BY EXTRACT(YEAR from published_date) ORDER BY EXTRACT(YEAR from published_date);")
+    query = cur.execute("SELECT EXTRACT(YEAR from published_date) AS year, count(id) FROM erowid.experiences WHERE EXTRACT(YEAR from published_date) NOT IN ('1995') AND primary_substance = '"+substance+"' GROUP BY EXTRACT(YEAR from published_date) ORDER BY EXTRACT(YEAR from published_date);")
     results = cur.fetchall()
+    query = cur.execute("SELECT count(id) FROM erowid.experiences WHERE EXTRACT(YEAR from published_date) NOT IN ('1995')  GROUP BY EXTRACT(YEAR from published_date) ORDER BY EXTRACT(YEAR from published_date);")
+    totals = cur.fetchall()
 
+    i = 0
     for result in results:
         obj.append({
+            "substance": substance,
             "year": int(result[0]),
-            "count": result[1]
+            "rate": result[1]/int(totals[i][0])
         })
+        
     return obj
 
 
-def json_object_year_experienced(obj, substance, cur):
-    if substance == None:
-        query = cur.execute("SELECT experience_year, count(id) FROM erowid.experiences WHERE experience_year NOT IN ('1995') GROUP BY experience_year ORDER BY experience_year;")
-    else:
-        query = cur.execute("SELECT experience_year, count(id) FROM erowid.experiences WHERE experience_year NOT IN ('1995') AND primary_substance = '"+substance+"' GROUP BY experience_year ORDER BY experience_year;")
-    results = cur.fetchall()
-
-    for result in results:
-        obj.append({
-            "year": int(result[0]),
-            "count": result[1]
-        })
-    return obj

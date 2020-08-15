@@ -14,11 +14,11 @@
                 Erowid is an organization that aims to educate the public about illicit drugs.
                 <a href="https://www.erowid.org">Their website</a> contains lots of information about pretty much any drug imaginable. Perhaps the most interesting portion of the website is the 'experience vault' where users can share their experiences on substances. These stories are incredible - full of joy, sadness, violence, sex, and more. 
                 A social scientist's dream. It's a fun read.
-
             </p>
             <p>
-                I decided to scrape all of these stories using <a href="https://github.com/scrapy/scrapy">Scrapy</a> and then perform sentiment analysis using <a href="https://textblob.readthedocs.io/en/dev/">TextBlob.</a> I performed sentiment analysis on a sentence-by-sentence level, ascribing a value between 1 (very positive) and -1 (very negative), to each sentence in the forum post. I then took the average of all of these sentences to give each story an overall sentiment value. There are 23,000 stories in total. 
-                Every story has demographic data, dose size information, a user-perscribed story "category" summarizing the setting of the experience, and more. The result is a very interesting dataset that I think has been underexplored. 
+                I became aware of this website in 2017. I thought the dataset was really interesting, so naturally, I wrote a scraper using <a href="https://github.com/scrapy/scrapy">Scrapy</a> and gathered all the data in a gigantic .csv.  In 2020, I revisted this project with the goal of collecting new data and refining the data structure. This time, I decided against using a scraper and instead reached out to the Erowid team, who provided me with an API key and the relevant documentation I needed. The Erowid API is easy to use and made importing the data to my database a breeze. In total, I gathered ~35,000 stories from the experience vault. I  used <a href="https://textblob.readthedocs.io/en/dev/">TextBlob</a> to perform sentiment analysis. Sentiment is analyzed on a sentence-by-sentence level, ascribing a value between 1 (very positive) and -1 (very negative), to each sentence in the forum post. I then took the average of all of these sentences to give each story an overall sentiment value.</p>
+            <p>
+                Every story also includes demographic data, relevant dates, a user-perscribed story "category" summarizing the setting of the experience, and more. The result is a very interesting dataset that I think has been underexplored. 
             </p>
             <p></p>
         </section>
@@ -54,7 +54,7 @@
               </div>
             </div>
             <br>
-            <p> I think the spread of sentences is interesting. The majority are correctly indentified, but some (namely the sentences referring to VH1's 'Greatest Rock and Roll Artists' and television being 'boring') are just a little off. That said, I can also see why the algorithm identified them they way it did. I think, after examining the data quite closely, the algorithm has done quite a good job and I put quite a bit of stock in the results, particularly when the taking the average of many thousand sentences.</p>
+            <p> I think the spread of sentences is interesting. The majority are correctly indentified, but some (namely the sentences referring to VH1's 'Greatest Rock and Roll Artists' and television being 'boring') are just a little off. That said, I can also see why the algorithm identified them they way it did. I think, after examining the data quite closely, the algorithm has done a fairly good job and I think the results are reasonable, particularly considering that I am taking the average of many thousands of sentences.</p>
         </section>
         <section>
             <p> The following is a chart of the average sentiment of stories about the seven most popular substances on the message board. The gender of the author is also available, so I included that dimension in the analysis.</p>
@@ -67,12 +67,12 @@
             </div>
             <svg class="chart" id="sentiment-chart" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet"></svg>
             <hr>
-            <p> The results were not as drastic as I was anticipating. Few things to point out, though. Notice how closely the 'aggregate' data tracks the 'male' options are. Given that I am recording 'average' values, this implies that men shared stories than women did. Women generally share more negative stories than those shared by men. Women did tend to enjoy MDMA and mushrooms more then men. Stories about MDMA were by far the most positive. 
+            <p> The results were not as drastic as I was anticipating. There are a few things to point out, though. Notice how closely the 'aggregate' data tracks the 'male' options are. Given that I am recording 'average' values, this implies that the bulk of stories are shared by men. Women generally share more stories with a lower sentiment value than me. This is not the case for two out of seven substances - Mushrooms and LSD. MDMA, sometimes referred to as ecstacy, had the highest overall sentiment value for both men and women.
             </p>
             <br>
         </section>
         <section>
-            <p>In the following chart, I graph the average sentiment by category and substance. So for example, the stories about amphetamine use with a category of 'Large Group (10+)' were the most positive, while stories with a category of "Health Problems" were most negative.
+            <p>Each experience is given a user-perscribed category. There are fifteen categories available to choose from. In the following chart, I graph the average sentiment by category and substance. So for example, the stories about cocaine  use with a category of 'Glowing Experiences' were the most positive, while stories with a category of 'Bad Trips' were most negative.</p>
             <hr>
             <h5 id="category"></h5>
             <div class="dropdown">
@@ -90,15 +90,16 @@
             </div>
             <svg class="chart" id="category-chart" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet"></svg>
             <hr>
-            <p> One interesting thing to note is that the 'Relationships' category of ketamine is the most positive of any substance while the 'Health Problems' category for ketamine is the most negative of any substance. Clearly, a polar set of stories relating to the substance. This visualization also quite clearly demonstrates the generally positive nature of stories pertaining to MDMA and Mushrooms. </p>
-            <p>I'm quite fond of the way this visualization turned out and I think that data is pretty interesting.</p>
-            <hr>
+            <p> The results are about what I expected. The categories 'Glowing Experiences', 'Mystical Experiences' and 'Health Benefits' are routinely in the top three, while 'Bad Trips', 'Health Problems', and 'Trainwrecks / Trip Disasters' are almost always near the bottom. This visualization quite clearly demonstrates the generally positive nature of stories pertaining to MDMA and Mushrooms. LSD stories categorized as 'Glowing Experiences' had the highest sentiment value of any sustance/category combination.</p>
+            <p>Just from an aesthetic standpoint I'm really pleased with the way this visualization turned out. Looks nice and portrays data well.</p>
         </section>
         <section>
-            <p>I think we can agree that some of these categories definitions are strongly emotional. A 'Glowing' or 'Mystical' experience generally conotes a very positive experience while terms like 'Trainwreck' or 'Bad Trip' conjure negative images, particularly in the context of drug use. thought it would be interesting to explore the commonality of these sorts of an experiences. To do so I defined the categories 'Glowing Experiences', 'Mystical Experiences' to be positive categories, 'Bad Trips', 'Trainwrecks / Trip Disasters' as negative categories and then calculated the ratio of the total body of experiences. I also included a third ratio- bodily harm. The bodily harm category group includes 'Health Problems' and 'Addiction / Habituation'. These two categories make up what I take to be the physical risk of the substance.</p>
+            <p>I think we can agree that some of these category definitions are strongly emotional. A 'Glowing' or 'Mystical' experience generally conotes a very positive experience while terms like 'Trainwreck' or 'Bad Trip' conjure negative images, particularly in the context of drug use. I thought it would be interesting to explore the commonality of these sorts of an experiences as it relates to the entire body of experiences. To do so I defined the categories 'Glowing Experiences', 'Mystical Experiences' to be positive categories, 'Bad Trips', 'Trainwrecks / Trip Disasters' as negative categories and then calculated the percentage of the total these stories made up of the total body of experiences. I also included a third categorization - bodily harm. The bodily harm category group includes 'Health Problems' and 'Addiction / Habituation'. These two categories make up the stories that detail physical risk to the user.</p>
             <hr>
             <h5>Ratio of Strongly Emotional Categories</h5>
             <svg class="chart" id="ratio-chart" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet"></svg>
+            <p> This chart is pretty interesting. The most obvious thing to note is the extremely high percentage of stories in the personal harm group for the stimulants cocaine and amphetamines. These are highly addictive substances with overt health effects, so the prevalence of these stories makes sense. But the fact that over 25% of the 707 cocaine experiences I captured are categorized this way is alarming. It's also interesting to note that neither of these substances produce very many intensly positive or negative stories.</p>
+            <p> The two hallucinogenics- mushrooms and LSD- on this chart are also worth discussing. They produce high rates of both negative and positive experiences, but very few stories detailing personal risk. This is likely because these substances are not addictive and tend to not put the user in harms way, but the experience is still very intense and can be pyschologically difficult.</p>
             <hr>
     </article>
     <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -398,12 +399,12 @@
            .attr("class", "y axis")
            .call(yAxis);
 
-        svg.append("circle").attr("cx",225).attr("cy",20).attr("r", 6).style("fill", "#DAF7A6");
-        svg.append("circle").attr("cx",225).attr("cy",40).attr("r", 6).style("fill", "#FF5733");
-        svg.append("circle").attr("cx",225).attr("cy",60).attr("r", 6).style("fill", "#900C3F");
-        svg.append("text").attr("cx", 225).attr("cy", 20).text("% of extremely positive experiences").style("font-size", "10px");
-        svg.append("text").attr("cx", 225).attr("cy", 40).text("% of extremely negative experiences").style("font-size", "10px");
-        svg.append("text").attr("cx", 225).attr("cy", 60).text("% of stories detailing personal harm").style("font-size", "10px");
+        svg.append("circle").attr("cx",475).attr("cy",20).attr("r", 6).style("fill", "#DAF7A6");
+        svg.append("circle").attr("cx",475).attr("cy",40).attr("r", 6).style("fill", "#FF5733");
+        svg.append("circle").attr("cx",475).attr("cy",60).attr("r", 6).style("fill", "#900C3F");
+        svg.append("text").attr("x", 483).attr("y", 23.5).text("% of extremely positive experiences").style("font-size", "10px");
+        svg.append("text").attr("x", 483).attr("y", 43.5).text("% of extremely negative experiences").style("font-size", "10px");
+        svg.append("text").attr("x", 483).attr("y", 63.5).text("% of stories detailing personal harm").style("font-size", "10px");
    
     }
 

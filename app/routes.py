@@ -4,7 +4,7 @@ import json
 import datetime
 import random
 import utilities
-from utilities import connect_to_database, close_connection, json_object_reddit,json_object_search,json_object_sentiment,json_object_category,json_object_year_published,json_object_gender,json_object_year_experienced,json_object_time_series,json_object_events,json_object_ratio
+from utilities import connect_to_database, close_connection, json_object_reddit,json_object_search,json_object_sentiment,json_object_category,json_object_year_published,json_object_gender,json_object_time_series,json_object_events,json_object_ratio
 
 @app.route('/')
 @app.route('/index')
@@ -188,8 +188,6 @@ def superbowl2019():
     json_touchdown_rams         = []
     json_brady_rams             = []
 
-
-
     json_object_time_series(json_aggregate_patriots, "patriots_aggregate", cur)
     json_object_time_series(json_shit_patriots, "patriots_shit", cur)
     json_object_time_series(json_fuck_patriots, "patriots_fuck", cur)
@@ -309,7 +307,6 @@ def sentiment():
     json_object_ratio("ketamine",ratios,cur)
     json_object_ratio("cocaine",ratios,cur)
 
-    print(ratios)
     close_connection(cur, conn)
 
     return render_template('erowid/sentiment.html', 
@@ -342,7 +339,6 @@ def users():
     genders_ketamine = []
     genders_cocaine = []
 
-    years = []
     years_cannabis = []
     years_amphetamines = []
     years_lsd = []
@@ -350,15 +346,6 @@ def users():
     years_mdma = []
     years_ketamine = []
     years_cocaine = []
-
-    views = []
-    views_cannabis = []
-    views_amphetamines = []
-    views_lsd = []
-    views_mushrooms = []
-    views_mdma = []
-    views_ketamine = []
-    views_cocaine = []
 
     # Populate data arrays with JSON objects
 
@@ -371,7 +358,6 @@ def users():
     json_object_gender(genders_ketamine,"ketamine",cur)
     json_object_gender(genders_cocaine,"cocaine",cur)
 
-    json_object_year_published(years, None, cur)
     json_object_year_published(years_cannabis, "cannabis", cur)
     json_object_year_published(years_amphetamines, "amphetamines", cur)
     json_object_year_published(years_lsd, "lsd", cur)
@@ -379,15 +365,6 @@ def users():
     json_object_year_published(years_mdma, "mdma", cur)
     json_object_year_published(years_ketamine, "ketamine", cur)
     json_object_year_published(years_cocaine, "cocaine", cur)
-
-    json_object_year_experienced(views, None, cur)
-    json_object_year_experienced(views_cannabis, "cannabis", cur)
-    json_object_year_experienced(views_amphetamines, "amphetamines", cur)
-    json_object_year_experienced(views_lsd, "lsd", cur)
-    json_object_year_experienced(views_mushrooms, "mushrooms", cur)
-    json_object_year_experienced(views_mdma, "mdma", cur)
-    json_object_year_experienced(views_ketamine, "ketamine", cur)
-    json_object_year_experienced(views_cocaine, "cocaine", cur)
 
     close_connection(cur, conn)
 
@@ -400,22 +377,14 @@ def users():
                     genders_mdma=json.dumps(genders_mdma),
                     genders_ketamine=json.dumps(genders_ketamine),
                     genders_cocaine=json.dumps(genders_cocaine),
-                    years=json.dumps(years),
                     years_cannabis=json.dumps(years_cannabis), 
                     years_amphetamines=json.dumps(years_amphetamines),
                     years_lsd=json.dumps(years_lsd),
                     years_mushrooms=json.dumps(years_mushrooms),
                     years_mdma=json.dumps(years_mdma),
                     years_ketamine=json.dumps(years_ketamine),
-                    years_cocaine=json.dumps(years_cocaine),
-                    views=json.dumps(views),
-                    views_cannabis=json.dumps(views_cannabis), 
-                    views_amphetamines=json.dumps(views_amphetamines),
-                    views_lsd=json.dumps(views_lsd),
-                    views_mushrooms=json.dumps(views_mushrooms),
-                    views_mdma=json.dumps(views_mdma),
-                    views_ketamine=json.dumps(views_ketamine),
-                    views_cocaine=json.dumps(views_cocaine))
+                    years_cocaine=json.dumps(years_cocaine)
+    )
                     
 
 
