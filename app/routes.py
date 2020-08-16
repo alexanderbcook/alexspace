@@ -306,7 +306,7 @@ def sentiment():
     json_object_ratio("mdma",ratios,cur)
     json_object_ratio("ketamine",ratios,cur)
     json_object_ratio("cocaine",ratios,cur)
-
+    
     close_connection(cur, conn)
 
     return render_template('erowid/sentiment.html', 
