@@ -218,7 +218,8 @@ def json_object_year_published(obj, substance, cur):
             "year": int(result[0]),
             "rate": result[1]/int(totals[i][0])
         })
-        
+        i+=1 
+
     return obj
 
 

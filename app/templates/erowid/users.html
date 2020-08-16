@@ -30,12 +30,12 @@
                   <a class="dropdown-item" onclick="updateGenderData('MDMA')">Display MDMA data.</a>
               </div>
           </div>
-          <svg viewBox="0 0 600 250"  preserveAspectRatio="xMidYMid meet" id="pie-chart-container"></svg>
+          <svg class="chart" viewBox="0 0 600 250"  preserveAspectRatio="xMidYMid meet" id="pie-chart-container"></svg>
           <hr>
         </section>
         <section>
           <p>Indeed, the websites population (or at least active user base) is mostly male. The most popular substances for female authors are MDMA and cocaine. I'm a little surprised that cannabis stories are so heavily male dominated, given the relative accessibility and popularity of the drug.</p>
-          <p>The forum posts list a date, as well as the view count for the forum post, so I went ahead and plotted these metrics. I think that these two metrics, plotted side by side, are an effective metric detailing the sites rise and decline. 
+          <p>The forum posts list the published date. I thought it would be interesting to look for trends- what substances are becoming more popular to write about and which are fading from relevance. I went ahead and plotted this data below.
           </p>
           <hr>
         </section>
@@ -54,12 +54,12 @@
                     <a class="dropdown-item" onclick="updateRateData('mushrooms')">Display mushrooms data.</a>
                 </div>
             </div>
-            <svg id="rate-chart-container" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet"></svg>
+            <svg class="chart" id="rate-chart-container" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet"></svg>
           <hr>
         </section>
         <section>
-          <p>I'm unsure what took place in 2007 that resulted in such a spike in both forum posts and forum views. Organic growth? Increase in advertisement spending? It's hard to say, but clearly Erowid was not able to retain that usage.</p>
-          <p>I'm quite pleased with the way this project turned out. I have many more ideas I'd like to explore with this dataset. I'm interested in plotting sentiment and dose size side by side. I imagine there is some correlation- specifically, I imagine after a certain dose size, sentiment trends downward rapidly. The barrier to this analysis is that the dose size is self-reported. In other words, how many grams is a 'hit' of cannabis or a 'a lot' of meth? Regardless, lots still to explore with this data.</p>
+          <p>The results are difficult to anaylze. The spikes are seemingly random with no clear trendlines. I do think the spike of stories about amphetamines between 2005-2010 is interesting. I'm also curious about what prompted the huge spike in ketamine stories in 2018. At this time, I don't have the answers to these questions. </p>
+          <p>There's also a spike in cannabis stories in 2012-2014. This is the period when legalization of the substance occurred in Washington, Colorado, Oregon, and Alaska. Perhaps the incresed accessibility prompted the new writings.</p>
           <hr>
         </section>
       </article>
@@ -235,7 +235,7 @@ window.onload = updateRateData('amphetamines')
 
 function drawBarChart(data, set){
 
-  var margin = {top: 25, right:0, bottom:70, left:40},
+  var margin = {top: 25, right:0, bottom:35, left:40},
           width = 800 - margin.left - margin.right,
           height = 400 - margin.top - margin.bottom;
 
@@ -246,7 +246,7 @@ function drawBarChart(data, set){
   var yAxis = d3.axisLeft(y)
 
   x.domain(data.map(function(d){return d.year;}))
-  y.domain([0, .30])
+  y.domain([0, d3.max(data, function(d) { return d.rate; })]);
 
   var svg = d3.select("#rate-chart-container").append("svg")
       .attr("width", width+margin.left+margin.right)
@@ -280,6 +280,9 @@ function drawBarChart(data, set){
             .attr("width", x.bandwidth())
             .attr("y", function(d){return y(d.rate);})
             .attr("height", function(d){return height-y(d.rate); })
+            .append("title")
+              .text(function(d) {  
+                    return d.year + ": " + Math.round(10000*d.rate)/10000})
     }
 
 </script>

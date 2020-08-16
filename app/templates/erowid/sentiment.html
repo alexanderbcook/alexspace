@@ -88,7 +88,7 @@
                     <a class="dropdown-item" onclick="updateCategoryData('mushrooms')">Display mushrooms data.</a>
                 </div>
             </div>
-            <svg class="chart" id="category-chart" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet"></svg>
+            <svg class="chart" id="category-chart" viewBox="0 0 1000 450" preserveAspectRatio="xMidYMid meet"></svg>
             <hr>
             <p> The results are about what I expected. The categories 'Glowing Experiences', 'Mystical Experiences' and 'Health Benefits' are routinely in the top three, while 'Bad Trips', 'Health Problems', and 'Trainwrecks / Trip Disasters' are almost always near the bottom. This visualization quite clearly demonstrates the generally positive nature of stories pertaining to MDMA and Mushrooms. LSD stories categorized as 'Glowing Experiences' had the highest sentiment value of any sustance/category combination.</p>
             <p>Just from an aesthetic standpoint I'm really pleased with the way this visualization turned out. Looks nice and portrays data well.</p>
@@ -263,14 +263,14 @@
     
     function drawCategoryChart(data){
 
-        var margin = {top: 25, right:-10, bottom:20, left:45},
-                width = 800 - margin.left - margin.right,
-                height = 400 - margin.top - margin.bottom;
+        var margin = {top: 20, right:85, bottom:20, left:115},
+                width = 1000 - margin.left - margin.right,
+                height = 450 - margin.top - margin.bottom;
 
         var x = d3.scaleLinear()
             .range([0, width]);
 
-        var y = d3.scaleBand().rangeRound([0,height]).padding(.1);
+        var y = d3.scaleBand().rangeRound([0,height]).padding(.075);
 
         var xAxis = d3.axisBottom(x);
 
@@ -320,7 +320,7 @@
             return i;
         });
 
-        var margin = {top: 25, right:-10, bottom:20, left:45},
+        var margin = {top: 15, right:-10, bottom:15, left:45},
             width = 800 - margin.left - margin.right,
             height = 400 - margin.top - margin.bottom
 
