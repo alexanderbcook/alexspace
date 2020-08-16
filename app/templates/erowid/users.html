@@ -146,7 +146,7 @@ function drawPieChart(data,set){
   var g = svg.append("g")
         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-  var color = d3.scaleOrdinal(["lightpink", "steelblue", "grey"]);
+  var color = d3.scaleOrdinal(["#cd9703", "#1b73d3", "grey"]);
 
   var pie = d3.pie()
       .sort(null)
