@@ -146,7 +146,7 @@ def json_object_ratio(substance, obj, cur):
     query = cur.execute("SELECT count(id) FROM erowid.experiences WHERE primary_substance = '"+substance+"' GROUP BY primary_substance;")
     denominator = cur.fetchone()
 
-    negative_ratio = numerator[0]/denominator[0]
+    negative_ratio = float(numerator[0])/float(denominator[0])
 
     query = cur.execute("SELECT count(id) FROM erowid.experiences WHERE primary_substance = '"+substance+"' AND primary_category_id IN (4,9) GROUP BY primary_substance;")
     numerator = cur.fetchone()
@@ -154,7 +154,7 @@ def json_object_ratio(substance, obj, cur):
     query = cur.execute("SELECT count(id) FROM erowid.experiences WHERE primary_substance = '"+substance+"' GROUP BY primary_substance;")
     denominator = cur.fetchone()
 
-    positive_ratio = numerator[0]/denominator[0]
+    positive_ratio = float(numerator[0])/float(denominator[0])
 
     query = cur.execute("SELECT count(id) FROM erowid.experiences WHERE primary_substance = '"+substance+"' AND primary_category_id IN (27,10) GROUP BY primary_substance;")
     numerator = cur.fetchone()
@@ -162,7 +162,7 @@ def json_object_ratio(substance, obj, cur):
     query = cur.execute("SELECT count(id) FROM erowid.experiences WHERE primary_substance = '"+substance+"' GROUP BY primary_substance;")
     denominator = cur.fetchone()
 
-    bodily_harm_ratio = numerator[0]/denominator[0]
+    bodily_harm_ratio = float(numerator[0])/float(denominator[0])
 
     obj.append({
         "substance": substance,
@@ -216,7 +216,7 @@ def json_object_year_published(obj, substance, cur):
         obj.append({
             "substance": substance,
             "year": int(result[0]),
-            "rate": result[1]/int(totals[i][0])
+            "rate": float(result[1])/float((totals[i][0]))
         })
         i+=1 
 
