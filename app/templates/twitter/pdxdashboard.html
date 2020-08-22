@@ -1,48 +1,109 @@
 {% extends "base.html" %}
 {% block content %}
-    <br>
-    <div id="mapid"></div>
-    <br>
-    <table class="table">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col"> Date</th>
-                <th scope="col"> Address</th>
-                <th scope="col"> Incident Type</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for event in events %}
-        <tr>
-            <th scope="row">{{ event.createdate }}</td>
-            <td>{{ event.address }}</td>
-            <td>{{ event.incident }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    <br>
-     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
-   integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
-   crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
-   integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
-   crossorigin=""></script>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" charset="utf-8"></script>
+    <script src="https://unpkg.com/es6-promise@4.2.4/dist/es6-promise.auto.min.js"></script>
+    <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
+    <article>
+        <header>
+            <br>
+                <hgroup>
+                    <h4>Charting PDX Crime</h4>
+                    <h5>Utilizing Sockets to Fetch Data in Realtime</h5>
+                </hgroup>
+            <br>
+        </header>
+        <section>
+            <p>I've built several visualizations with static data. I wanted to experiment with real-time data. I follow <a href="https://twitter.com/pdxpolicelog">PDX Police Log</a> on Twitter, which is a police scanner feed. I thought this was pretty interesting, so I wrote a persistent listener that uploads these Tweets to a database. An open socket connection updates this data in realtime.</p>
+            <br>
+        </section>
+        <section>
+            <div id='map-container'>
+                <div id='map' style='width: 1100px; height: 600px;'></div>
+            </div>
+            <br>
+        </section>
+        <section>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col"> Date</th>
+                        <th scope="col"> Address</th>
+                        <th scope="col"> Incident Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in events %}
+                    <tr>
+                        <th scope="row">{{ event.createdate }}</th>
+                        <td>{{ event.address }}</td>
+                        <td>{{ event.incident }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>    
+            <br>
+        </section>
+    </article>
     <script>
 
-        var mymap = L.map('mapid').setView([45.5123, -122.6587], 13);
-        
-        
-        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-            maxZoom: 18,
-            id: 'mapbox.streets',
-            accessToken: 'pk.eyJ1IjoiYWJjb29rIiwiYSI6ImNqcnp5N3N2ZzFkeWs0NG80bnVtNmFxaDEifQ.zPkUuVuuVNGg-3DkQcBflQ'
-        }).addTo(mymap);
+    var JSONdata = {{jsonEvents|tojson}}  
+    var events = JSON.parse(JSONdata)
 
+    mapboxgl.accessToken = 'pk.eyJ1IjoiYWJjb29rIiwiYSI6ImNqcnp5N3N2ZzFkeWs0NG80bnVtNmFxaDEifQ.zPkUuVuuVNGg-3DkQcBflQ';
+
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [-122.635, 45.535],
+        zoom: 11,
+        interactive: false
+    });
+
+    var mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+    events.forEach(event =>
+        mapboxClient.geocoding
+            .forwardGeocode({
+                query: event.address,
+                autocomplete: false,
+                limit: 5,
+                proximity: map.center,
+                types: ['address']
+            })
+            .send()
+            .then(function(response) {
+                if (
+                    response &&
+                    response.body &&
+                    response.body.features &&
+                    response.body.features.length
+                ) {
+                var feature = response.body.features[0];
+                var marker = new mapboxgl.Marker()
+                    .setLngLat(feature.center)
+                    .setPopup(new mapboxgl.Popup().setHTML("<h6>"+event.address.toLocaleString()+"</h6>"+"<h6>"+event.incident+"</h6>"))
+                    .addTo(map);
+
+                var markerDiv = marker.getElement();
+
+                markerDiv.addEventListener('mouseenter', () => marker.togglePopup());
+                markerDiv.addEventListener('mouseleave', () => marker.togglePopup());
+            }})
+    );
+
+    document.getElementById('page-title').innerHTML = "PDX Event Dashboard"    
     </script>
     <style>
-        #mapid { height: 400px; }
+    .mapboxgl-popup-content{
+        font: 10.5px sans-serif;
+        padding: 7.5px;
+        width: 240px;
+    }
+    .mapbox-popup-content-wrapper {
+        padding: 5%;
+    }
     </style>
 {% endblock %}
 

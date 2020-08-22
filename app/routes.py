@@ -162,8 +162,8 @@ def pdxdashboard():
     close_connection(cur, conn)
 
     return render_template('twitter/pdxdashboard.html',
+                            jsonEvents=json.dumps(json_events),
                             events=json_events)
-
 
 @app.route('/superbowl/2019')
 def superbowl2019():
