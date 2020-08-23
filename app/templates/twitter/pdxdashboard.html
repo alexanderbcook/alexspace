@@ -10,8 +10,8 @@
         <header>
             <br>
                 <hgroup>
-                    <h4>Charting PDX Crime</h4>
-                    <h5>Utilizing Sockets to Fetch Data in Realtime</h5>
+                    <h4>Charting PDX Crime Reports</h4>
+                    <h5>Utilizing Mapbox and Geocoding to Visualize PPD Dispatches</h5>
                 </hgroup>
             <br>
         </header>
@@ -32,6 +32,7 @@
                         <th scope="col">Date</th>
                         <th scope="col">Address</th>
                         <th scope="col">Incident Type</th>
+                        <th scope="col">Urgency</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,7 +40,14 @@
                     <tr id="{{event.id|string|truncate(10, end ='')}}" class="event-row">
                         <td scope="row">{{ event.createdate }}</th>
                         <td>{{ event.address }}</td>
-                        <td>{{ event.incident }}</td>
+                        <td class="incident-column">{{ event.incident }}</td>
+                        {% if 'PRIORITY' == event.urgency %}
+                            <td>Priority</td>
+                        {% elif 'INJURY' == event.urgency %}
+                            <td>Injury</td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -64,11 +72,12 @@
 
     var markers = []
 
+
     var mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
     events.forEach(event =>
         mapboxClient.geocoding
             .forwardGeocode({
-                query: event.address,
+                query: event.address + ' PORTLAND, OR',
                 autocomplete: false,
                 limit: 5,
                 proximity: map.center,
@@ -83,9 +92,20 @@
                     response.body.features.length
                 ) {
                 var feature = response.body.features[0];
-                var marker = new mapboxgl.Marker()
+
+                if(event.urgency=='PRIORITY'){
+                    markerColor = '#e87166'
+                }
+                else if(event.urgency=='INJURY'){
+                    markerColor = '#7c66e8'  
+                }
+                else{
+                    markerColor = '#d2e866'
+                }
+
+                var marker = new mapboxgl.Marker({ "color": markerColor })
                     .setLngLat(feature.center)
-                    .setPopup(new mapboxgl.Popup().setHTML("<h6>"+event.address.toLocaleString()+"</h6>"+"<h6>"+event.incident+"</h6>"))
+                    .setPopup(new mapboxgl.Popup({"closeButton":false}).setHTML("<h6><b>Address:</b> "+event.address+"</h6><br><h6><b>Incident Type:</b> "+event.incident+"</h6>"))
                     .addTo(map);
 
                 var markerDiv = marker.getElement();
@@ -114,9 +134,9 @@
     </script>
     <style>
     .mapboxgl-popup-content{
-        font: 10.5px sans-serif;
+        font: 10px sans-serif;
         padding: 7.5px;
-        width: 240px;
+        width: 275px;
     }
     .mapbox-popup-content-wrapper {
         padding: 5%;

@@ -160,7 +160,6 @@ def pdxdashboard():
     json_events = json.loads(dump)
 
     close_connection(cur, conn)
-
     return render_template('twitter/pdxdashboard.html',
                             jsonEvents=json.dumps(json_events, default=str),
                             events=json_events)
