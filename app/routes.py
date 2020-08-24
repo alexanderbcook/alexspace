@@ -109,7 +109,6 @@ def topwords():
                     year_news=json.dumps(json_year_news), 
                     year_worldnews = json.dumps(json_year_worldnews))
 
-
 @app.route('/reddit/search', methods=['GET','POST']) 
 def search():
     conn = connect_to_database()
@@ -141,7 +140,6 @@ def search():
                     politics=json.dumps(json_politics, default=str), 
                     news=json.dumps(json_news, default=str), 
                     worldnews = json.dumps(json_worldnews, default=str))
-
 
 @app.route('/twitter/scalability')
 def scalability():
@@ -225,14 +223,9 @@ def superbowl2019():
                                 json_brady_rams=json.dumps(json_brady_rams, default=str),
                                 json_maroon_5_rams=json.dumps(json_maroon_5_rams, default=str))
 
-
-
 @app.route('/superbowl/2017')
 def superbowl2017():
     return render_template('twitter/2017.html')
-
-
-
 
 @app.route('/erowid/sentiment')
 def sentiment():
@@ -383,7 +376,4 @@ def users():
                     years_mdma=json.dumps(years_mdma),
                     years_ketamine=json.dumps(years_ketamine),
                     years_cocaine=json.dumps(years_cocaine)
-    )
-                    
-
-
+    )                   

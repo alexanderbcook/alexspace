@@ -47,7 +47,7 @@
             <p>The database schema looked this:</p>
             <hr>
             <figure>
-                <img src="../static/assets/preschema.png" style="width:100%;max-width:550px" class="center"/>
+                <img src="../static/assets/performance/pre-schema.png" style="width:100%;max-width:550px" class="center"/>
             </figure>
             <hr>
             <p>Notice that the last column is a datetime. The data that I really needed, however, was a date. This resulted in a lot of operations casting this column to a date (e.g. date_trunc(day, 'date')). I indexed the 'day' column, but these operations did not take advantage of the index, resulting in very slow queries.</p>
@@ -55,7 +55,7 @@
             <p>The database schema now looks like this:</p>
             <hr>
             <figure>
-                <img src="../static/assets/postschema.png" style="width:100%;max-width:600px" class="center"/>
+                <img src="../static/assets/performance/post-schema.png" style="width:100%;max-width:600px" class="center"/>
             </figure>
             <hr>
             <p>This change improved performance significantly, reducing load times by about 30%, to between 9-20s. While a step in the right direction, the application was not nearly snappy enough.</p>
@@ -65,7 +65,7 @@
             <p>Here is the definition for a few of the materialized views I use in this application.</p>
             <hr>
             <figure>
-                <img src="../static/assets/creatematview.png" style="width:100%;max-width:600px" class="center" />
+                <img src="../static/assets/performance/create-materialized-view.png" style="width:100%;max-width:600px" class="center" />
             </figure>
             <hr>
         </section>
@@ -73,11 +73,11 @@
             <p>What makes materialized views so perfect for this application is the ability to dynamically refresh the view. In this case, I just refresh the materialized views at the end of each crawler run, preprocessing the data that needs to be returned for each API call. Here are a few examples of what these ultimately look like.</p>
             <hr>
             <span>
-                <img id="matview_words" src="../static/assets/matview_words.png" style="width:100%;max-width:450px"  class="center"/>
+                <img id="matview_words" src="../static/assets/performance/materialized-view-words.png" style="width:100%;max-width:450px"  class="center"/>
             </span>
             <hr>
             <span>
-                <img id="matview_totals" src="../static/assets/matview_totals.png" style="width:100%;max-width:450px"  class="center"/>
+                <img id="matview_totals" src="../static/assets/performance/materialized-view-totals.png" style="width:100%;max-width:450px"  class="center"/>
             </span>
 
             <hr>

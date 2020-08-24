@@ -1,6 +1,9 @@
 import psycopg2
 import datetime
+from datetime import datetime
 import itertools
+from pytz import timezone
+import pytz
 
 # General utilites
 
@@ -16,11 +19,9 @@ def close_connection(cur, conn):
 
 # Reddit top words page
 
-
 def json_object_reddit(obj, subreddit, interval, requestType, cur):
     if requestType == "default":
-        query = cur.execute(
-            "SELECT word, sum, subreddit, total, interval  FROM " + interval + "_" + subreddit + ";")
+        query = cur.execute( "SELECT word, sum, subreddit, total, interval  FROM " + interval + "_" + subreddit + ";")
     else:
         query = cur.execute("SELECT word, SUM(count) as sum, 'reddit."+subreddit+"', (SELECT total FROM count_"+subreddit+" WHERE day = '" +
                             interval + "') as total FROM reddit."+subreddit+" WHERE day = '"+interval+"' GROUP BY word ORDER BY sum DESC limit 10;")
@@ -38,7 +39,6 @@ def json_object_reddit(obj, subreddit, interval, requestType, cur):
     return obj
 
 # Reddit search page
-
 
 def json_object_search(obj, subreddit, word, cur):
     startDate = str(datetime.datetime.now() - datetime.timedelta(days=365))
@@ -65,18 +65,19 @@ def json_object_search(obj, subreddit, word, cur):
 
 # Portland events page
 
-
 def json_object_events(obj, cur):
     query = cur.execute("SELECT id, createdate, address, incident_type, urgency FROM twitter.police ORDER BY createdate DESC LIMIT 15;")
     results = cur.fetchall()
 
     i = 0
     while i < len(results):
+        pst_datetime = results[i][1].astimezone(pytz.timezone("America/Los_Angeles"))
+        pst_date = datetime.strftime(pst_datetime, '%Y-%m-%d %I:%M %p')
 
         obj.append(
             {
                 "id": results[i][0],
-                "createdate": results[i][1],
+                "createdate": pst_date,
                 "address": results[i][2],
                 "incident": results[i][3].title(),
                 "urgency": results[i][4]
@@ -87,7 +88,6 @@ def json_object_events(obj, cur):
     return obj
 
 # 2019 Superbowl page
-
 
 def json_object_time_series(obj, subject, cur):
     query = cur.execute(
@@ -173,17 +173,13 @@ def json_object_ratio(substance, obj, cur):
 
     return obj
 
-# Erowid user page
-
+# Erowid user pag
 
 def json_object_gender(obj, substance, cur):
     if substance == None:
-        query = cur.execute(
-            "SELECT DISTINCT gender, count(gender) FROM erowid.experiences GROUP BY gender;")
-
+        query = cur.execute("SELECT DISTINCT gender, count(gender) FROM erowid.experiences GROUP BY gender;")
     else:
-        query = cur.execute(
-            "SELECT DISTINCT gender, count(gender) FROM erowid.experiences WHERE primary_substance='"+substance+"' GROUP BY gender;")
+        query = cur.execute("SELECT DISTINCT gender, count(gender) FROM erowid.experiences WHERE primary_substance='"+substance+"' GROUP BY gender;")
 
     results = cur.fetchall()
 

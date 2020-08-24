@@ -4,7 +4,6 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
-    <script src="https://unpkg.com/es6-promise@4.2.4/dist/es6-promise.auto.min.js"></script>
     <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
     <article>
         <header>
@@ -17,6 +16,7 @@
         </header>
         <section>
             <p>I've built several visualizations with static data. I wanted to experiment with real-time data. I follow <a href="https://twitter.com/pdxpolicelog">PDX Police Log</a> on Twitter, which is a police scanner feed. I thought this was pretty interesting, so I wrote a persistent listener that uploads these Tweets to a database. An open socket connection updates this data in realtime.</p>
+            <p>I use <a href="https://mapbox.com">Mapbox</a> to generate the chart. Mapbox is really great- it's feature-rich, great documentation, and free to use for projects like this. You may have noticed that the Twitter account provides the address of the event. I use Mapbox's geocoding tool to convert the address to latitude and longitude and then create the markers on the map using the latitude and longitude. The tool is not always successful - they tweet out a few different address formats and some formats are easier to parse and geocode than others. In particular, address formats of 'STREET 1 / STREET 2' rarely return correctly.</p>
             <br>
         </section>
         <section>
@@ -40,13 +40,13 @@
                     <tr id="{{event.id|string|truncate(10, end ='')}}" class="event-row">
                         <td scope="row">{{ event.createdate }}</th>
                         <td>{{ event.address }}</td>
-                        <td class="incident-column">{{ event.incident }}</td>
+                        <td>{{ event.incident }}</td>
                         {% if 'PRIORITY' == event.urgency %}
-                            <td>Priority</td>
+                        <td>Priority</td>
                         {% elif 'INJURY' == event.urgency %}
-                            <td>Injury</td>
+                        <td>Injury</td>
                         {% else %}
-                            <td></td>
+                        <td></td>
                         {% endif %}
                     </tr>
                     {% endfor %}
@@ -64,7 +64,7 @@
 
     var map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11',
+        style: 'mapbox://styles/mapbox/light-v10?optimize=true',
         center: [-122.635, 45.535],
         zoom: 10.5,
         interactive: false
