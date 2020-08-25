@@ -1,9 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
     <article>
         <header>
@@ -57,7 +55,7 @@
     </article>
     <script>
 
-    var JSONdata = {{jsonEvents|tojson}}  
+    var JSONdata = {{jsonEvents|tojson}}
     var events = JSON.parse(JSONdata)
 
     mapboxgl.accessToken = 'pk.eyJ1IjoiYWJjb29rIiwiYSI6ImNqcnp5N3N2ZzFkeWs0NG80bnVtNmFxaDEifQ.zPkUuVuuVNGg-3DkQcBflQ';
