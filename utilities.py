@@ -72,7 +72,7 @@ def json_object_events(obj, cur):
     i = 0
     while i < len(results):
         pst_datetime = results[i][1].astimezone(pytz.timezone("America/Los_Angeles"))
-        pst_date = datetime.strftime(pst_datetime, '%Y-%m-%d %I:%M %p')
+        pst_date = datetime.strftime(results[i][1], '%Y-%m-%d %I:%M %p')
 
         obj.append(
             {
