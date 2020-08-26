@@ -137,6 +137,12 @@
                         if(mobileDevice == false){
                             rows[i].addEventListener("mouseenter", function(){togglePopup(marker)}, false);
                             rows[i].addEventListener("mouseleave", function(){togglePopup(marker)}, false);                            
+                        }                
+                        else{
+                            // Add touch popup toggle to the markers themselves.
+                            markerDiv.addEventListener('touchstart', () => marker.togglePopup());
+                            markerDiv.addEventListener('touchcancel', () => marker.togglePopup());      
+                            markerDiv.addEventListener('touchmove', () => marker.togglePopup());                     
                         }
                     }
                 }
