@@ -117,16 +117,15 @@
                 var markerDiv = marker.getElement();
 
                 if(mobileDevice == false){
-                    // Add popup toggle to the markers themselves.
+                    // Add mouse popup toggle to the markers themselves.
                     markerDiv.addEventListener('mouseenter', () => marker.togglePopup());
                     markerDiv.addEventListener('mouseleave', () => marker.togglePopup());                    
                 }
                 else{
-                    // Add popup toggle to the markers themselves.
+                    // Add touch popup toggle to the markers themselves.
                     markerDiv.addEventListener('touchstart', () => marker.togglePopup());
                     markerDiv.addEventListener('touchcancel', () => marker.togglePopup());      
-                    markerDiv.addEventListener('touchmove', () => marker.togglePopup());  
-                    markerDiv.addEventListener('touchend', () => marker.togglePopup());                   
+                    markerDiv.addEventListener('touchmove', () => marker.togglePopup());                     
                 }
 
 
@@ -209,6 +208,9 @@
     .td{
         font: 7px sans-serif;
     }
+
+   -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
     </style>
 {% endblock %}
 
