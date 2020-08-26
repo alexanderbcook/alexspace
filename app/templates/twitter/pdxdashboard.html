@@ -50,13 +50,21 @@
     var JSONdata = {{jsonEvents|tojson}}
     var events = JSON.parse(JSONdata)
 
+    var zoomValue = 10.5;
+
+    var deviceWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    if (deviceWidth < 700){
+        var zoomValue = 9.75;
+    }
+    console.log(deviceWidth)
+
     mapboxgl.accessToken = 'pk.eyJ1IjoiYWJjb29rIiwiYSI6ImNqcnp5N3N2ZzFkeWs0NG80bnVtNmFxaDEifQ.zPkUuVuuVNGg-3DkQcBflQ';
 
     var map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/light-v10?optimize=true',
         center: [-122.635, 45.535],
-        zoom: 10.5,
+        zoom: zoomValue,
         interactive: false
     });
 
