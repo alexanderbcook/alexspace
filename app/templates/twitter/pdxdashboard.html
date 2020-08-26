@@ -35,7 +35,7 @@
                 </thead>
                 <tbody>
                     {% for event in events %}
-                    <tr id="{{event.id|string|truncate(10, end ='')}}" class="event-row">
+                    <tr id="{{event.id|string|truncate(12, end ='')}}" class="event-row">
                         <td scope="row">{{ event.createdate }}</th>
                         <td>{{ event.address }}</td>
                         <td>{{ event.incident }}</td>
@@ -118,7 +118,7 @@
 
                 for (i = 0; i < rows.length; i++) 
                 {
-                    if(rows[i].id == event.id.toString().substring(0,10)){
+                    if(rows[i].id == event.id.toString().substring(0,12)){
                         rows[i].addEventListener("mouseenter", function(){togglePopup(marker)}, false);
                         rows[i].addEventListener("mouseleave", function(){togglePopup(marker)}, false);
                     }
