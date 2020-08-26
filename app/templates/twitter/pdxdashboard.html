@@ -136,7 +136,8 @@
         var formattedAddress = formattedAddress.replace(' SW ',' SOUTHWEST ');
         var formattedAddress = formattedAddress.replace(' S ',' SOUTH ');
         var formattedAddress = formattedAddress.replace(' N ',' NORTH ');
-        var formattedAddress =formattedAddress +', PORTLAND, OREGON';
+        var formattedAddress = formattedAddress.replace(' / ', ' & ');
+        var formattedAddress = formattedAddress +', PORTLAND, OREGON';
         return formattedAddress
     }
 
