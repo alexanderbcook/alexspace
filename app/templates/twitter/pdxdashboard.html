@@ -124,7 +124,8 @@
                 else{
                     // Add popup toggle to the markers themselves.
                     markerDiv.addEventListener('touchstart', () => marker.togglePopup());
-                    markerDiv.addEventListener('touchend', () => marker.togglePopup());                      
+                    markerDiv.addEventListener('touchcancel', () => marker.togglePopup());      
+                    markerDiv.addEventListener('touchmove', () => marker.togglePopup());                                      
                 }
 
 
@@ -136,10 +137,6 @@
                         if(mobileDevice == false){
                             rows[i].addEventListener("mouseenter", function(){togglePopup(marker)}, false);
                             rows[i].addEventListener("mouseleave", function(){togglePopup(marker)}, false);                            
-                        }
-                        else{
-                            rows[i].addEventListener("touchstart", function(){togglePopup(marker)}, false);
-                            rows[i].addEventListener("touchend", function(){togglePopup(marker)}, false);   
                         }
                     }
                 }
