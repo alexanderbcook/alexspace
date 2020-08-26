@@ -17,7 +17,7 @@
             <p>I use <a href="https://mapbox.com">Mapbox</a> to generate the chart. Mapbox is really great- it's feature-rich, great documentation, and free to use for projects like this. You may have noticed that the Twitter account provides the address of the event. I use Mapbox's geocoding tool to convert the address to latitude and longitude and then create the markers on the map using the latitude and longitude. The tool is not always successful - they tweet out a few different address formats and some formats are easier to parse and geocode than others. In particular, address formats of 'STREET 1 / STREET 2' rarely return correctly.</p>
         </section>
         <section>
-            <div id='map-container'>
+            <div id='map-container' data-tap-disabled="true">
                 <div id='map' style='width:100%; height:62.5vh; margin:0;'></div>
             </div>
             <br>
@@ -125,7 +125,8 @@
                     // Add popup toggle to the markers themselves.
                     markerDiv.addEventListener('touchstart', () => marker.togglePopup());
                     markerDiv.addEventListener('touchcancel', () => marker.togglePopup());      
-                    markerDiv.addEventListener('touchmove', () => marker.togglePopup());                                      
+                    markerDiv.addEventListener('touchmove', () => marker.togglePopup());  
+                    markerDiv.addEventListener('touchend', () => marker.togglePopup());                   
                 }
 
 
