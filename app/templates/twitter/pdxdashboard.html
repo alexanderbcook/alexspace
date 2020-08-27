@@ -55,7 +55,7 @@
         var mobileDevice = true;
     }
     else{
-        var zoomValue = 11;
+        var zoomValue = 10.75;
         var mobileDevice = false;
     }
 
@@ -111,19 +111,19 @@
                 if(event.urgency=='PRIORITY'){
                     markerColor = '#e87166';
                     if(mobileDevice == false){
-                        popupContent +"<br><h6>Urgency: Priority</h6>"
+                        var popupContent = popupContent +"<br><h6>Urgency: Priority</h6>"
                     }
                     else{
-                        popupContent +"<br><h7>Urgency: Priority</h7>"
+                        var popupContent = popupContent +"<br><h7>Urgency: Priority</h7>"
                     }
                 }
                 else if(event.urgency=='INJURY'){
                     markerColor = '#7c66e8' ;
                     if(mobileDevice == false){
-                        popupContent +"<br><h6>Urgency: Injury</h6>"
+                        var popupContent = popupContent +"<br><h6>Urgency: Injury</h6>"
                     }
                     else{
-                        popupContent +"<br><h7>Urgency: Injury</h7>"
+                        var popupContent = popupContent +"<br><h7>Urgency: Injury</h7>"
                     }
                 }
                 else{
@@ -164,8 +164,7 @@
                             rows[i].addEventListener('touchstart', () => marker.togglePopup());
                             rows[i].addEventListener('touchcancel', () => marker.togglePopup());      
                             rows[i].addEventListener('touchmove', () => marker.togglePopup());                     
-                    }
-
+                        }
                     }
                 }
             }})
