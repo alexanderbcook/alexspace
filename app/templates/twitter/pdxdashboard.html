@@ -18,7 +18,7 @@
         </section>
         <section>
             <div id='map-container' data-tap-disabled="true">
-                <div id='map' style='width:100%; height:62.5vh; margin:0;'></div>
+                <div id='map' style='width:100%; height:60vh; margin:0;'></div>
             </div>
             <br>
         </section>
@@ -99,16 +99,6 @@
                 ) {
                 var feature = response.body.features[0];
 
-                if(event.urgency=='PRIORITY'){
-                    markerColor = '#e87166'
-                }
-                else if(event.urgency=='INJURY'){
-                    markerColor = '#7c66e8'  
-                }
-                else{
-                    markerColor = '#d2e866'
-                }
-
                 if(mobileDevice == false){
                     var popupContent = "<h6><b>Address:</b> "+event.address+"</h6><br><h6><b>Incident Type:</b> "+event.incident+"</h6>"
                     var markerSize = "1"
@@ -117,6 +107,29 @@
                     var popupContent = "<h7><b>Address:</b> "+event.address+"</h7><br><h7><b>Incident Type:</b> "+event.incident+"</h7>"
                     var markerSize = ".75"
                 }
+
+                if(event.urgency=='PRIORITY'){
+                    markerColor = '#e87166';
+                    if(mobileDevice == false){
+                        popupContent +"<br><h6>Urgency: Priority</h6>"
+                    }
+                    else{
+                        popupContent +"<br><h7>Urgency: Priority</h7>"
+                    }
+                }
+                else if(event.urgency=='INJURY'){
+                    markerColor = '#7c66e8' ;
+                    if(mobileDevice == false){
+                        popupContent +"<br><h6>Urgency: Injury</h6>"
+                    }
+                    else{
+                        popupContent +"<br><h7>Urgency: Injury</h7>"
+                    }
+                }
+                else{
+                    markerColor = '#d2e866'
+                }
+
                 var marker = new mapboxgl.Marker({ "color": markerColor, "scale":markerSize})
                     .setLngLat(feature.center)
                     .setPopup(new mapboxgl.Popup({"closeButton":false}).setHTML(popupContent))
