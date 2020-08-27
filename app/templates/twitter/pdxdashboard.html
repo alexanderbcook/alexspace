@@ -143,7 +143,8 @@
                             markerDiv.addEventListener('touchstart', () => marker.togglePopup());
                             markerDiv.addEventListener('touchcancel', () => marker.togglePopup());      
                             markerDiv.addEventListener('touchmove', () => marker.togglePopup());                     
-                        }
+                    }
+
                     }
                 }
             }})
@@ -211,12 +212,13 @@
     .mapbox-popup-content-wrapper {
         padding: 5%;
     }
-    .td{
-        font: 7px sans-serif;
+    @media only screen and (max-width: 600px) {
+    .table-hover {
+        line-height: 7.5px;
+        font-size: 7.5px;
     }
-
-   -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
-     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
     </style>
 {% endblock %}
 
