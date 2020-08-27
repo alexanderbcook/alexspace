@@ -140,9 +140,9 @@
                         }                
                         else{
                             // Add touch popup toggle to the markers themselves.
-                            markerDiv.addEventListener('touchstart', () => marker.togglePopup());
-                            markerDiv.addEventListener('touchcancel', () => marker.togglePopup());      
-                            markerDiv.addEventListener('touchmove', () => marker.togglePopup());                     
+                            rows[i].addEventListener('touchstart', () => marker.togglePopup());
+                            rows[i].addEventListener('touchcancel', () => marker.togglePopup());      
+                            rows[i].addEventListener('touchmove', () => marker.togglePopup());                     
                     }
 
                     }
