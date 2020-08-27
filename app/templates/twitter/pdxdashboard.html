@@ -49,15 +49,15 @@
     var JSONdata = {{jsonEvents|tojson}}
     var events = JSON.parse(JSONdata)
 
-    var zoomValue = 11;
-    var mobileDevice = false;
-
     var deviceWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
     if (deviceWidth < 700){
         var zoomValue = 9.66;
         var mobileDevice = true;
     }
-    console.log(deviceWidth)
+    else{
+        var zoomValue = 11;
+        var mobileDevice = false;
+    }
 
     mapboxgl.accessToken = 'pk.eyJ1IjoiYWJjb29rIiwiYSI6ImNqcnp5N3N2ZzFkeWs0NG80bnVtNmFxaDEifQ.zPkUuVuuVNGg-3DkQcBflQ';
 
@@ -109,9 +109,15 @@
                     markerColor = '#d2e866'
                 }
 
+                if(mobileDevice == false){
+                    var popupContent = "<h6><b>Address:</b> "+event.address+"</h6><br><h6><b>Incident Type:</b> "+event.incident+"</h6>"
+                }
+                else{
+                    var popupContent = "<h7><b>Address:</b> "+event.address+"</h7><br><h7><b>Incident Type:</b> "+event.incident+"</h7>"
+                }
                 var marker = new mapboxgl.Marker({ "color": markerColor })
                     .setLngLat(feature.center)
-                    .setPopup(new mapboxgl.Popup({"closeButton":false}).setHTML("<h6><b>Address:</b> "+event.address+"</h6><br><h6><b>Incident Type:</b> "+event.incident+"</h6>"))
+                    .setPopup(new mapboxgl.Popup({"closeButton":false}).setHTML(popupContent))
                     .addTo(map);
 
                 var markerDiv = marker.getElement();
@@ -149,8 +155,14 @@
                 }
             }})
     )
+    var nav = new mapboxgl.NavigationControl({
+        showCompass: false,
+        showZoom: true
+    });
 
-    map.addControl(new mapboxgl.NavigationControl());
+    map.addControl(nav, "top-right");
+    map.dragRotate.disable();
+    map.touchZoomRotate.disableRotation();
 
     function togglePopup(marker) {
         marker.togglePopup()
@@ -218,7 +230,7 @@
         font-size: 7.5px;
     }
     .mapboxgl-popup-content{
-        font-size: 7.5px;
+        font-size: 1.5px sans-serif;
         padding: 2.5px;
         width: 145px;
     }
