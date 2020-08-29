@@ -18,7 +18,7 @@
         </section>
         <section>
             <div id='map-container' data-tap-disabled="true">
-                <div id='map' style='width:100%; height:60vh; margin:0;'></div>
+                <div id='map' style='width:100%; height:62.5vh; margin:0;'></div>
             </div>
             <br>
         </section>
@@ -49,21 +49,21 @@
     var JSONdata = {{jsonEvents|tojson}}
     var events = JSON.parse(JSONdata)
 
+    var zoomValue = 11;
+    var mobileDevice = false;
+
     var deviceWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
     if (deviceWidth < 700){
         var zoomValue = 9.66;
         var mobileDevice = true;
     }
-    else{
-        var zoomValue = 10.75;
-        var mobileDevice = false;
-    }
+    console.log(deviceWidth)
 
     mapboxgl.accessToken = 'pk.eyJ1IjoiYWJjb29rIiwiYSI6ImNqcnp5N3N2ZzFkeWs0NG80bnVtNmFxaDEifQ.zPkUuVuuVNGg-3DkQcBflQ';
 
     var bounds = [
-        [-122.825,45.40209931994792],
-        [-122.382,45.62385405719672]
+        [-122.82576721782573,45.40209931994792],
+        [-122.38211898946827,45.62385405719672]
     ];
 
     var map = new mapboxgl.Map({
@@ -99,40 +99,19 @@
                 ) {
                 var feature = response.body.features[0];
 
-                if(mobileDevice == false){
-                    var popupContent = "<h6><b>Address:</b> "+event.address+"</h6><br><h6><b>Incident Type:</b> "+event.incident+"</h6>"
-                    var markerSize = "1"
-                }
-                else{
-                    var popupContent = "<h7><b>Address:</b> "+event.address+"</h7><br><h7><b>Incident Type:</b> "+event.incident+"</h7>"
-                    var markerSize = ".66"
-                }
-
                 if(event.urgency=='PRIORITY'){
-                    markerColor = '#e87166';
-                    if(mobileDevice == false){
-                        var popupContent = popupContent +"<br><h6><b>Urgency:</b> Priority</h6>"
-                    }
-                    else{
-                        var popupContent = popupContent +"<br><h7><b>Urgency:</b> Priority</h7>"
-                    }
+                    markerColor = '#e87166'
                 }
                 else if(event.urgency=='INJURY'){
-                    markerColor = '#7c66e8' ;
-                    if(mobileDevice == false){
-                        var popupContent = popupContent +"<br><h6><b>Urgency:</b> Injury</h6>"
-                    }
-                    else{
-                        var popupContent = popupContent +"<br><h7><b>Urgency:</b> Injury</h7>"
-                    }
+                    markerColor = '#7c66e8'  
                 }
                 else{
                     markerColor = '#d2e866'
                 }
 
-                var marker = new mapboxgl.Marker({ "color": markerColor, "scale":markerSize})
+                var marker = new mapboxgl.Marker({ "color": markerColor })
                     .setLngLat(feature.center)
-                    .setPopup(new mapboxgl.Popup({"closeButton":false}).setHTML(popupContent))
+                    .setPopup(new mapboxgl.Popup({"closeButton":false}).setHTML("<h6><b>Address:</b> "+event.address+"</h6><br><h6><b>Incident Type:</b> "+event.incident+"</h6>"))
                     .addTo(map);
 
                 var markerDiv = marker.getElement();
@@ -161,22 +140,17 @@
                         }                
                         else{
                             // Add touch popup toggle to the markers themselves.
-                            rows[i].addEventListener('touchstart', () => marker.togglePopup());
-                            rows[i].addEventListener('touchcancel', () => marker.togglePopup());      
-                            rows[i].addEventListener('touchmove', () => marker.togglePopup());                     
-                        }
+                            markerDiv.addEventListener('touchstart', () => marker.togglePopup());
+                            markerDiv.addEventListener('touchcancel', () => marker.togglePopup());      
+                            markerDiv.addEventListener('touchmove', () => marker.togglePopup());                     
+                    }
+
                     }
                 }
             }})
     )
-    var nav = new mapboxgl.NavigationControl({
-        showCompass: false,
-        showZoom: true
-    });
 
-    map.addControl(nav, "top-right");
-    map.dragRotate.disable();
-    map.touchZoomRotate.disableRotation();
+    map.addControl(new mapboxgl.NavigationControl());
 
     function togglePopup(marker) {
         marker.togglePopup()
@@ -222,7 +196,7 @@
             var mapCenter = [-122.6604,45.5154]
         }
         else{
-            var mapCenter = [-122.6750,45.5051]
+            var mapCenter =  [-122.6750,45.5051]
         };
         return mapCenter;
     }
@@ -240,13 +214,7 @@
     }
     @media only screen and (max-width: 600px) {
     .table-hover {
-        line-height: 7.5px;
-        font-size: 7.5px;
-    }
-    .mapboxgl-popup-content{
-        font-size: 1.5px sans-serif;
-        padding: 2.5px;
-        width: 145px;
+        font-size: 7px sans-serif;
     }
     -webkit-touch-callout: none;
     -webkit-user-select: none;
