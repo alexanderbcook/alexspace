@@ -66,7 +66,7 @@ def json_object_search(obj, subreddit, word, cur):
 # Portland events page
 
 def json_object_events(obj, cur):
-    query = cur.execute("SELECT id, createdate, address, incident_type, urgency FROM twitter.police ORDER BY createdate DESC LIMIT 15;")
+    query = cur.execute("SELECT id, createdate, address, incident_type, urgency, lat, long FROM twitter.police ORDER BY createdate DESC LIMIT 15;")
     results = cur.fetchall()
 
     i = 0
@@ -80,7 +80,9 @@ def json_object_events(obj, cur):
                 "createdate": pst_date,
                 "address": results[i][2],
                 "incident": results[i][3].title(),
-                "urgency": results[i][4]
+                "urgency": results[i][4],
+                "lat": results[i][5],
+                "lng": results[i][6]
             }
         )
         i += 1
