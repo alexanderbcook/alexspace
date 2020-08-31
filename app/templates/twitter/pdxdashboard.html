@@ -80,37 +80,19 @@
     var markers = []
 
     var mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
-    events.forEach(event =>
-        mapboxClient.geocoding
-            .forwardGeocode({
-                query: formatAddress(event.address),
-                autocomplete: false,
-                limit: 1,
-                proximity: setProximity(event.address),
-                types: ['address']
-            })
-            .send()
-            .then(function(response) {
-                if (
-                    response &&
-                    response.body &&
-                    response.body.features &&
-                    response.body.features.length
-                ) {
-                var feature = response.body.features[0];
-
-                if(event.urgency=='PRIORITY'){
-                    markerColor = '#e87166'
-                }
-                else if(event.urgency=='INJURY'){
-                    markerColor = '#7c66e8'  
-                }
-                else{
-                    markerColor = '#d2e866'
-                }
-
+    events.forEach(event => {
+    	if(event.urgency=='PRIORITY'){
+          markerColor = '#e87166'
+        }
+        else if(event.urgency=='INJURY'){
+         markerColor = '#7c66e8'  
+        }
+        else{
+          markerColor = '#d2e866'
+        }
+		var coords = [event.lng, event.lat]
                 var marker = new mapboxgl.Marker({ "color": markerColor })
-                    .setLngLat(feature.center)
+                    .setLngLat(coords)
                     .setPopup(new mapboxgl.Popup({"closeButton":false}).setHTML("<h6><b>Address:</b> "+event.address+"</h6><br><h6><b>Incident Type:</b> "+event.incident+"</h6>"))
                     .addTo(map);
 
