@@ -72,8 +72,8 @@ def json_object_events(obj, cur):
 
     i = 0
     while i < len(results):
-        pst_datetime = results[i][1]
-        pst_date = datetime.strftime(results[i][1], '%Y-%m-%d %I:%M %p')
+        pst_datetime = datetime.strptime(results[i][1], '%Y-%m-%d %I:%M %p') - timedelta(hours=7, minutes=0)
+        pst_date = datetime.strftime(pst_datetime)
 
         obj.append(
             {
