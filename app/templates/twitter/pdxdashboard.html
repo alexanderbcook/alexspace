@@ -57,7 +57,6 @@
         var zoomValue = 9.66;
         var mobileDevice = true;
     }
-    console.log(deviceWidth)
 
     mapboxgl.accessToken = 'pk.eyJ1IjoiYWJjb29rIiwiYSI6ImNqcnp5N3N2ZzFkeWs0NG80bnVtNmFxaDEifQ.zPkUuVuuVNGg-3DkQcBflQ';
 
@@ -81,106 +80,66 @@
 
     var mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
     events.forEach(event => {
+        var popupHTML;
+        var markerColor; 
+
     	if(event.urgency=='PRIORITY'){
           markerColor = '#e87166'
+          popupHTML = "<h6><b>Address:</b> "+event.address+"</h6><br><h6><b>Incident Type:</b> "+event.incident+"<br><h6><b>Urgency:</b> Priority</h6>"
         }
         else if(event.urgency=='INJURY'){
          markerColor = '#7c66e8'  
+         popupHTML = "<h6><b>Address:</b> "+event.address+"</h6><br><h6><b>Incident Type:</b> "+event.incident+"<br><h6><b>Urgency:</b> Injury</h6>"
         }
         else{
           markerColor = '#d2e866'
+          popupHTML = "<h6><b>Address:</b> "+event.address+"</h6><br><h6><b>Incident Type:</b> "+event.incident+"</h6>"
         }
+
 		var coords = [event.lng, event.lat]
-                var marker = new mapboxgl.Marker({ "color": markerColor })
-                    .setLngLat(coords)
-                    .setPopup(new mapboxgl.Popup({"closeButton":false}).setHTML("<h6><b>Address:</b> "+event.address+"</h6><br><h6><b>Incident Type:</b> "+event.incident+"</h6>"))
-                    .addTo(map);
+        var marker = new mapboxgl.Marker({ "color": markerColor })
+            .setLngLat(coords)
+            .setPopup(new mapboxgl.Popup({"closeButton":false}).setHTML())
+            .addTo(map);
 
-                var markerDiv = marker.getElement();
+        var markerDiv = marker.getElement();
 
+        if(mobileDevice == false){
+            // Add mouse popup toggle to the markers themselves.
+            markerDiv.addEventListener('mouseenter', () => marker.togglePopup());
+            markerDiv.addEventListener('mouseleave', () => marker.togglePopup());                    
+        }
+        else{
+            // Add touch popup toggle to the markers themselves.
+            markerDiv.addEventListener('touchstart', () => marker.togglePopup());
+            markerDiv.addEventListener('touchcancel', () => marker.togglePopup());      
+            markerDiv.addEventListener('touchmove', () => marker.togglePopup());                     
+        }
+
+
+        // Add popup toggle to the table rows.
+        var rows = document.getElementsByClassName('event-row');
+        for (i = 0; i < rows.length; i++) 
+        {
+            if(rows[i].id == event.id.toString().substring(0,12)){
                 if(mobileDevice == false){
-                    // Add mouse popup toggle to the markers themselves.
-                    markerDiv.addEventListener('mouseenter', () => marker.togglePopup());
-                    markerDiv.addEventListener('mouseleave', () => marker.togglePopup());                    
-                }
+                    rows[i].addEventListener("mouseenter", function(){togglePopup(marker)}, false);
+                    rows[i].addEventListener("mouseleave", function(){togglePopup(marker)}, false);                            
+                }                
                 else{
                     // Add touch popup toggle to the markers themselves.
                     markerDiv.addEventListener('touchstart', () => marker.togglePopup());
                     markerDiv.addEventListener('touchcancel', () => marker.togglePopup());      
                     markerDiv.addEventListener('touchmove', () => marker.togglePopup());                     
                 }
-
-
-                // Add popup toggle to the table rows.
-                var rows = document.getElementsByClassName('event-row');
-                for (i = 0; i < rows.length; i++) 
-                {
-                    if(rows[i].id == event.id.toString().substring(0,12)){
-                        if(mobileDevice == false){
-                            rows[i].addEventListener("mouseenter", function(){togglePopup(marker)}, false);
-                            rows[i].addEventListener("mouseleave", function(){togglePopup(marker)}, false);                            
-                        }                
-                        else{
-                            // Add touch popup toggle to the markers themselves.
-                            markerDiv.addEventListener('touchstart', () => marker.togglePopup());
-                            markerDiv.addEventListener('touchcancel', () => marker.togglePopup());      
-                            markerDiv.addEventListener('touchmove', () => marker.togglePopup());                     
-                    }
-
-                    }
-                }
             }
-    )
+        }
+    })
 
     map.addControl(new mapboxgl.NavigationControl());
 
     function togglePopup(marker) {
         marker.togglePopup()
-    }
-
-    function formatAddress(unformattedAddress){
-        // Manually format address to be more compatible w/ Mapbox's API.
-        var formattedAddress = unformattedAddress.replace(' NE ', ' NORTHEAST ');
-        var formattedAddress = formattedAddress.replace(' NW ', ' NORTHWEST ');
-        var formattedAddress = formattedAddress.replace(' SE ',' SOUTHEAST ');
-        var formattedAddress = formattedAddress.replace(' SW ',' SOUTHWEST ');
-        var formattedAddress = formattedAddress.replace(' S ',' SOUTH ');
-        var formattedAddress = formattedAddress.replace(' N ',' NORTH ');
-        var formattedAddress = formattedAddress.replace(' / ', ' & ');
-        var formattedAddress = formattedAddress +', PORTLAND, OREGON';
-        return formattedAddress
-    }
-
-    function setProximity(unformattedAddress){
-        // Manually set map bias to the quadrants of the Portland.
-        if(unformattedAddress.includes(' NE ')){
-            var mapCenter = [-122.6179,45.5676]
-        }
-        if(unformattedAddress.includes(' SE ')){
-            var mapCenter = [-122.5930,45.4914]
-        }
-        if(unformattedAddress.includes(' NW ')){
-            var mapCenter = [-122.7609,45.5586]
-        }
-        if(unformattedAddress.includes(' SE ')){
-            var mapCenter = [-122.5930,45.4914]
-        }
-        if(unformattedAddress.includes(' N ')){
-            var mapCenter = [-122.7236,45.6075]
-        }
-        if(unformattedAddress.includes(' S ')){
-            var mapCenter = [-122.6747,45.4888]
-        }
-        if(unformattedAddress.includes(' W ')){
-            var mapCenter = [-122.7221,45.4475]
-        }
-        if(unformattedAddress.includes(' E ')){
-            var mapCenter = [-122.6604,45.5154]
-        }
-        else{
-            var mapCenter =  [-122.6750,45.5051]
-        };
-        return mapCenter;
     }
 
     document.getElementById('page-title').innerHTML = "PDX Event Dashboard";
