@@ -99,7 +99,7 @@
 		var coords = [event.lng, event.lat]
         var marker = new mapboxgl.Marker({ "color": markerColor })
             .setLngLat(coords)
-            .setPopup(new mapboxgl.Popup({"closeButton":false}).setHTML())
+            .setPopup(new mapboxgl.Popup({"closeButton":false}).setHTML(popupHTML))
             .addTo(map);
 
         var markerDiv = marker.getElement();
