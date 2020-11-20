@@ -145,7 +145,7 @@ def search():
 def scalability():
     return render_template('twitter/scalability.html')
 
-@app.route('/twitter/pdxdashboard', methods=['GET','POST'])
+@app.route('/dispatch/dashboard', methods=['GET','POST'])
 def pdxdashboard():
     conn = connect_to_database()
     cur = conn.cursor()
