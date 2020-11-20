@@ -90,6 +90,18 @@ def json_object_events(obj, cur):
 
     return obj
 
+# Portland neighborhood dashboard
+def json_object_neighborhoods(obj, cur): 
+    query = cur.execute("SELECT neighborhood, COUNT(*) FROM twitter.police WHERE neighborhood != ''GROUP BY neighborhood ORDER BY COUNT(*) DESC LIMIT 15;")
+    results = cur.fetchall()
+
+    for result in results:
+        obj.append({
+            "neighborhood": result[0],
+            "count": result[1]
+        })
+
+    return results
 # 2019 Superbowl page
 
 def json_object_time_series(obj, subject, cur):

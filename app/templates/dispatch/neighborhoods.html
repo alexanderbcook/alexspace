@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
+    <article>
+        <header>
+            <br>
+                <hgroup>
+                    <h4>When and Where are the Police being Dispatched?</h4>
+                    <h5>Charting Dispatches by Neighborhood and Time</h5>
+                </hgroup>
+            <br>
+        </header>
+        <section>
+            <table class="table table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Neighborhood</th>
+                        <th scope="col">Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for neighborhood in neighborhoods %}
+                    <tr>
+                        <td>{{ neighborhood.neighborhood }}</td>
+                        <td>{{ neighborhood.count }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>    
+            <br>
+        </section>
+    </article>
+    <script>
+        var JSONdata = {{neighborhoods|tojson}}
+        var neighborhoods = JSON.parse(JSONdata)
+        console.log(events)
+        document.getElementById('page-title').innerHTML = "Dispatches by Neighborhood";
+    </script>
+    <style>
+    </style>
+{% endblock %}
+

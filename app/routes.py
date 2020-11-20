@@ -4,7 +4,7 @@ import json
 import datetime
 import random
 import utilities
-from utilities import connect_to_database, close_connection, json_object_reddit,json_object_search,json_object_sentiment,json_object_category,json_object_year_published,json_object_gender,json_object_time_series,json_object_events,json_object_ratio
+from utilities import connect_to_database, close_connection, json_object_reddit,json_object_search,json_object_sentiment,json_object_category,json_object_year_published,json_object_gender,json_object_time_series,json_object_events,json_object_ratio,json_object_neighborhoods
 
 @app.route('/')
 @app.route('/index')
@@ -145,7 +145,7 @@ def search():
 def scalability():
     return render_template('twitter/scalability.html')
 
-@app.route('/dispatch/dashboard', methods=['GET','POST'])
+@app.route('/dispatch/dashboard')
 def pdxdashboard():
     conn = connect_to_database()
     cur = conn.cursor()
@@ -158,9 +158,26 @@ def pdxdashboard():
     json_events = json.loads(dump)
 
     close_connection(cur, conn)
-    return render_template('twitter/pdxdashboard.html',
+    return render_template('dispatch/dashboard.html',
                             jsonEvents=json.dumps(json_events, default=str),
                             events=json_events)
+
+@app.route('/dispatch/neighborhoods')
+def pdxneighborhoods():
+    conn = connect_to_database()
+    cur = conn.cursor()
+
+    json_neighborhoods = []
+
+    json_object_neighborhoods(json_neighborhoods, cur)
+
+    dump = json.dumps(json_neighborhoods, default=str)
+    json_neighborhoods = json.loads(dump)
+
+    close_connection(cur, conn)
+    return render_template('dispatch/neighborhoods.html',
+                            jsonNeighborhoods=json.dumps(json_neighborhoods, default=str),
+                            neighborhoods=json_neighborhoods)
 
 @app.route('/superbowl/2019')
 def superbowl2019():
