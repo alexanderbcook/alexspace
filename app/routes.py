@@ -152,7 +152,7 @@ def pdxdashboard():
 
     json_events = []
 
-    json_object_events(json_events, cur)
+    json_object_events(json_events, None, cur)
 
     dump = json.dumps(json_events, default=str)
     json_events = json.loads(dump)
@@ -162,22 +162,28 @@ def pdxdashboard():
                             jsonEvents=json.dumps(json_events, default=str),
                             events=json_events)
 
-@app.route('/dispatch/neighborhoods')
+@app.route('/dispatch/neighborhoods', methods=['GET','POST'])
 def pdxneighborhoods():
     conn = connect_to_database()
     cur = conn.cursor()
 
-    json_neighborhoods = []
+    if request.method == 'GET':
+        neighborhood = request.form.get('neighborhood','Alameda')
 
-    json_object_neighborhoods(json_neighborhoods, cur)
+    if request.method == 'POST':
+        neighborhood = request.form.get('neighborhood','Alameda')
 
-    dump = json.dumps(json_neighborhoods, default=str)
-    json_neighborhoods = json.loads(dump)
+    neighborhoods = []
+    events = []
+    json_object_neighborhoods(neighborhoods, cur)
+    json_object_events(events, neighborhood, cur)
+
 
     close_connection(cur, conn)
     return render_template('dispatch/neighborhoods.html',
-                            jsonNeighborhoods=json.dumps(json_neighborhoods, default=str),
-                            neighborhoods=json_neighborhoods)
+                            neighborhood=neighborhood,
+                            neighborhoods=neighborhoods,
+                            events=events)
 
 @app.route('/superbowl/2019')
 def superbowl2019():

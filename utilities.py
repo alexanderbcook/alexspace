@@ -65,9 +65,11 @@ def json_object_search(obj, subreddit, word, cur):
 
 # Portland events page
 
-def json_object_events(obj, cur):
-
-    query = cur.execute("SELECT id, createdate, address, incident_type, urgency, lat, lng FROM twitter.police UNION SELECT id, createdate, address, incident_type, urgency, lat, lng FROM twitter.fire ORDER BY createdate DESC LIMIT 15;")
+def json_object_events(obj, neighborhood, cur):
+    if neighborhood == None:
+        query = cur.execute("SELECT id, createdate, address, incident_type, urgency, lat, lng FROM twitter.police UNION SELECT id, createdate, address, incident_type, urgency, lat, lng FROM twitter.fire ORDER BY createdate DESC LIMIT 15;")
+    else:
+        query = cur.execute("SELECT id, createdate, address, incident_type, urgency, lat, lng FROM twitter.police WHERE neighborhood='"+ neighborhood +"' UNION SELECT id, createdate, address, incident_type, urgency, lat, lng FROM twitter.fire WHERE neighborhood='"+ neighborhood +"' ORDER BY createdate DESC LIMIT 15;")
     results = cur.fetchall()
 
     i = 0
@@ -92,13 +94,12 @@ def json_object_events(obj, cur):
 
 # Portland neighborhood dashboard
 def json_object_neighborhoods(obj, cur): 
-    query = cur.execute("SELECT neighborhood, COUNT(*) FROM twitter.police WHERE neighborhood != ''GROUP BY neighborhood ORDER BY COUNT(*) DESC LIMIT 15;")
+    query = cur.execute("SELECT neighborhood FROM twitter.police WHERE neighborhood != ''GROUP BY neighborhood ORDER BY neighborhood;")
     results = cur.fetchall()
 
     for result in results:
         obj.append({
             "neighborhood": result[0],
-            "count": result[1]
         })
 
     return results

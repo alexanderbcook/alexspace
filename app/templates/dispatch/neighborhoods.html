@@ -1,8 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
-    <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
-    <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
     <article>
         <header>
             <br>
@@ -13,32 +10,60 @@
             <br>
         </header>
         <section>
+            <p>
+                Writing about this project goes here. I'll describe why I am interested in this data and how it is processed. Police dispatches are a serious topic and I, a serious man, am approaching the topic appropriately.
+            </p>
+            <p>
+                A second paragraph will drive the point home. Police are bad, but some are good. And sometimes they do things that are important.
+            </p>
+        </section>
+        <section>
+            <hr>
+            <form name="neighborhoodSelector" action="/dispatch/neighborhoods" method="POST">
+              <div class="btn-group">
+                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Pick a neighborhood:
+                </button>
+                <div class="dropdown-menu">
+                    {% for neighborhood in neighborhoods %}
+                    <button type="submit" name="neighborhood" value="{{neighborhood.neighborhood}}" class="dropdown-item" >{{neighborhood.neighborhood}}</button>
+                    {% endfor %}
+                </div>
+              </div>
+            </form>
+            <hr>
+        </section>
+
+        <section>
+            <h5>Here's what is happening in the {{neighborhood}} neighborhood.</h5>
             <table class="table table-hover">
                 <thead class="thead-light">
                     <tr>
-                        <th scope="col">Neighborhood</th>
-                        <th scope="col">Count</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Incident Type</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for neighborhood in neighborhoods %}
-                    <tr>
-                        <td>{{ neighborhood.neighborhood }}</td>
-                        <td>{{ neighborhood.count }}</td>
-                    </tr>
+                    {% for event in events %}
+                    <tr id="{{event.id|string|truncate(12, end ='')}}" class="event-row">
+                        <td scope="row">{{ event.createdate }}</th>
+                        <td>{{ event.address }}</td>
+                        <td>{{ event.incident }}</td>
                     {% endfor %}
                 </tbody>
-            </table>    
+            </table>
             <br>
         </section>
     </article>
     <script>
-        var JSONdata = {{neighborhoods|tojson}}
-        var neighborhoods = JSON.parse(JSONdata)
-        console.log(events)
+        //var JSONdata = {{neighborhoods|tojson}}
+        //var neighborhoods = JSON.parse(JSONdata)
+        //console.log(events)
         document.getElementById('page-title').innerHTML = "Dispatches by Neighborhood";
     </script>
     <style>
     </style>
 {% endblock %}
 
+ 
