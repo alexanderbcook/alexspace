@@ -24,7 +24,7 @@
                 <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Pick a neighborhood:
                 </button>
-                <div class="dropdown-menu">
+                <div class="dropdown-menu menu-scroll">
                     {% for neighborhood in neighborhoods %}
                     <button type="submit" name="neighborhood" value="{{neighborhood.neighborhood}}" class="dropdown-item" >{{neighborhood.neighborhood}}</button>
                     {% endfor %}
@@ -63,6 +63,10 @@
         document.getElementById('page-title').innerHTML = "Dispatches by Neighborhood";
     </script>
     <style>
+        .menu-scroll {
+           overflow-y: scroll;
+            max-height: 300px;
+        }
     </style>
 {% endblock %}
 
