@@ -69,7 +69,7 @@ def json_object_events(obj, neighborhood, cur):
     if neighborhood == None:
         query = cur.execute("SELECT id, createdate, address, incident_type, urgency, lat, lng FROM twitter.police UNION SELECT id, createdate, address, incident_type, urgency, lat, lng FROM twitter.fire ORDER BY createdate DESC LIMIT 15;")
     else:
-        query = cur.execute("SELECT id, createdate, address, incident_type, urgency, lat, lng FROM twitter.police WHERE neighborhood='"+ neighborhood +"' UNION SELECT id, createdate, address, incident_type, urgency, lat, lng FROM twitter.fire WHERE neighborhood='"+ neighborhood +"' ORDER BY createdate DESC LIMIT 15;")
+        query = cur.execute("SELECT id, createdate, address, incident_type, urgency, lat, lng FROM twitter.police WHERE neighborhood='"+ neighborhood +"' UNION SELECT id, createdate, address, incident_type, urgency, lat, lng FROM twitter.fire WHERE neighborhood='"+ neighborhood +"' ORDER BY createdate DESC LIMIT 5;")
     results = cur.fetchall()
 
     i = 0
@@ -93,13 +93,22 @@ def json_object_events(obj, neighborhood, cur):
     return obj
 
 # Portland neighborhood dashboard
-def json_object_neighborhoods(obj, cur): 
-    query = cur.execute("SELECT neighborhood FROM twitter.police WHERE neighborhood != ''GROUP BY neighborhood ORDER BY neighborhood;")
+def json_object_neighborhoods(obj, name, cur): 
+    if name == None:
+        query = cur.execute("SELECT name, lat, lng, density, owned, rented, householdsize FROM portland.neighborhoods ORDER BY name;")
+    else:
+        query = cur.execute("SELECT name, lat, lng, density, owned, rented, householdsize FROM portland.neighborhoods WHERE name = '"+name+"' ORDER BY name;")
     results = cur.fetchall()
 
     for result in results:
         obj.append({
-            "neighborhood": result[0],
+            "name":str(result[0]),
+            "lat":str(result[1]),
+            "lng":str(result[2]),
+            "density":str(result[3]),
+            "owned":str(result[4]),
+            "rented":str(result[5]),
+            "householdsize":str(result[6])
         })
 
     return results

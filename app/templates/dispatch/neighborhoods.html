@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
     <article>
         <header>
             <br>
@@ -26,7 +28,7 @@
                 </button>
                 <div class="dropdown-menu menu-scroll">
                     {% for neighborhood in neighborhoods %}
-                    <button type="submit" name="neighborhood" value="{{neighborhood.neighborhood}}" class="dropdown-item" >{{neighborhood.neighborhood}}</button>
+                    <button type="submit" name="name" value="{{neighborhood.name}}" class="dropdown-item" >{{neighborhood.name}}</button>
                     {% endfor %}
                 </div>
               </div>
@@ -35,34 +37,88 @@
         </section>
 
         <section>
-            <h5>Here's what is happening in the {{neighborhood}} neighborhood.</h5>
-            <table class="table table-hover">
-                <thead class="thead-light">
-                    <tr>
-                        <th scope="col">Date</th>
-                        <th scope="col">Address</th>
-                        <th scope="col">Incident Type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for event in events %}
-                    <tr id="{{event.id|string|truncate(12, end ='')}}" class="event-row">
-                        <td scope="row">{{ event.createdate }}</th>
-                        <td>{{ event.address }}</td>
-                        <td>{{ event.incident }}</td>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <h5 id='section-title'></h5>
+            <div class="float-container">
+                <div class="float-child">
+                    <table class="table table-sm">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Address</th>
+                                <th scope="col">Incident Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for event in events %}
+                            <tr class="event-row">
+                            <td class='table-column' scope="row"><p class='text-nowrap'>{{ event.createdate }}</p></td>
+                            <td class='table-column'><p class='text-nowrap'>{{ event.address }}</p></td>
+                            <td class='table-column'><p class='text-nowrap'>{{ event.incident }}</p></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="float-child" id='map-container' data-tap-disabled="true">
+                    <div id='map' style='height:45vh; margin:0;'></div>
+                </div>
+            </div>
             <br>
         </section>
     </article>
     <script>
-        //var JSONdata = {{neighborhoods|tojson}}
-        //var neighborhoods = JSON.parse(JSONdata)
-        //console.log(events)
+        var JSONdata = {{neighborhood|tojson}}
+        var neighborhood = JSON.parse(JSONdata)
+
+        document.getElementById('section-title').innerHTML = "Here's what is happening in the " + neighborhood[0].name + " neighborhood."
         document.getElementById('page-title').innerHTML = "Dispatches by Neighborhood";
+
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYWJjb29rIiwiYSI6ImNqcnp5N3N2ZzFkeWs0NG80bnVtNmFxaDEifQ.zPkUuVuuVNGg-3DkQcBflQ';
+
+        var bounds = [
+            [-122.82576721782573,45.40209931994792],
+            [-122.38211898946827,45.62385405719672]
+        ];
+
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/light-v10?optimize=true',
+            center: [-122.6355, 45.535],
+            zoom: 6,
+            interactive: true,
+            minZoom: 6,
+            maxZoom: 14,
+            maxBounds: bounds
+        });
+
+        var coords = [neighborhood[0].lng, neighborhood[0].lat]
+
+        console.log(coords)
+
+        var marker = new mapboxgl.Marker()
+            .setLngLat(coords)
+            .setPopup(new mapboxgl.Popup({"closeButton":false}))
+            .addTo(map);
+
+        console.log(marker)
+
     </script>
     <style>
+        .table-column {
+            font-size:13px;
+        }
+        .float-container {
+            border: 3px solid #fff;
+            padding: 20px;
+        }
+
+        .float-child {
+            width: 50%;
+            float: left;
+            padding: 20px;
+            border: 2px solid red;
+        }  
+
         .menu-scroll {
            overflow-y: scroll;
             max-height: 300px;

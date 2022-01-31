@@ -168,21 +168,25 @@ def pdxneighborhoods():
     cur = conn.cursor()
 
     if request.method == 'GET':
-        neighborhood = request.form.get('neighborhood','Alameda')
+        name = request.form.get('name','Alameda')
 
     if request.method == 'POST':
-        neighborhood = request.form.get('neighborhood','Alameda')
+        name = request.form.get('name','Alameda')
 
     neighborhoods = []
+    neighborhood = []
     events = []
-    json_object_neighborhoods(neighborhoods, cur)
-    json_object_events(events, neighborhood, cur)
+
+    json_object_neighborhoods(neighborhoods, None, cur)
+    json_object_neighborhoods(neighborhood, name, cur)
+    json_object_events(events, name, cur)
 
 
     close_connection(cur, conn)
     return render_template('dispatch/neighborhoods.html',
-                            neighborhood=neighborhood,
+                            name=name,
                             neighborhoods=neighborhoods,
+                            neighborhood=json.dumps(neighborhood,default="str"),
                             events=events)
 
 @app.route('/superbowl/2019')
