@@ -97,7 +97,7 @@ def json_object_neighborhoods(obj, name, cur):
     if name == None:
         query = cur.execute("SELECT name, lat, lng, density, owned, rented, householdsize FROM portland.neighborhoods ORDER BY name;")
     else:
-        query = cur.execute("SELECT name, lat, lng, density, owned, rented, householdsize FROM portland.neighborhoods WHERE name = '"+name+"' ORDER BY name;")
+        query = cur.execute("SELECT name, lat, lng, density, owned, rented, householdsize FROM portland.neighborhoods WHERE name = '"+name+"';")
     results = cur.fetchall()
 
     for result in results:

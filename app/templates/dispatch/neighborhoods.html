@@ -23,9 +23,10 @@
             <hr>
             <form name="neighborhoodSelector" action="/dispatch/neighborhoods" method="POST">
               <div class="btn-group">
-                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Pick a neighborhood:
+                Here is what is happening in the&nbsp;
+                <button class="btn btn-secondary btn-sm dropdown-toggle" id="button-content" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 </button>
+                &nbsp;neighborhood.
                 <div class="dropdown-menu menu-scroll">
                     {% for neighborhood in neighborhoods %}
                     <button type="submit" name="name" value="{{neighborhood.name}}" class="dropdown-item" >{{neighborhood.name}}</button>
@@ -33,13 +34,12 @@
                 </div>
               </div>
             </form>
-            <hr>
         </section>
-
         <section>
-            <h5 id='section-title'></h5>
-            <div class="float-container">
-                <div class="float-child">
+          <h5 id='section-title'></h5>
+          <div class="container">
+            <div class="row">
+              <div class="col">
                     <table class="table table-sm">
                         <thead class="thead-light">
                             <tr>
@@ -57,70 +57,47 @@
                             </tr>
                             {% endfor %}
                         </tbody>
-                    </table>
+                    </table>              
                 </div>
-                <div class="float-child" id='map-container' data-tap-disabled="true">
-                    <div id='map' style='height:45vh; margin:0;'></div>
-                </div>
+              <div class="col" id='map-container' data-tap-disabled="true">
+                    <div id='map' style='height:27.5vh; width: 25vw; margin:0;'></div>
+              </div>
             </div>
-            <br>
+          </div>
+          <br>
         </section>
     </article>
     <script>
+
         var JSONdata = {{neighborhood|tojson}}
         var neighborhood = JSON.parse(JSONdata)
 
-        document.getElementById('section-title').innerHTML = "Here's what is happening in the " + neighborhood[0].name + " neighborhood."
         document.getElementById('page-title').innerHTML = "Dispatches by Neighborhood";
+        document.getElementById('button-content').innerHTML = neighborhood[0].name;
 
         mapboxgl.accessToken = 'pk.eyJ1IjoiYWJjb29rIiwiYSI6ImNqcnp5N3N2ZzFkeWs0NG80bnVtNmFxaDEifQ.zPkUuVuuVNGg-3DkQcBflQ';
-
-        var bounds = [
-            [-122.82576721782573,45.40209931994792],
-            [-122.38211898946827,45.62385405719672]
-        ];
+    
+        var coords = [parseFloat(neighborhood[0].lng), parseFloat(neighborhood[0].lat)]
 
         var map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/light-v10?optimize=true',
-            center: [-122.6355, 45.535],
-            zoom: 6,
-            interactive: true,
-            minZoom: 6,
-            maxZoom: 14,
-            maxBounds: bounds
+            center: coords,
+            zoom: 10,    
         });
-
-        var coords = [neighborhood[0].lng, neighborhood[0].lat]
-
-        console.log(coords)
 
         var marker = new mapboxgl.Marker()
             .setLngLat(coords)
             .setPopup(new mapboxgl.Popup({"closeButton":false}))
             .addTo(map);
 
-        console.log(marker)
-
     </script>
     <style>
         .table-column {
-            font-size:13px;
+            font-size:12px;
         }
-        .float-container {
-            border: 3px solid #fff;
-            padding: 20px;
-        }
-
-        .float-child {
-            width: 50%;
-            float: left;
-            padding: 20px;
-            border: 2px solid red;
-        }  
-
         .menu-scroll {
-           overflow-y: scroll;
+            overflow-y: scroll;
             max-height: 300px;
         }
     </style>

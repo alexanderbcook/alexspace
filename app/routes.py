@@ -121,7 +121,7 @@ def search():
 
     if request.method == 'GET':
         
-        words = ['coronavirus']
+        words = ['ukraine']
         index = len(words)
         word = words[index-1]
 
@@ -169,10 +169,9 @@ def pdxneighborhoods():
 
     if request.method == 'GET':
         name = request.form.get('name','Alameda')
-
     if request.method == 'POST':
-        name = request.form.get('name','Alameda')
-
+        name = request.form.get('name')
+        
     neighborhoods = []
     neighborhood = []
     events = []
@@ -180,7 +179,6 @@ def pdxneighborhoods():
     json_object_neighborhoods(neighborhoods, None, cur)
     json_object_neighborhoods(neighborhood, name, cur)
     json_object_events(events, name, cur)
-
 
     close_connection(cur, conn)
     return render_template('dispatch/neighborhoods.html',
