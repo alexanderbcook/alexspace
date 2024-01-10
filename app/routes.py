@@ -15,6 +15,10 @@ def index():
 def sffpc():
     return render_template('sffpc.html')
     
+@app.route('/recs')
+def recs():
+    return render_template('recs.html')
+
 @app.route('/reddit/performance')
 def performance():
     return render_template('/reddit/performance.html')
