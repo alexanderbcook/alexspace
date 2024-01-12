@@ -12,8 +12,11 @@
         <section>
             <p>My wife has lived in Portland her whole life and loves this city very much. She is involved in the food scene, so whenever a new bar, restaurant, bakery, coffee shop, butcher, fishmonger, speakeasy, brewpub, sushi counter, pizzeria, taco truck, hot dog stand, or bistro opens, she is among the first visitors.</p>
             <p>So when people are coming from out of town and ask, 'Well, what should we do?' - she often has too many answers. She created a Google Sheets page a few years ago to keep track of everything, but recently we decided to give the spreadsheet a facelift and created <a href="https://pdxrecs.com">Riley's Recs</a>. It turned out pretty cool.</p>
-            <p>The backend is pretty similar to this site- it's hosted on AWS using Flask and Gunicorn. However, we did use a cool tool called <a href="https://airtable.com">Airtable</a> to host the content. It's essentially a hosted RDBMS, that looks like a series of spreadsheets from the front-end. This allows her to quickly add or edit content. Airtable has an easy to use Python wrapper which I used to consume the data.</p>
-            <p>I also used <a href="https://htmx.org/">HTMX</a>, the new hotness, to manipulate the front-end. It's really cool- you should check it out.</p>
+            <p>I used a few new tools to build this site. The first is <a href="https://fastapi.tiangolo.com">FastAPI</a>, which is a really cool project and improves on Flask in a lot of significant ways- I love the static typing, auto generated documentation, and the fact that it has things like websockets built-in. Really cool!</p>
+            <p>I also used <a href="https://htmx.org">HTMX</a> to do a lot of front-end. It's really neat and growing in popularity. Simplifies the front-end dependency stack (which was in my opinion getting out of hand in the React/npm world) and makes simple stuff like manipulating the DOM with GET/POST responses really easy.</p>
+            <p> Finally we also used a cool tool called <a href="https://airtable.com">Airtable</a> to host the content. It's essentially a hosted RDBMS, that looks like a series of spreadsheets from the front-end. This allows her to quickly add or edit content. Airtable has an easy to use Python wrapper which I used to consume the data.</p>
+            <p>All in all, this is a small, lightweight tech stack that is really easy to standup and enjoyable to tinker with. Enjoy the recommendations.</p>
+
           <hr>
         </section>
      </article>
