@@ -4,7 +4,8 @@ import json
 import datetime
 import random
 import utilities
-from utilities import connect_to_database, close_connection, json_object_reddit,json_object_search,json_object_sentiment,json_object_category,json_object_year_published,json_object_gender,json_object_time_series,json_object_events,json_object_ratio,json_object_neighborhoods
+from collections import Counter
+from utilities import connect_to_database, close_connection, json_object_reddit,json_object_search,json_object_sentiment,json_object_category,json_object_year_published,json_object_gender,json_object_time_series,json_object_events,json_object_ratio,json_object_neighborhoods,json_object_golf_scores,json_object_golf_rounds
 
 @app.route('/')
 @app.route('/index')
@@ -404,5 +405,33 @@ def users():
                     years_mushrooms=json.dumps(years_mushrooms),
                     years_mdma=json.dumps(years_mdma),
                     years_ketamine=json.dumps(years_ketamine),
-                    years_cocaine=json.dumps(years_cocaine)
-    )                   
+                    years_cocaine=json.dumps(years_cocaine))
+
+
+
+@app.route('/golf')
+def golf():
+    conn = connect_to_database()
+    cur = conn.cursor()   
+
+    scores = []
+    rounds = []           
+
+    json_object_golf_scores(scores, cur)
+    json_object_golf_rounds(rounds, cur)
+
+    close_connection(cur, conn)
+    
+    course_counts = Counter(r['course_name'] for r in rounds)
+    most_frequent_course, most_frequent_count = course_counts.most_common(1)[0]
+
+    print(most_frequent_course)
+    print(most_frequent_count)
+    return render_template('golf.html',
+                    low_score = '81',
+                    low_score_date = '06-25-2025',
+                    most_frequent_course = most_frequent_course,
+                    most_frequent_count = most_frequent_count,
+                    round_count = len(rounds),
+                    scores=scores,
+                    rounds=rounds)
