@@ -2,6 +2,7 @@ import psycopg2
 import datetime
 from datetime import datetime, date, time, timedelta
 import itertools
+import json
 from pytz import timezone
 import pytz
 
@@ -242,4 +243,39 @@ def json_object_year_published(obj, substance, cur):
 
     return obj
 
+def json_object_golf_rounds(obj, cur):
+    query = cur.execute("SELECT r.id, r.date, r.gross, r.net, c.course_name FROM golf.rounds r INNER JOIN golf.courses c ON r.course_id = c.id;");
+    results = cur.fetchall()
 
+    i = 0
+    for result in results:
+        obj.append({
+            "id": result[0],
+            "date": str(result[1]),
+            "gross": result[2],
+            "net": result[3],
+            "course_name": result[4]
+        })
+        i+=1 
+
+    return json.dumps(obj)
+
+def json_object_golf_scores(obj, cur):
+    query = cur.execute("SELECT s.id, s.round_id, s.hole, s.distance, s.par, s.score, s.putts, s.gir FROM golf.scores s;");
+    results = cur.fetchall()
+
+    i = 0
+    for result in results:
+        obj.append({
+            "id": result[0],
+            "round_id": result[1],
+            "hole": result[2],
+            "distance": result[3],
+            "par": result[4],
+            "score": result[5],
+            "putts": result[6],
+            "gir": result[7]
+        })
+        i+=1 
+
+    return json.dumps(obj)
